@@ -1,0 +1,42 @@
+
+<ion-content>
+  <ion-list>
+    <ion-list-header bold>
+      Login
+    </ion-list-header>
+    <ion-item>
+      <ion-label floating>Username</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Dash Settings</ion-list-header> 
+  
+    <ion-item>
+      <ion-label>Select Project</ion-label>
+      <ion-select [(ngModel)]="gaming">
+        <ion-option value="nes">NES</ion-option>
+        <ion-option value="n64">Nintendo64</ion-option>
+        <ion-option value="ps">PlayStation</ion-option>
+        <ion-option value="genesis">Sega Genesis</ion-option>
+        <ion-option value="saturn">Sega Saturn</ion-option>
+        <ion-option value="snes">SNES</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Remember Login</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <button fab primary fab-bottom fab-right (click)="openMenu()">
+    <ion-icon name="more"></ion-icon>
+  </button>
+</ion-content>
