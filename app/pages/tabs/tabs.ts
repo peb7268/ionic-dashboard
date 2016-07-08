@@ -7,6 +7,7 @@ import {SettingsPage} from '../settings/settings';
 @Component({
   templateUrl: 'build/pages/tabs/tabs.html'
 })
+
 export class TabsPage {
 
   private tab1Root: any;
