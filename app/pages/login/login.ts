@@ -15,8 +15,11 @@ export class LoginPage {
 
   login(evt){
   	evt.preventDefault();
+  	var username = this.user.username.trim().toLowerCase();
+  	var password = this.user.password.trim().toLowerCase();
 
-  	var auth = (this.user.username == 'peb7268' && this.user.password == 'erford7268') ? true : false;
+  	var auth = (username == 'peb7268' && password == 'erford7268') ? true : false;
+
   	if(auth == true) this.nav.push(TabsPage);
   }
 }
