@@ -6,8 +6,7 @@ import {Platform, ActionSheet, NavController} from 'ionic-angular';
 })
 
 export class SettingsPage {
-  constructor(public platform: Platform, public nav: NavController) {
-  }
+  constructor(public platform: Platform, public nav: NavController) {}
 
   openMenu() {
     let actionSheet = ActionSheet.create({

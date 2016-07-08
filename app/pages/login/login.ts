@@ -1,18 +1,22 @@
-import {Component} from '@angular/core'
-import {Platform} from 'ionic-angular';
 
-import {HomePage} from '../home/home';
+import {Component} from '@angular/core'
+import {NgModel} from '@angular/common'
+import {Platform, NavController} from 'ionic-angular';
+
+import {TabsPage} from '../tabs/tabs';
 
 @Component({
   templateUrl: 'build/pages/login/login.html'
 })
 
 export class LoginPage {
-  private tab1Root: any;
+  public user: any = {};
+  constructor(public platform: Platform, public nav: NavController) {}
 
-  constructor() {
-    // this tells the tabs component which Pages
-    // should be each tab's root Page
-    this.tab1Root = HomePage;
+  login(evt){
+  	evt.preventDefault();
+
+  	var auth = (this.user.username == 'peb7268' && this.user.password == 'erford7268') ? true : false;
+  	if(auth == true) this.nav.push(TabsPage);
   }
 }
