@@ -27,12 +27,12 @@ export class Chart {
   ngOnInit() {}
 
   ngOnChanges(changes:any):void {
-    console.log('ngOnChanges');
+    //console.log('ngOnChanges');
     this.composeBarChart(this.data);
   }
 
   composeBarChart(resp){
-    console.log('composeBarChart', resp);
+    //console.log('composeBarChart', resp);
 
     //if(resp.length == 0) return;
     //var resp    = JSON.parse(resp);
@@ -40,13 +40,16 @@ export class Chart {
     //TODO: Calculate Net Attraction and plot it in series
     //TODO: Calculate Axis and plot it in labels
 
-    //Aggregate and sort Chart Data
+    /* 
+      Aggregate and sort Chart Data
+      [200000, 400000, 500000, 300000],
+      [100000, 200000, 400000, 600000]
+    */
     var data: { labels?: string[], series?: any } = { 
       labels: ['Q1', 'Q2', 'Q3', 'Q4'],
       series: [
-        [800000, 1200000, 1400000, 1300000],
-        [200000, 400000, 500000, 300000],
-        [100000, 200000, 400000, 600000]
+        [-800000, -1200000, 1400000, 1300000],
+        [-200000, -1000000, 800000, 1500000]
       ]
     };
 
@@ -57,7 +60,12 @@ export class Chart {
         labelInterpolationFnc: function (value) {
           return (value / 1000) + 'k';
         }
-      }
+      },
+      plugins: [
+        Chartist.plugins.ctPointLabels({
+          textAnchor: 'middle'
+        })
+      ]
     };
 
     //Instantiate the chart
