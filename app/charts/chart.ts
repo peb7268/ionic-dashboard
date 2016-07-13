@@ -80,6 +80,12 @@ export class Chart {
         data.element.attr({
           style: 'stroke-width: 30px'
         });
+
+        data.group.elem('text', {
+          x: data.x1,
+          y: data.y1,
+          style: 'text-anchor: middle'
+        }, 'barLabel').text(data.value.x + ', ' + data.value.y);
       }
     });
 
