@@ -1,13 +1,13 @@
 
-import { Component, View, Input } from 'angular2/core';
+import { Component, Input } from '@angular/core';
+
+declare var Chartist: any;
+declare var data: any;
 
 @Component({
-  selector: 'chart'
-  //templateUrl: 'dashboard/dashboard.html'
-})
-
-@View({
+  selector: 'chart',
   template: "\n  <div class='ct-chart ct-perfect-fourth'></div> \n "
+  //templateUrl: 'dashboard/dashboard.html'
 })
 
 export class Netattraction {

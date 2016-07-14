@@ -1,4 +1,12 @@
 {
+  "name": "mdash",
+  "description": "mDash: An Ionic project",
+  "scripts": {
+    "test": "clear; mocha -w --timeout 10000",
+    "build:scripts": "clear; tsc && tsc -w",
+    "posttest": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage -t html",
+    "coverage": "http-server -c-1 -o -p 9875 ./coverage"
+  },
   "dependencies": {
     "@angular/common": "2.0.0-rc.3",
     "@angular/compiler": "2.0.0-rc.3",
@@ -17,15 +25,26 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "del": "2.2.0",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.5",
+    "http-server": "^0.9.0",
     "ionic-gulp-browserify-typescript": "2.0.0",
     "ionic-gulp-fonts-copy": "^1.0.0",
     "ionic-gulp-html-copy": "^1.0.0",
     "ionic-gulp-sass-build": "^1.0.0",
     "ionic-gulp-scripts-copy": "^2.0.0",
-    "run-sequence": "1.1.5"
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.1.1",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-coverage": "^1.1.0",
+    "karma-jasmine": "^1.0.2",
+    "mocha": "^2.5.3",
+    "remap-istanbul": "^0.6.4",
+    "run-sequence": "1.1.5",
+    "systemjs": "^0.19.31"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
@@ -42,7 +61,5 @@
       "version": "",
       "locator": "ios"
     }
-  ],
-  "name": "mdash",
-  "description": "mDash: An Ionic project"
+  ]
 }
