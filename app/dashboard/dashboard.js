@@ -18,7 +18,7 @@ var Dashboard = (function () {
     function Dashboard(http) {
         var _this = this;
         this.http = http;
-        var observable = this.http.get('http://marketpa3pne.intengoresearch.com/dashboard/chart').map(function (resp) {
+        var observable = this.http.get('http://market7qvnra.intengoresearch.com/dash/chart').map(function (resp) {
             return resp.json();
         }).subscribe(function (resp) { return _this.data = resp; });
     }
@@ -36,3 +36,4 @@ var Dashboard = (function () {
     return Dashboard;
 }());
 exports.Dashboard = Dashboard;
+//# sourceMappingURL=dashboard.js.map

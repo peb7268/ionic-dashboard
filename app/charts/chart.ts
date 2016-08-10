@@ -1,6 +1,6 @@
 
 import { Component, Input } from '@angular/core';
-import {NavController, Loading} from 'ionic-angular';
+import { NavController, Loading } from 'ionic-angular';
 
 declare var Chartist: any;
 declare var data: any;
@@ -31,11 +31,69 @@ export class Chart {
     this.composeBarChart(this.data);
   }
 
-  composeBarChart(resp){
-    //console.log('composeBarChart', resp);
+  getLabels(concepts){
+    var labels = concepts.map(function(concept){
+     return concept.name;
+    });
 
-    //if(resp.length == 0) return;
-    //var resp    = JSON.parse(resp);
+    //console.log('labels: ', labels);
+    return labels;
+  }
+
+  /*
+  * Return an array of arrays representing series data
+  * TODO: Need to refactor this so it can handle more than vwap charts
+  * it should be able to delegate and return series data for multiple types of charts.
+  */
+  getSeriesData(vwapData){
+    var seriesData = [];
+    
+    var best_data   = [];
+    var worst_data  = [];
+    
+    for(let concept_id in vwapData.best_count){
+      best_data.push(vwapData.best_count[concept_id][0]);
+      worst_data.push(vwapData.worst_count[concept_id][0]);
+    }
+    seriesData.push(best_data, worst_data);
+
+    return seriesData;
+  }
+
+  getChartHigh(seriesData, offset){
+
+  }
+
+  getChartLow(seriesData, offset){
+
+  }
+
+  /*
+  * To get the stacked effect:
+  * There needs to be multiple arrays with the indexes
+  * of each overlapping aka:
+    
+    var seriesData = [
+        [-800000, -1200000, 1400000, 1300000],
+        [-200000, -1000000, 800000, 1500000]
+    ];
+    
+    Where -8k and -2k correspond to the same bar but stacked.
+  
+  */
+  composeBarChart(resp){
+    if(resp.length == 0) return;
+    var resp = JSON.parse(resp);
+
+  
+    var labels     = this.getLabels(resp.data.concepts);
+    //var labels = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+    var seriesData = this.getSeriesData(resp.data);
+    // var seriesData = [
+    //     [-800000, -1200000, 1400000, 1300000],
+    //     [-200000, -1000000, 800000, 1500000]
+    // ];
 
     //TODO: Calculate Net Attraction and plot it in series
     //TODO: Calculate Axis and plot it in labels
@@ -46,25 +104,25 @@ export class Chart {
       [100000, 200000, 400000, 600000]
     */
     var data: { labels?: string[], series?: any } = { 
-      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-      series: [
-        [-800000, -1200000, 1400000, 1300000],
-        [-200000, -1000000, 800000, 1500000]
-      ]
+      labels: labels,
+      series: seriesData
     };
 
     //Set the options
     var options = {
-      stackBars: true,
+      // stackBars: true,
       axisY: {
         labelInterpolationFnc: function (value) {
-          return (value / 1000) + 'k';
+          return (value);
+          //return (value / 1000) + 'k';
         }
       },
+      high: 50,
+      low: -50,
       plugins: [
-        Chartist.plugins.ctPointLabels({
-          textAnchor: 'middle'
-        })
+        // Chartist.plugins.ctPointLabels({
+        //   textAnchor: 'middle'
+        // })
       ]
     };
 
@@ -81,11 +139,12 @@ export class Chart {
           style: 'stroke-width: 30px'
         });
 
-        data.group.elem('text', {
-          x: data.x1,
-          y: data.y1,
-          style: 'text-anchor: middle'
-        }, 'barLabel').text(data.value.x + ', ' + data.value.y);
+        //Turn this back on to enable labels
+        // data.group.elem('text', {
+        //   x: data.x1,
+        //   y: data.y1,
+        //   style: 'text-anchor: middle'
+        // }, 'barLabel').text(data.value.x + ', ' + data.value.y);
       }
     });
 

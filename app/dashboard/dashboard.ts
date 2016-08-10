@@ -19,7 +19,8 @@ export class Dashboard {
   public data: Object;
 
   constructor(public http: Http){
-    var observable = this.http.get('http://marketpa3pne.intengoresearch.com/dashboard/chart').map( (resp) => {
+    //intengoresearch
+    var observable = this.http.get('http://market7qvnra.dev.intengodev.com/dash/chart').map( (resp) => {
       return resp.json();
     }).subscribe(resp => this.data = resp );
   }

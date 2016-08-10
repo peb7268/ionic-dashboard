@@ -1,13 +1,13 @@
 module.exports = function(config) {
     config.set({
-
         basePath: '.',
 
-        frameworks: ['jasmine'],
+        //'cucumberjs'
+        frameworks: ['jasmine', 'cucumberjs'],
 
         files: [
             //SystemJS
-            {pattern: 'node_modules/systemjs/dist/system.src.js', included: true, watched: true},
+            {pattern: 'node_modules/systemjs/dist/system.js', included: true, watched: true},
             
             
             //Zone Stuff just in case
@@ -19,9 +19,7 @@ module.exports = function(config) {
             { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
 
-            {pattern: 'node_modules/@angular/**/*.js', included: true, watched: true},
-
-            {pattern: 'karma-test-shim.js', included: true, watched: true},
+            //{pattern: 'karma-test-shim.js', included: true, watched: true},
 
             //Just in case
             { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false }, // PhantomJS2 (and possibly others) might require it
@@ -32,14 +30,19 @@ module.exports = function(config) {
 
             // paths to support debugging with source maps in dev tools
             {pattern: 'app/**/*.ts', included: false, watched: false},
-            {pattern: 'www/**/*.js.map', included: false, watched: false}
-        ],
+            {pattern: 'www/**/*.js.map', included: false, watched: false},
 
-        // proxied base paths
-        proxies: {
-            // required for component assests fetched by Angular's compiler
-            '/src/': '/www/build/'
-        },
+            //Cucumber Files
+            {pattern: 'node_modules/karma-cucumberjs/vendor/cucumber-html.css', watched: false, included: false, served: true},
+            {pattern: 'test/features/app.template', watched: false, included: false, served: true},
+
+            //Acceptance Tests
+            {pattern: 'test/features/**/*.feature', watched: true, included: false, served: true},
+            {pattern: 'test/features/step_definitions/**/*.js', watched: true, included: true, served: true},
+
+            //Unit Tests
+            'test/specs/app.spec.js'
+        ],
 
         port: 9876,
 
@@ -47,32 +50,57 @@ module.exports = function(config) {
 
         colors: true,
 
-        autoWatch: true,
-
+        //PhantomJS, Chrome
         browsers: ['Chrome'],
 
         // Karma plugins loaded
         plugins: [
             'karma-jasmine',
+            'karma-cucumberjs',
+
+            'karma-chrome-launcher',
+            'karma-phantomjs-launcher',
+
             'karma-coverage',
-            'karma-chrome-launcher'
+            'karma-html-detailed-reporter',
+            'karma-spec-reporter'
         ],
 
-        // Coverage reporter generates the coverage
-        reporters: ['progress', 'dots', 'coverage'],
+        //Configure reporters
+        reporters: [
+            'spec',
+            'htmlDetailed',
+            'coverage'
+        ],
 
         // Source files that you wanna generate coverage for.
         // Do not include tests or libraries (these files will be instrumented by Istanbul)
         preprocessors: {
-            'test/**/!(*spec).js': ['coverage']
+            'www/build/js/*.js': ['coverage']
         },
 
+        //Configure reporters
+        specReporter: {
+            maxLogLines: 5,         // limit number of lines logged per test 
+            suppressErrorSummary: true,  // do not print error summary 
+            suppressFailed: false,  // do not print information about failed tests 
+            suppressPassed: false,  // do not print information about passed tests 
+            suppressSkipped: true,  // do not print information about skipped tests 
+            showSpecTiming: false // print the time elapsed for each spec 
+        },
+        //karma-coverage coverage reporter, requires preprocessor above to be configured
         coverageReporter: {
-            reporters:[
-                {type: 'json', subdir: '.', file: 'coverage-final.json'}
-            ]
+            type: 'html',
+            subdir: 'coverage', 
+            dir: 'test'
         },
 
-        singleRun: true
+        htmlDetailed: {
+            dir: './test/reports',
+            splitResults: true  //splits results into seperate files for each browser
+        },
+
+        singleRun: false,
+        autoWatch: true
     })
 };

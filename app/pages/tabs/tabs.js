@@ -27,3 +27,4 @@ var TabsPage = (function () {
     return TabsPage;
 }());
 exports.TabsPage = TabsPage;
+//# sourceMappingURL=tabs.js.map

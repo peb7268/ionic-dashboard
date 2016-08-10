@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {HTTP_PROVIDERS, Http} from '@angular/http';
+import { Component } from '@angular/core';
+import { HTTP_PROVIDERS, Http } from '@angular/http';
 
-import {Platform, ionicBootstrap} from 'ionic-angular';
-import {StatusBar} from 'ionic-native';
-import {TabsPage} from './pages/tabs/tabs';
-import {LoginPage} from './pages/login/login';
+import { Platform, ionicBootstrap } from 'ionic-angular';
+import { StatusBar } from 'ionic-native';
+import { TabsPage } from './pages/tabs/tabs';
+import { LoginPage } from './pages/login/login';
 
 
 @Component({

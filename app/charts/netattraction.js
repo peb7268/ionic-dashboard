@@ -47,3 +47,4 @@ var Netattraction = (function () {
     return Netattraction;
 }());
 exports.Netattraction = Netattraction;
+//# sourceMappingURL=netattraction.js.map

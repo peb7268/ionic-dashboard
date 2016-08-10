@@ -19,10 +19,54 @@ var Chart = (function () {
         //console.log('ngOnChanges');
         this.composeBarChart(this.data);
     };
+    Chart.prototype.getLabels = function (concepts) {
+        var labels = concepts.map(function (concept) {
+            return concept.name;
+        });
+        //console.log('labels: ', labels);
+        return labels;
+    };
+    /*
+    * Return an array of arrays representing series data
+    * TODO: Need to refactor this so it can handle more than vwap charts
+    * it should be able to delegate and return series data for multiple types of charts.
+    */
+    Chart.prototype.getSeriesData = function (data) {
+        var seriesData = [];
+        var _data = [];
+        for (var vwap in data.vwaps) {
+            var vwap_val = data.vwaps[vwap];
+            _data.push(vwap_val);
+        }
+        seriesData.push(_data);
+        return seriesData;
+    };
+    /*
+    * To get the stacked effect:
+    * There needs to be multiple arrays with the indexes
+    * of each overlapping aka:
+      
+      var seriesData = [
+          [-800000, -1200000, 1400000, 1300000],
+          [-200000, -1000000, 800000, 1500000]
+      ];
+      
+      Where -8k and -2k correspond to the same bar but stacked.
+    
+    */
     Chart.prototype.composeBarChart = function (resp) {
-        //console.log('composeBarChart', resp);
-        //if(resp.length == 0) return;
-        //var resp    = JSON.parse(resp);
+        console.log('composeBarChart');
+        if (resp.length == 0)
+            return;
+        var resp = JSON.parse(resp);
+        debugger;
+        var labels = this.getLabels(resp.data.concepts);
+        //var labels = ['Q1', 'Q2', 'Q3', 'Q4'];
+        //var seriesData = this.getSeriesData(resp.data);
+        var seriesData = [
+            [-800000, -1200000, 1400000, 1300000],
+            [-200000, -1000000, 800000, 1500000]
+        ];
         //TODO: Calculate Net Attraction and plot it in series
         //TODO: Calculate Axis and plot it in labels
         /*
@@ -31,11 +75,8 @@ var Chart = (function () {
           [100000, 200000, 400000, 600000]
         */
         var data = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            series: [
-                [-800000, -1200000, 1400000, 1300000],
-                [-200000, -1000000, 800000, 1500000]
-            ]
+            labels: labels,
+            series: seriesData
         };
         //Set the options
         var options = {
@@ -91,3 +132,4 @@ var Chart = (function () {
     return Chart;
 }());
 exports.Chart = Chart;
+//# sourceMappingURL=chart.js.map
