@@ -7,7 +7,6 @@ export class App implements AppInterface {
 	public loading: any;
 
 	constructor(){
-		console.log('making an App');
 		this.loading = 'nothing';
 	}
 }

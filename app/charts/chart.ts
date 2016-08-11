@@ -21,7 +21,7 @@ export class Chart {
   public chartType: String;
   @Input() data: Object;
 
-  constructor() {}
+  constructor(){}
 
   //Fires on init
   ngOnInit() {}
@@ -60,58 +60,41 @@ export class Chart {
     return seriesData;
   }
 
-  getChartHigh(seriesData, offset){
-
-  }
-
-  getChartLow(seriesData, offset){
-
-  }
-
   /*
-  * To get the stacked effect:
-  * There needs to be multiple arrays with the indexes
-  * of each overlapping aka:
-    
-    var seriesData = [
-        [-800000, -1200000, 1400000, 1300000],
-        [-200000, -1000000, 800000, 1500000]
-    ];
-    
-    Where -8k and -2k correspond to the same bar but stacked.
-  
+  ** Get the Highest value to be plotted on the chart
+  ** plus some offset so the chart doesnt go all the way to the bounds.
   */
+  getChartHigh(seriesData, offset){}
+
+  getChartLow(seriesData, offset){}
+
+  getYLabelVal(yCoord, yVal){
+    var offset      = 20;
+    var yLabelVal   = (yVal > 0) ? yCoord + offset : yCoord - ( offset - 10 );
+
+    return yLabelVal;
+  }
+
   composeBarChart(resp){
+    window['App'].klass = this;
+
     if(resp.length == 0) return;
     var resp = JSON.parse(resp);
 
   
     var labels     = this.getLabels(resp.data.concepts);
-    //var labels = ['Q1', 'Q2', 'Q3', 'Q4'];
-
     var seriesData = this.getSeriesData(resp.data);
-    // var seriesData = [
-    //     [-800000, -1200000, 1400000, 1300000],
-    //     [-200000, -1000000, 800000, 1500000]
-    // ];
-
-    //TODO: Calculate Net Attraction and plot it in series
-    //TODO: Calculate Axis and plot it in labels
-
-    /* 
-      Aggregate and sort Chart Data
-      [200000, 400000, 500000, 300000],
-      [100000, 200000, 400000, 600000]
-    */
+    
     var data: { labels?: string[], series?: any } = { 
       labels: labels,
       series: seriesData
     };
 
-    //Set the options
+    //Set the options: See the defauts for bar charts in chartist.js: ~3625
     var options = {
-      // stackBars: true,
-      seriesBarDistance: 0,
+      stackBars: true,
+      stackMode: 'overlap',
+      //reverseData: true,
       axisY: {
         labelInterpolationFnc: function (value) {
           return (value);
@@ -133,22 +116,34 @@ export class Chart {
       series: data.series
     }, options);
 
-    //Add Customization
+    //Add Custom labels
     chart.on('draw', function (data) {
       if (data.type === 'bar') {
         data.element.attr({
-          style: 'stroke-width: 30px'
+          style: 'stroke-width: 50px'
         });
 
-        //Turn this back on to enable labels
-        // data.group.elem('text', {
-        //   x: data.x1,
-        //   y: data.y1,
-        //   style: 'text-anchor: middle'
-        // }, 'barLabel').text(data.value.x + ', ' + data.value.y);
+        /* Bar labels //
+        ** data.value.y: The value that is being demonstrated on the graph
+        ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
+        var xVal = data.x1;
+        var yVal = window['App'].klass.getYLabelVal(data.y2, data.value.y);
+
+        data.group.elem('text', {
+          x: xVal,
+          y: yVal,
+          style: 'text-anchor: middle'
+        }, 'barLabel').text(data.value.y);
       }
     });
 
+    //Add hover behavior
+    chart.on('hover', function (data) {
+      console.log('hovering: ', data);
+      if (data.type === 'bar') {}
+    });
+
+    //For changing nav
     chart.on('created', function (data) {
       setTimeout(function(){
         window['App'].loading.destroy();
