@@ -24,7 +24,7 @@
       <ion-item>
         <ion-label>Select Project</ion-label>
         <ion-select>
-          <ion-option *ngFor="let project of projects" value="{{project.name}}">{{ project.name }}</ion-option>
+          <ion-option *ngFor="let project of projects" value="{{project.id}}">{{ project.name }}</ion-option>
         </ion-select>
       </ion-item>
 
@@ -35,7 +35,7 @@
     </ion-list>
   </section>
   
-  <button block>Save</button>
+  <button block (click)="saveSelections($event)">Save</button>
 
   <button fab primary fab-bottom fab-right (click)="openMenu()">
     <ion-icon name="more"></ion-icon>

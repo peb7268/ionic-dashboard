@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Platform, ActionSheet, NavController} from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
+import { HomePage }  from '../home/home';
 
 @Component({
   templateUrl: 'build/pages/settings/settings.html'
@@ -10,13 +11,24 @@ import { LoginPage } from '../login/login';
 export class SettingsPage {
   private creds:any;
   public  projects: any;
+  public  project: any;
 
   constructor(public platform: Platform, public nav: NavController) {
     var creds    = window.localStorage.getItem('credentials');
     var projects = window.localStorage.getItem('projects');
-
+    this.project = {};
+    
     if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
     if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
+  }
+
+  saveSelections(evt){
+    evt.preventDefault();
+    //Save project id
+    debugger;
+
+    //Send to dash page
+    window['App'].klass.nav.push(HomePage);
   }
 
   openMenu() {
