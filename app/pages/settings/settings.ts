@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {Platform, ActionSheet, NavController} from 'ionic-angular';
 
+import { LoginPage } from '../login/login';
+
 @Component({
   templateUrl: 'build/pages/settings/settings.html'
 })
@@ -15,17 +17,6 @@ export class SettingsPage {
 
     if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
     if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
-    
-    this.populateCredentialFields(creds);
-    this.populateAllowedProjects(creds);
-  }
-
-  populateCredentialFields(creds){
-    //Fill out the form fields with the user creds
-  }
-
-  populateAllowedProjects(creds){
-    //Grab the project list from local storage and populate the allowed projects list
   }
 
   openMenu() {
@@ -52,7 +43,8 @@ export class SettingsPage {
           role: 'logout', // will always sort to be on the bottom
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
-            console.log('Cancel clicked');
+            window.localStorage.clear();
+            window['App'].klass.nav.push(LoginPage);
           }
         }
       ]
