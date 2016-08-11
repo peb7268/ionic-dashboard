@@ -111,6 +111,7 @@ export class Chart {
     //Set the options
     var options = {
       // stackBars: true,
+      seriesBarDistance: 0,
       axisY: {
         labelInterpolationFnc: function (value) {
           return (value);
