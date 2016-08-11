@@ -36,7 +36,7 @@ export class LoginPage {
 
       //intengoresearch
       //market7qvnra.
-      var observable = this.http.post('http://dev.intengodev.com/dash/login', {'credentials' : creds }).map( (resp) => {
+      var observable = this.http.post('http://intengoresearch.com/dash/login', {'credentials' : creds }).map( (resp) => {
         return resp.json();
       }).subscribe(resp => {
         this.data = resp;
