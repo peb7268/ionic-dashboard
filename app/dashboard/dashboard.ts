@@ -16,14 +16,9 @@ import { Chart }                             from '../charts/chart';
 })
 
 export class Dashboard {
-  public data: Object;
+  
 
-  constructor(public http: Http){
-    //intengoresearch
-    var observable = this.http.get('http://market7qvnra.dev.intengodev.com/dash/chart').map( (resp) => {
-      return resp.json();
-    }).subscribe(resp => this.data = resp );
-  }
+  constructor(public http: Http){}
 
   ngOnInit(){}
 }

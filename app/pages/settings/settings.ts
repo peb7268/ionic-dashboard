@@ -6,7 +6,27 @@ import {Platform, ActionSheet, NavController} from 'ionic-angular';
 })
 
 export class SettingsPage {
-  constructor(public platform: Platform, public nav: NavController) {}
+  private creds:any;
+  public  projects: any;
+
+  constructor(public platform: Platform, public nav: NavController) {
+    var creds    = window.localStorage.getItem('credentials');
+    var projects = window.localStorage.getItem('projects');
+
+    if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
+    if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
+    
+    this.populateCredentialFields(creds);
+    this.populateAllowedProjects(creds);
+  }
+
+  populateCredentialFields(creds){
+    //Fill out the form fields with the user creds
+  }
+
+  populateAllowedProjects(creds){
+    //Grab the project list from local storage and populate the allowed projects list
+  }
 
   openMenu() {
     let actionSheet = ActionSheet.create({
