@@ -3,7 +3,7 @@ import { Platform, NavController } from 'ionic-angular';
 
 import { Component, EventEmitter, Output } from '@angular/core'
 import { NgModel } from '@angular/common'
-import { Http, HTTP_PROVIDERS }                from '@angular/http';
+import { Http, HTTP_PROVIDERS, Headers}                from '@angular/http';
 import 'rxjs/Rx';
 
 
@@ -27,8 +27,11 @@ export class LoginPage {
 
   	var username = this.user.username.trim().toLowerCase();
   	var password = this.user.password.trim().toLowerCase();
-
   	var auth = (username == 'peb7268@gmail.com' && password == 'testpass') ? true : false;
+
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
 
   	if(auth == true) {
       var creds     = JSON.stringify({'username' : username, 'password' : password });
@@ -36,7 +39,7 @@ export class LoginPage {
 
       //intengoresearch
       //market7qvnra.
-      var observable = this.http.post('http://intengoresearch.com/dash/login', {'credentials' : creds }).map( (resp) => {
+      var observable = this.http.post('http://www.intengoresearch.com/dash/login', {'credentials' : creds }).map( (resp) => {
         return resp.json();
       }).subscribe(resp => {
         this.data = resp;
