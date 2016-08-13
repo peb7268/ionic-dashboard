@@ -154,6 +154,7 @@ export class Chart {
     chart.on('created', function (data) {
       setTimeout(function(){
         window['App'].loading.destroy();
+        window.dispatchEvent(new Event('resize'));
       }, 3500);
     });
   }
