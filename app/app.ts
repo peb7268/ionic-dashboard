@@ -15,8 +15,13 @@ export class MyApp {
   private rootPage:any;
 
   constructor(private platform:Platform) {
-    this.rootPage   = LoginPage;
-    //this.rootPage = TabsPage;
+    var cache_settings = localStorage.getItem('cache_settings');
+    if(cache_settings === null){
+      localStorage.clear();
+      this.rootPage   = LoginPage;
+    } else {
+      this.rootPage = TabsPage;
+    }
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

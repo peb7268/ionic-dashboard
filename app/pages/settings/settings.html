@@ -23,14 +23,14 @@
     
       <ion-item>
         <ion-label>Select Project</ion-label>
-        <ion-select>
+        <ion-select [(ngModel)]="project_id">
           <ion-option *ngFor="let project of projects" value="{{project.id}}">{{ project.name }}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label>Remember Settings</ion-label>
-        <ion-checkbox></ion-checkbox>
+        <ion-checkbox [(ngModel)]="project.cache_settings"></ion-checkbox>
       </ion-item>
     </ion-list>
   </section>

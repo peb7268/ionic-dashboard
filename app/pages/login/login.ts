@@ -11,8 +11,7 @@ import {TabsPage} from '../tabs/tabs';
 
 @Component({
   templateUrl: 'build/pages/login/login.html',
-  providers: [HTTP_PROVIDERS],
-  output: ['data', 'dataEvent']
+  providers: [HTTP_PROVIDERS]
 })
 
 export class LoginPage {
@@ -37,7 +36,7 @@ export class LoginPage {
       var creds     = JSON.stringify({'username' : username, 'password' : password });
       window.localStorage.setItem('credentials', creds);
 
-      //intengoresearch
+      //www.intengoresearch
       //market7qvnra.
       var observable = this.http.post('http://www.intengoresearch.com/dash/login', {'credentials' : creds }).map( (resp) => {
         return resp.json();

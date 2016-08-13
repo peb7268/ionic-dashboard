@@ -24,12 +24,19 @@ export class Chart {
   constructor(){}
 
   //Fires on init
-  ngOnInit() {}
+  ngOnInit() {
+    var data     = localStorage.getItem('project_data');
+    var haveData = typeof data !== 'undefined';
 
-  ngOnChanges(changes:any):void {
-    //console.log('ngOnChanges');
-    this.composeBarChart(this.data);
+    if(haveData) this.data = data;
+    if(haveData) { 
+      this.composeBarChart(this.data);
+    } else {
+      alert('oops there was an error loading your chart.');
+    }
   }
+
+  ngOnChanges(changes:any):void {}
 
   getLabels(concepts){
     var labels = concepts.map(function(concept){
@@ -78,10 +85,10 @@ export class Chart {
   composeBarChart(resp){
     window['App'].klass = this;
 
+    if(resp == null)     return;
     if(resp.length == 0) return;
     var resp = JSON.parse(resp);
 
-  
     var labels     = this.getLabels(resp.data.concepts);
     var seriesData = this.getSeriesData(resp.data);
     

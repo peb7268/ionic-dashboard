@@ -1,7 +1,10 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+// import { NgModel }   from '@angular/common'
+
 import {Platform, ActionSheet, NavController} from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
+import { TabsPage }  from '../tabs/tabs';
 import { HomePage }  from '../home/home';
 
 @Component({
@@ -12,6 +15,7 @@ export class SettingsPage {
   private creds:any;
   public  projects: any;
   public  project: any;
+  public  project_id: any;
 
   constructor(public platform: Platform, public nav: NavController) {
     var creds    = window.localStorage.getItem('credentials');
@@ -24,11 +28,15 @@ export class SettingsPage {
 
   saveSelections(evt){
     evt.preventDefault();
+
     //Save project id
-    debugger;
+    console.log('project_id: ', typeof this.project_id);
+    if(typeof this.project_id !== 'undefined') window.localStorage.setItem('project_id', this.project_id);
+    if(typeof this.project.cache_settings !== 'undefined' && this.project.cache_settings === true ) window.localStorage.setItem('cache_settings', 'true');
 
     //Send to dash page
-    window['App'].klass.nav.push(HomePage);
+    console.log('typeof this.nav.parent.select: ', typeof this.nav.parent);
+    this.nav.parent.select(0);
   }
 
   openMenu() {
