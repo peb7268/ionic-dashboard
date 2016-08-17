@@ -24,18 +24,18 @@ export class SettingsPage {
     
     if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
     if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
+
+    //641
   }
 
   saveSelections(evt){
     evt.preventDefault();
 
     //Save project id
-    console.log('project_id: ', typeof this.project_id);
     if(typeof this.project_id !== 'undefined') window.localStorage.setItem('project_id', this.project_id);
     if(typeof this.project.cache_settings !== 'undefined' && this.project.cache_settings === true ) window.localStorage.setItem('cache_settings', 'true');
 
     //Send to dash page
-    console.log('typeof this.nav.parent.select: ', typeof this.nav.parent);
     this.nav.parent.select(0);
   }
 

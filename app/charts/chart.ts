@@ -1,6 +1,6 @@
 
-import { Component, Input } from '@angular/core';
-import { NavController, Loading } from 'ionic-angular';
+import { Component, Input }         from '@angular/core';
+import { NavController, Loading }   from 'ionic-angular';
 
 declare var Chartist: any;
 declare var data: any;
@@ -21,22 +21,30 @@ export class Chart {
   public chartType: String;
   @Input() data: Object;
 
-  constructor(){}
+  constructor(){
+    console.log('chart constructed');
+  }
 
   //Fires on init
   ngOnInit() {
-    var data     = localStorage.getItem('project_data');
-    var haveData = typeof data !== 'undefined';
-
-    if(haveData) this.data = data;
-    if(haveData) { 
-      this.composeBarChart(this.data);
-    } else {
-      alert('oops there was an error loading your chart.');
-    }
+    console.log('chart init');
   }
 
-  ngOnChanges(changes:any):void {}
+  ngOnChanges(changes:any):void {
+    if(typeof this.data == 'undefined') return;
+    
+
+    //var data     = localStorage.getItem('project_data');
+    //var haveData = typeof data !== 'undefined';
+
+    //if(haveData) this.data = data;
+    // if(haveData) { 
+    //   this.composeBarChart(this.data);
+    // } else {
+    //   alert('oops there was an error loading your chart.');
+    // }
+    this.composeBarChart(this.data);
+  }
 
   getLabels(concepts){
     var labels = concepts.map(function(concept){
