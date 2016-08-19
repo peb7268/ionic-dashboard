@@ -21,7 +21,7 @@ declare var data: any;
 export class Chart {
   //public chartType: String;
 
-  @Input() data: Object;
+  @Input() data: any;
   @Input() chartType:String;
 
   constructor(public chartService: ChartService){
@@ -36,17 +36,9 @@ export class Chart {
   ngOnChanges(changes:any):void {
     if(typeof this.data == 'undefined') return;
     
-
-    //var data     = localStorage.getItem('project_data');
-    //var haveData = typeof data !== 'undefined';
-
-    //if(haveData) this.data = data;
-    // if(haveData) { 
-    //   this.composeBarChart(this.data);
-    // } else {
-    //   alert('oops there was an error loading your chart.');
-    // }
-    this.composeChart(this.chartType, this.data);
+    if(this.data !== null && typeof this.data == 'object') {
+      this.composeChart(this.chartType, this.data);
+    }
   }
 
   getLabels(concepts){
@@ -99,8 +91,7 @@ export class Chart {
     window['App'].klass = this;
 
     if(resp == null)     return;
-    if(resp.length == 0) return;
-    var resp = JSON.parse(resp);
+    if(typeof resp.data !==  'object') return;
 
     switch (chartType) {
       case "netattraction":
@@ -180,7 +171,7 @@ export class Chart {
       setTimeout(function(){
         window['App'].loading.destroy();
         window.dispatchEvent(new Event('resize'));
-      }, 3500);
+      }, 500);
     });
   }
 }

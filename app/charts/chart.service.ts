@@ -8,6 +8,7 @@ export class ChartService {
 			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
 		if(typeof localData == 'string' && cache == true) {
+			console.log('fetching data cache');
 			_data 	= JSON.parse(localData);
 			return _data;
 		} else {

@@ -26,6 +26,8 @@ export class Dashboard {
 	public data: Object;
 
 	constructor(private navController: NavController, public http: Http, public chartService: ChartService){
+		var project_id = localStorage.getItem('project_id');
+
 		console.log('Dashboard Constructed');
 	    console.log(this.chartService);
 
@@ -35,20 +37,22 @@ export class Dashboard {
 	      duration: 0,
 	      dismissOnPageChange: false
 	    });
+	  	this.navController.present(window['App'].loading);
 
 	    var _data = this.chartService.fetchData(window.localStorage.getItem('project_data'));
-
-	    this.navController.present(window['App'].loading);
-
-	    var project_id = localStorage.getItem('project_id');
-	    this.loadCharts(project_id);
+	    if(typeof _data.data == 'object' && _data.data !== null) { 
+	    	this.data = _data;
+    	} else {
+    		this.loadCharts(project_id);
+    	}
 	}
 
 	loadCharts(pid){
+		console.log('loading charts');
 	    var observable = this.http.get('http://www.intengoresearch.com/dash/projects/' + pid).map( (resp) => {
 	        return resp.json();
 	      }).subscribe(resp => {
-	        console.log('Project specific data came back: ');
+	        console.log('Observable setting data: Project specific data came back: ');
 
 	        this.data = resp;
 	        window.localStorage.setItem('project_data', JSON.stringify(resp));
