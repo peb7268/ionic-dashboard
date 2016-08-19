@@ -11,24 +11,23 @@ declare var data: any;
   selector: 'chart',
 
   //templateUrl: 'dashboard/dashboard.html',
-  inputs: ['data', 'chartType', 'test'],
   template: "\n  <div class='ct-chart ct-perfect-fourth'></div> \n "
 })
 
 //TODO: Figure out how to pass the data better using an observable and an event emitter
 
 export class Chart {
-  public chartType: String;
+  //public chartType: String;
+
   @Input() data: Object;
+  @Input() chartType:String;
 
   constructor(){
     console.log('chart constructed');
   }
 
   //Fires on init
-  ngOnInit() {
-    console.log('chart init');
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes:any):void {
     if(typeof this.data == 'undefined') return;
@@ -43,7 +42,7 @@ export class Chart {
     // } else {
     //   alert('oops there was an error loading your chart.');
     // }
-    this.composeBarChart(this.data);
+    this.composeChart(this.chartType, this.data);
   }
 
   getLabels(concepts){
@@ -90,13 +89,27 @@ export class Chart {
     return yLabelVal;
   }
 
-  composeBarChart(resp){
+  //Delegates to whichever specific chart type we are working with
+  composeChart(chartType, resp){
+    console.log('composing a ' + this.chartType + ' chart.');
     window['App'].klass = this;
 
     if(resp == null)     return;
     if(resp.length == 0) return;
     var resp = JSON.parse(resp);
 
+    switch (chartType) {
+      case "netattraction":
+        this.composeBarChart(resp);
+      break;
+      
+      default:
+        console.log('default switch matched');  
+      break;
+    }
+  }
+
+  composeBarChart(resp){
     var labels     = this.getLabels(resp.data.concepts);
     var seriesData = this.getSeriesData(resp.data);
     
