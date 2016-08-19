@@ -2,16 +2,18 @@
 import { Component, Input }         from '@angular/core';
 import { NavController, Loading }   from 'ionic-angular';
 
+import { ChartService }             from './chart.service'
+
 declare var Chartist: any;
 declare var data: any;
 
-//TODO: Explore passing data into this compoonent from dashboard because I still dont think it's 100% right.
-
+/* TODO: Explore passing data into this compoonent from dashboard 
+** because I still dont think it's 100% right.
+**/
 @Component({
   selector: 'chart',
-
-  //templateUrl: 'dashboard/dashboard.html',
-  template: "\n  <div class='ct-chart ct-perfect-fourth'></div> \n "
+  templateUrl: "build/charts/chart.html",
+  providers: [ChartService]
 })
 
 //TODO: Figure out how to pass the data better using an observable and an event emitter
@@ -22,12 +24,14 @@ export class Chart {
   @Input() data: Object;
   @Input() chartType:String;
 
-  constructor(){
-    console.log('chart constructed');
+  constructor(public chartService: ChartService){
+    console.log('Chart constructed');
   }
 
   //Fires on init
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Chart Init');
+  }
 
   ngOnChanges(changes:any):void {
     if(typeof this.data == 'undefined') return;

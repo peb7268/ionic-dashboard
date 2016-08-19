@@ -9,6 +9,7 @@ import { App } 					          		from './../globals';
 window['App'] = new App();
 
 import { Chart }       							from '../charts/chart';
+import { ChartService }             			from '../charts/chart.service'
 
 
 //TODO: Make this the main component - aka remove the main componenet and have this as the top level component.
@@ -17,15 +18,16 @@ import { Chart }       							from '../charts/chart';
   selector: 'dashboard',
   directives: [Chart],
   templateUrl: 'build/dashboard/dashboard.html',
-  providers: [HTTP_PROVIDERS],
+  providers: [HTTP_PROVIDERS, ChartService],
   output: ['data', 'dataEvent'],
 })
 
 export class Dashboard {
 	public data: Object;
 
-	constructor(private navController: NavController, public http: Http){
+	constructor(private navController: NavController, public http: Http, public chartService: ChartService){
 		console.log('Dashboard Constructed');
+	    console.log(this.chartService);
 
 		//Show the modal and store it as a promise on the window
 	  	window['App'].loading = Loading.create({
@@ -33,6 +35,9 @@ export class Dashboard {
 	      duration: 0,
 	      dismissOnPageChange: false
 	    });
+
+	    var _data = this.chartService.fetchData(window.localStorage.getItem('project_data'));
+
 	    this.navController.present(window['App'].loading);
 
 	    var project_id = localStorage.getItem('project_id');
