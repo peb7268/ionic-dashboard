@@ -1,6 +1,4 @@
 
-//import { NavController, Loading } 		from 'ionic-angular';
-
 import { Injectable } 					from '@angular/core';
 import { Http } 						from '@angular/http';
 import 'rxjs/Rx';
@@ -8,12 +6,10 @@ import 'rxjs/Rx';
 //import { App } 					        from './../globals';
 
 @Injectable()
-export class ChartService {
+export class DataService {
 	public data;
 	
-	constructor(public http: Http){
-		console.log('chart service constructed'); 
-	}
+	constructor(public http: Http){ console.log('chart service constructed'); }
 
 	fetchData(localData, project_id = null){
 		var _data;
@@ -21,8 +17,9 @@ export class ChartService {
 			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
 		if(typeof localData == 'string' && cache == true) {
-			console.log('fetching data cache');
+			console.log('fetching cached data:');
 			_data 	= JSON.parse(localData);
+
 			return _data;
 		} else {
 			var observable = this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id).map( (resp) => {

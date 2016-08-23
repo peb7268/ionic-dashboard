@@ -2,7 +2,7 @@
 import { Component, Input }         from '@angular/core';
 import { NavController, Loading }   from 'ionic-angular';
 
-import { ChartService }             from '../charts/chart.service'
+import { DataService }              from '../dashboard/data.service'
 
 declare var Chartist: any;
 declare var data: any;
@@ -23,7 +23,7 @@ export class Chart {
   @Input() data: any;
   @Input() chartType:String;
 
-  constructor(public chartService: ChartService){
+  constructor(public dataService: DataService){
     console.log('Chart constructed');
   }
 

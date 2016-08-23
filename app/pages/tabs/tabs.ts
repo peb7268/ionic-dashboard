@@ -5,7 +5,7 @@ import { Platform, NavController }  from 'ionic-angular';
 import { HomePage }                 from '../home/home';
 import { SettingsPage }             from '../settings/settings';
 
-import { ChartService }             from '../../charts/chart.service'
+import { DataService }              from '../../dashboard/data.service'
 //import { Dashboard }  from '../../dashboard/dashboard';
 
 @Component({
@@ -17,7 +17,7 @@ export class TabsPage {
   private tab2Root: 	any;
   private currentTab: 	any;
 
-  constructor(public nav: NavController, public chartService: ChartService) {
+  constructor(public nav: NavController, public dataService: DataService) {
     console.log('Tabs Page Constructor');
     // this tells the tabs component which Pages
     // should be each tab's root Page
@@ -32,9 +32,9 @@ export class TabsPage {
   //TODO: When you click the dashboard page and you have changed studies load the data from the new study
   initDash(){
     console.log('Initializing Dashboard');
-    var project_id = this.chartService.getProjectId();
+    var project_id = this.dataService.getProjectId();
 
-    if(this.chartService.studiesDidChange(project_id)){
+    if(this.dataService.studiesDidChange(project_id)){
       //reload data
       console.log('Reloading The Data From Web Service');
     } else {

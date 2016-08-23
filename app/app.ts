@@ -8,18 +8,18 @@ import { StatusBar }      from 'ionic-native';
 import { TabsPage }       from './pages/tabs/tabs';
 import { LoginPage }      from './pages/login/login';
 
-import { ChartService }   from './charts/chart.service'
-// import { provide }        from '@angular/core';
+import { DataService }   from './dashboard/data.service'
+
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [ChartService]
+  providers: [DataService]
 })
 
 export class MyApp {
   private rootPage:any;
 
-  constructor(private platform: Platform, public chartService: ChartService) {
+  constructor(private platform: Platform, public dataService: DataService) {
     var cache_settings = localStorage.getItem('cache_settings');
     if(cache_settings === null){
       localStorage.clear();
@@ -37,4 +37,4 @@ export class MyApp {
 }
 
 
-ionicBootstrap(MyApp, [ChartService])
+ionicBootstrap(MyApp, [DataService])

@@ -7,7 +7,7 @@ import { App } 					          		from './../globals';
 window['App'] = new App();
 
 import { Chart }       							from '../charts/chart';
-import { ChartService }   						from '../charts/chart.service'
+import { DataService }   						from '../dashboard/data.service'
 
 
 //TODO: Make this the main component - aka remove the main componenet and have this as the top level component.
@@ -22,7 +22,7 @@ import { ChartService }   						from '../charts/chart.service'
 export class Dashboard {
 	public data: Object;
 
-	constructor(private navController: NavController, public chartService: ChartService){
+	constructor(private navController: NavController, public dataService: DataService){
 		console.log('Dashboard Constructed');
 
 		window['App'].klass  = this;
@@ -37,18 +37,26 @@ export class Dashboard {
 	    });
 	  	this.navController.present(window['App'].loading);
 
-	  	var _data = this.chartService.fetchData(window.localStorage.getItem('project_data'));
-	    this.initializeDashboard(_data.data, project_id);
+	  	var _data = this.dataService.fetchData(window.localStorage.getItem('project_data'));
+	    this.initializeDashboard(_data.data, project_id, function(){
+	    	console.log('dashboard intialized');
+	    	window['App'].loading.dismiss();
+	    	
+	    	
+	    });
 	}
 
-	initializeDashboard(data, project_id){
+	initializeDashboard(data, project_id, callback){
 	    var _shouldStoreData = this.shouldStoreData(data, project_id);
 	    console.log('Should Store Data?: ' + _shouldStoreData);
+	    this.data = data;
 
-	    this.chartService.fetchData(data, project_id);
+	    if(typeof callback !== 'undefined') {
+	    	window.setTimeout(callback, 500);
+	    }
 	}
 
 	shouldStoreData(data, project_id){
-		return (this.chartService.dataIsValid(data) && this.chartService.isCurrentProject(project_id, data.survey.id));
+		return (this.dataService.dataIsValid(data) && this.dataService.isCurrentProject(project_id, data.survey.id));
 	}
 }
