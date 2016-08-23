@@ -1,42 +1,46 @@
 
-import { Component, Input }         from '@angular/core';
-import { NavController, Loading }   from 'ionic-angular';
+import { Component, Input, Output, EventEmitter }   from '@angular/core';
+import { NavController, Loading }                   from 'ionic-angular';
 
-import { DataService }              from '../dashboard/data.service'
+import { DataService }                              from '../dashboard/data.service'
 
 declare var Chartist: any;
-declare var data: any;
 
-/* TODO: Explore passing data into this compoonent from dashboard 
-** because I still dont think it's 100% right.
-**/
-@Component({
-  selector: 'chart',
-  templateUrl: "build/charts/chart.html"
-})
+
 
 //TODO: Figure out how to pass the data better using an observable and an event emitter
+@Component({
+  selector: 'chart',
+  templateUrl: "build/charts/chart.html",
+
+  inputs:  ['data', 'chartType'],
+  outputs: ['dataEvent']
+})
 
 export class Chart {
-  //public chartType: String;
-
-  @Input() data: any;
-  @Input() chartType:String;
+  public data: any;
+  public chartType: String;
 
   constructor(public dataService: DataService){
     console.log('Chart constructed');
+    this.data = this.dataService.getData();
   }
 
   //Fires on init
   ngOnInit() {
-    console.log('Chart Init');
+    //console.log('ngOnInit: this.data: ');
+    //console.log(this.data);
   }
 
   ngOnChanges(changes:any):void {
+    debugger;
+    // console.log('ngOnChanges: this.data: ');
+    // console.log(this.data);
+
     if(typeof this.data == 'undefined') return;
     
     if(this.data !== null && typeof this.data == 'object') {
-      this.composeChart(this.chartType, this.data);
+      this.composeChart(this.chartType, this.data.data);
     }
   }
 
@@ -85,16 +89,15 @@ export class Chart {
   }
 
   //Delegates to whichever specific chart type we are working with
-  composeChart(chartType, resp){
+  composeChart(chartType, data){
     console.log('composing a ' + this.chartType + ' chart.');
     window['App'].klass = this;
 
-    if(resp == null)     return;
-    if(typeof resp.data !==  'object') return;
+    if(data == null) return;
 
     switch (chartType) {
       case "netattraction":
-        this.composeBarChart(resp);
+        this.composeBarChart(data);
       break;
       
       default:
@@ -103,11 +106,11 @@ export class Chart {
     }
   }
 
-  composeBarChart(resp){
-    var labels     = this.getLabels(resp.data.concepts);
-    var seriesData = this.getSeriesData(resp.data);
+  composeBarChart(data){
+    var labels     = this.getLabels(data.concepts);
+    var seriesData = this.getSeriesData(data);
     
-    var data: { labels?: string[], series?: any } = { 
+    var _data: { labels?: string[], series?: any } = { 
       labels: labels,
       series: seriesData
     };
@@ -134,8 +137,8 @@ export class Chart {
 
     //Instantiate the chart
     var chart = new Chartist.Bar('.ct-chart', {
-      labels: data.labels,
-      series: data.series
+      labels: _data.labels,
+      series: _data.series
     }, options);
 
     //Add Custom labels
@@ -145,6 +148,8 @@ export class Chart {
           style: 'stroke-width: 50px'
         });
 
+        if(typeof window['App'].klass.getYLabelVal !== 'function') return;
+        
         /* Bar labels //
         ** data.value.y: The value that is being demonstrated on the graph
         ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */

@@ -19,7 +19,7 @@ import { DataService }   from './dashboard/data.service'
 export class MyApp {
   private rootPage:any;
 
-  constructor(private platform: Platform, public dataService: DataService) {
+  constructor(private platform: Platform) {
     var cache_settings = localStorage.getItem('cache_settings');
     if(cache_settings === null){
       localStorage.clear();

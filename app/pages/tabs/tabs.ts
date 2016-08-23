@@ -9,13 +9,15 @@ import { DataService }              from '../../dashboard/data.service'
 //import { Dashboard }  from '../../dashboard/dashboard';
 
 @Component({
-  templateUrl: 'build/pages/tabs/tabs.html'
+  templateUrl: 'build/pages/tabs/tabs.html',
+  outputs: ['data']
 })
 
 export class TabsPage {
-  private tab1Root: 	any;
-  private tab2Root: 	any;
+  private tab1Root: 	  any;
+  private tab2Root: 	  any;
   private currentTab: 	any;
+  public  data: Object;
 
   constructor(public nav: NavController, public dataService: DataService) {
     console.log('Tabs Page Constructor');
@@ -37,6 +39,9 @@ export class TabsPage {
     if(this.dataService.studiesDidChange(project_id)){
       //reload data
       console.log('Reloading The Data From Web Service');
+      window.localStorage.removeItem('project_data');
+      this.dataService.fetchData(null, project_id);
+
     } else {
       console.log('Displaying the dash with cache');
     }
