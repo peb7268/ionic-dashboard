@@ -13,9 +13,12 @@ import { Http } 						from '@angular/http';
 @Injectable()
 export class DataService {
 	public data;
+	public charts 		 = {};
+	public instances:any = {}; 
+
 	constructor(public http: Http){}
 
-	fetchData(localData, project_id = null){
+	fetchData(localData, project_id = null, callback?){
 		var cache = window.localStorage.getItem('cache_settings');
 			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
@@ -33,6 +36,7 @@ export class DataService {
 		        window['App'].loading.dismiss();
 
 		        this.data = data;
+		        if(typeof callback !== 'undefined') callback();
 		    });
 		}
 
@@ -66,5 +70,22 @@ export class DataService {
 
 	getProjectId(data = null){
 		return (this.dataIsValid(data)) ? data.id : window.localStorage.getItem('project_id');
+	}
+
+	pushChart(chartType, data, chart){
+		var chart_id = chartType + '-' + data.survey.id;
+		this.charts[chart_id] = chart;
+	}
+
+	removeCharts(){
+		for(var chartName in this.charts){
+			var chart = this.charts[chartName];
+			chart.detach();
+			chart.container.remove();
+		}
+	}
+
+	reloadCharts(){
+		this.instances.Dashboard.initializeDashboard();
 	}
 }

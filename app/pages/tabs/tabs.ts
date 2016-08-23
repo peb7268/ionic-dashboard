@@ -40,8 +40,9 @@ export class TabsPage {
       //reload data
       console.log('Reloading The Data From Web Service');
       window.localStorage.removeItem('project_data');
-      this.dataService.fetchData(null, project_id);
-
+      
+      this.dataService.removeCharts();
+      this.dataService.fetchData(null, project_id, this.dataService.reloadCharts);
     } else {
       console.log('Displaying the dash with cache');
     }

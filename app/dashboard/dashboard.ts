@@ -27,7 +27,13 @@ export class Dashboard {
 
 	constructor(private navController: NavController, public dataService: DataService){
 		console.log('Dashboard Constructed');
+		
+		this.dataService.instances['Dashboard'] = this;
+		this.initializeDashboard();
+	}
 
+	//TODO: Use an observable instead of a timeout / callback
+	initializeDashboard(){
 		window['App'].klass  = this;
 		var project_id 		 = localStorage.getItem('project_id');
 
@@ -40,20 +46,13 @@ export class Dashboard {
 	  	this.navController.present(window['App'].loading);
 
 	  	this.data = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id);
-	    this.initializeDashboard(this.data, project_id, function(){
+
+	    var _shouldStoreData = this.dataService.shouldStoreData(this.data, project_id);
+	    console.log('Should Store Data?: ' + _shouldStoreData);
+	    
+    	window.setTimeout(function(){
 	    	console.log('dashboard intialized');
 	    	window['App'].loading.dismiss();
-	    });
-	}
-
-	//TODO: Use an observable instead of a timeout / callback
-	initializeDashboard(data, project_id, callback){
-	    var _shouldStoreData = this.dataService.shouldStoreData(data, project_id);
-	    console.log('Should Store Data?: ' + _shouldStoreData);
-	    this.data = data;
- 
-	    if(typeof callback !== 'undefined') {
-	    	window.setTimeout(callback, 500);
-	    }
+    	}, 500);
 	}
 }

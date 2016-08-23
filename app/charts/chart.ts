@@ -33,7 +33,6 @@ export class Chart {
   }
 
   ngOnChanges(changes:any):void {
-    debugger;
     // console.log('ngOnChanges: this.data: ');
     // console.log(this.data);
 
@@ -97,7 +96,8 @@ export class Chart {
 
     switch (chartType) {
       case "netattraction":
-        this.composeBarChart(data);
+        var chart     = this.composeBarChart(data);
+        this.dataService.pushChart(chartType, data, chart); 
       break;
       
       default:
@@ -149,7 +149,7 @@ export class Chart {
         });
 
         if(typeof window['App'].klass.getYLabelVal !== 'function') return;
-        
+
         /* Bar labels //
         ** data.value.y: The value that is being demonstrated on the graph
         ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
@@ -177,6 +177,8 @@ export class Chart {
         window.dispatchEvent(new Event('resize'));
       }, 500);
     });
+
+    return chart;
   }
 }
 
