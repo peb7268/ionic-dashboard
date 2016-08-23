@@ -1,21 +1,23 @@
 
-import { Component }    from '@angular/core'
-import { Platform }     from 'ionic-angular';
+import { Component }                from '@angular/core'
+import { Platform, NavController }  from 'ionic-angular';
 
-import { HomePage }     from '../home/home';
-import { SettingsPage } from '../settings/settings';
+import { HomePage }                 from '../home/home';
+import { SettingsPage }             from '../settings/settings';
+import { ChartService }             from '../../charts/chart.service'
+//import { Dashboard }  from '../../dashboard/dashboard';
 
 @Component({
-  templateUrl: 'build/pages/tabs/tabs.html'
+  templateUrl: 'build/pages/tabs/tabs.html',
+  providers: [ChartService]
 })
 
 export class TabsPage {
-
   private tab1Root: 	any;
   private tab2Root: 	any;
   private currentTab: 	any;
 
-  constructor() {
+  constructor(public nav: NavController, public chartService: ChartService) {
     console.log('Tabs Page Constructor');
     // this tells the tabs component which Pages
     // should be each tab's root Page
@@ -25,5 +27,18 @@ export class TabsPage {
     this.currentTab = currentTab;
     this.tab1Root 	= HomePage;
     this.tab2Root 	= SettingsPage;
+  }
+
+  //TODO: When you click the dashboard page and you have changed studies load the data from the new study
+  initDash(){
+    console.log('Initializing Dashboard');
+    var project_id = this.chartService.getProjectId();
+
+    if(this.chartService.studiesDidChange(project_id)){
+      //reload data
+      console.log('Reloading The Data From Web Service');
+    } else {
+      console.log('Displaying the dash with cache');
+    }
   }
 }

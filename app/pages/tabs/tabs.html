@@ -1,6 +1,6 @@
 
 <ion-tabs [selectedIndex]="currentTab">
-  <ion-tab [root]="tab1Root" tabTitle="Dashboard" tabIcon="podium"></ion-tab>
+  <ion-tab [root]="tab1Root" tabTitle="Dashboard" tabIcon="podium" (ionSelect)="initDash()"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="Preferences" tabIcon="switch"></ion-tab>
 </ion-tabs>
 

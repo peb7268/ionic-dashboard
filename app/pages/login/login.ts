@@ -1,17 +1,17 @@
 
-import { Platform, NavController } from 'ionic-angular';
+import { Platform, NavController }         from 'ionic-angular';
 
 import { Component, EventEmitter, Output } from '@angular/core'
-import { NgModel } from '@angular/common'
-import { Http, HTTP_PROVIDERS, Headers}                from '@angular/http';
+import { NgModel }                         from '@angular/common'
+import { Http, Headers}                    from '@angular/http';
+
 import 'rxjs/Rx';
 
 
 import {TabsPage} from '../tabs/tabs';
 
 @Component({
-  templateUrl: 'build/pages/login/login.html',
-  providers: [HTTP_PROVIDERS]
+  templateUrl: 'build/pages/login/login.html'
 })
 
 export class LoginPage {

@@ -1,9 +1,7 @@
 
 import { Component, EventEmitter, Output }   	from '@angular/core';
 
-import {Http, HTTP_PROVIDERS}     				from '@angular/http';
 import { NavController, Loading } 				from 'ionic-angular';
-import 'rxjs/Rx';
 
 import { App } 					          		from './../globals';
 window['App'] = new App();
@@ -18,18 +16,19 @@ import { ChartService }             			from '../charts/chart.service'
   selector: 'dashboard',
   directives: [Chart],
   templateUrl: 'build/dashboard/dashboard.html',
-  providers: [HTTP_PROVIDERS, ChartService],
+  providers: [ChartService],
   output: ['data', 'dataEvent'],
 })
 
 export class Dashboard {
 	public data: Object;
 
-	constructor(private navController: NavController, public http: Http, public chartService: ChartService){
-		var project_id = localStorage.getItem('project_id');
-
+	constructor(private navController: NavController, public chartService: ChartService){
 		console.log('Dashboard Constructed');
-	    console.log(this.chartService);
+
+		window['App'].klass  = this;
+		this.data 			 = {};
+		var project_id 		 = localStorage.getItem('project_id');
 
 		//Show the modal and store it as a promise on the window
 	  	window['App'].loading = Loading.create({
@@ -39,24 +38,18 @@ export class Dashboard {
 	    });
 	  	this.navController.present(window['App'].loading);
 
-	    var _data = this.chartService.fetchData(window.localStorage.getItem('project_data'));
-	    if(typeof _data.data == 'object' && _data.data !== null) { 
-	    	this.data = _data;
-    	} else {
-    		this.loadCharts(project_id);
-    	}
+	  	var _data = this.chartService.fetchData(window.localStorage.getItem('project_data'));
+	    this.initializeDashboard(_data.data, project_id);
 	}
 
-	loadCharts(pid){
-		console.log('loading charts');
-	    var observable = this.http.get('http://www.intengoresearch.com/dash/projects/' + pid).map( (resp) => {
-	        return resp.json();
-	      }).subscribe(resp => {
-	        console.log('Observable setting data: Project specific data came back: ');
+	initializeDashboard(data, project_id){
+	    var _shouldStoreData = this.shouldStoreData(data, project_id);
+	    console.log('Should Store Data?: ' + _shouldStoreData);
 
-	        this.data = resp;
-	        window.localStorage.setItem('project_data', JSON.stringify(resp));
-	        window['App'].loading.dismiss();
-	      });
-  	}
+	    this.chartService.fetchData(data, project_id);
+	}
+
+	shouldStoreData(data, project_id){
+		return (this.chartService.dataIsValid(data) && this.chartService.isCurrentProject(project_id, data.survey.id));
+	}
 }

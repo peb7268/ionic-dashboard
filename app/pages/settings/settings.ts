@@ -18,14 +18,15 @@ export class SettingsPage {
   public  project_id: any;
 
   constructor(public platform: Platform, public nav: NavController) {
-    var creds    = window.localStorage.getItem('credentials');
-    var projects = window.localStorage.getItem('projects');
-    this.project = {};
+    console.log('settings constructor');
+    var creds            = window.localStorage.getItem('credentials');
+    var projects         = window.localStorage.getItem('projects');
+
+    window['App'].klass  = this;
+    this.project         = {};
     
     if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
     if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
-
-    //641
   }
 
   saveSelections(evt){
