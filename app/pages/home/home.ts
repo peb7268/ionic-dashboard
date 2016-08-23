@@ -2,8 +2,9 @@
 import { Component } 	          from '@angular/core';
 import { NavController }          from 'ionic-angular';
 
-import {Http, HTTP_PROVIDERS}     from '@angular/http';
+import { Http }     from '@angular/http';
 
+// import { ChartService }   		  from '../../charts/chart.service'
 import { Dashboard } 			  from '../../dashboard/dashboard';
 
 @Component({

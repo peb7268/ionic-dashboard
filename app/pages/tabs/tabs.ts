@@ -4,12 +4,12 @@ import { Platform, NavController }  from 'ionic-angular';
 
 import { HomePage }                 from '../home/home';
 import { SettingsPage }             from '../settings/settings';
+
 import { ChartService }             from '../../charts/chart.service'
 //import { Dashboard }  from '../../dashboard/dashboard';
 
 @Component({
-  templateUrl: 'build/pages/tabs/tabs.html',
-  providers: [ChartService]
+  templateUrl: 'build/pages/tabs/tabs.html'
 })
 
 export class TabsPage {

@@ -2,7 +2,7 @@
 import { Component, Input }         from '@angular/core';
 import { NavController, Loading }   from 'ionic-angular';
 
-import { ChartService }             from './chart.service'
+import { ChartService }             from '../charts/chart.service'
 
 declare var Chartist: any;
 declare var data: any;
@@ -12,8 +12,7 @@ declare var data: any;
 **/
 @Component({
   selector: 'chart',
-  templateUrl: "build/charts/chart.html",
-  providers: [ChartService]
+  templateUrl: "build/charts/chart.html"
 })
 
 //TODO: Figure out how to pass the data better using an observable and an event emitter

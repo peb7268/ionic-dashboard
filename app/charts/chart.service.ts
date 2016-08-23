@@ -1,19 +1,18 @@
 
-import { NavController, Loading } 		from 'ionic-angular';
+//import { NavController, Loading } 		from 'ionic-angular';
 
 import { Injectable } 					from '@angular/core';
 import { Http } 						from '@angular/http';
-
-//import 'rxjs/Rx';
+import 'rxjs/Rx';
 
 //import { App } 					        from './../globals';
 
 @Injectable()
 export class ChartService {
-	public data = {};
+	public data;
 	
-	constructor(public http: Http){ 
-		console.log('chart service constructed');	
+	constructor(public http: Http){
+		console.log('chart service constructed'); 
 	}
 
 	fetchData(localData, project_id = null){
@@ -53,6 +52,10 @@ export class ChartService {
 	/* Confirms data from local storage is an acutal response object */
 	dataIsValid(data){
 		return (typeof data == 'object' && data !== null);
+	}
+
+	getData(){
+		return this.data;
 	}
 
 	getProjectId(data = null){

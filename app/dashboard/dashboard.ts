@@ -7,7 +7,7 @@ import { App } 					          		from './../globals';
 window['App'] = new App();
 
 import { Chart }       							from '../charts/chart';
-import { ChartService }             			from '../charts/chart.service'
+import { ChartService }   						from '../charts/chart.service'
 
 
 //TODO: Make this the main component - aka remove the main componenet and have this as the top level component.
@@ -16,8 +16,7 @@ import { ChartService }             			from '../charts/chart.service'
   selector: 'dashboard',
   directives: [Chart],
   templateUrl: 'build/dashboard/dashboard.html',
-  providers: [ChartService],
-  output: ['data', 'dataEvent'],
+  output: ['data', 'dataEvent']
 })
 
 export class Dashboard {
