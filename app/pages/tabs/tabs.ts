@@ -42,7 +42,7 @@ export class TabsPage {
       window.localStorage.removeItem('project_data');
       
       this.dataService.removeCharts();
-      this.dataService.fetchData(null, project_id, this.dataService.reloadCharts);
+      this.data = this.dataService.fetchData(null, project_id, this.dataService.reloadCharts);
     } else {
       console.log('Displaying the dash with cache');
     }

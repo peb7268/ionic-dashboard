@@ -8,7 +8,7 @@ import { StatusBar }      from 'ionic-native';
 import { TabsPage }       from './pages/tabs/tabs';
 import { LoginPage }      from './pages/login/login';
 
-import { DataService }   from './dashboard/data.service'
+import { DataService }    from './dashboard/data.service'
 
 
 @Component({

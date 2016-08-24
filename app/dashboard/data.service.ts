@@ -2,9 +2,9 @@
 import { Injectable } 					from '@angular/core';
 import { Http } 						from '@angular/http';
 
-//import { Observable } 					from 'rxjs/Observable';
+import { Observable } 					from 'rxjs/Observable';
 //import { Subject } 						from 'rxjs/Subject';
-//import 'rxjs/rx';
+import 'rxjs/rx';
 
 
 //import { App } 					    from './../globals';
@@ -19,6 +19,10 @@ export class DataService {
 	constructor(public http: Http){}
 
 	fetchData(localData, project_id = null, callback?){
+		debugger;
+		//TODO: Look up ES6 Features I can use to bypasss this
+		window['App'].self = this;
+
 		var cache = window.localStorage.getItem('cache_settings');
 			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
@@ -86,6 +90,6 @@ export class DataService {
 	}
 
 	reloadCharts(){
-		this.instances.Dashboard.initializeDashboard();
+		window['App'].self.instances.Dashboard.initializeDashboard();
 	}
 }
