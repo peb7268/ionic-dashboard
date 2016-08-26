@@ -6,8 +6,6 @@ import { DataService }                              from '../dashboard/data.serv
 
 declare var Chartist: any;
 
-
-
 //TODO: Figure out how to pass the data better using an observable and an event emitter
 @Component({
   selector: 'chart',
@@ -22,19 +20,15 @@ export class Chart {
   public chartType: String;
 
   constructor(public dataService: DataService){
-    console.log('Chart constructed');
+    console.log('Chart:constructor');
     this.data = this.dataService.getData();
   }
 
   //Fires on init
-  ngOnInit() {
-    //console.log('ngOnInit: this.data: ');
-    //console.log(this.data);
-  }
+  ngOnInit() { console.log('ngOnInit: this.data: ', this.data); }
 
   ngOnChanges(changes:any):void {
-    // console.log('ngOnChanges: this.data: ');
-    // console.log(this.data);
+    console.log('Chart:ngOnChanges: this.data: ', this.data);
 
     if(typeof this.data == 'undefined') return;
     
@@ -134,6 +128,15 @@ export class Chart {
         // })
       ]
     };
+
+    var _chart:any = document.querySelectorAll('.ct-chart');
+    if( _chart.length == 0){
+      var dashboard = document.querySelectorAll('dashboard')[0];
+      _chart = document.createElement('ct-chart');
+      _chart.classList.add('ct-chart');
+
+      dashboard.appendChild(_chart);
+    }
 
     //Instantiate the chart
     var chart = new Chartist.Bar('.ct-chart', {

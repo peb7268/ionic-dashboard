@@ -22,20 +22,30 @@ import { DataService }   							from '../dashboard/data.service'
 })
 
 export class Dashboard {
-	public data: Object = {};
-	public dataEvent: any = new EventEmitter();
+	public data: any;
+	public pet = 'cat';
 
 	constructor(private navController: NavController, public dataService: DataService){
-		console.log('Dashboard Constructed');
-		
+		console.log('Dashboard:constructor');
+
 		this.dataService.instances['Dashboard'] = this;
 		this.initializeDashboard();
 	}
 
+	ngOnChanges(changes:any):void {
+    	console.log('Dashboard:ngOnChanges: this.data: ', this.data);
+  	}
+
 	//TODO: Use an observable instead of a timeout / callback
 	initializeDashboard(){
-		window['App'].klass  = this;
-		var project_id 		 = localStorage.getItem('project_id');
+		this.data = null;
+		console.log('Dashboard:initializeDashboard');
+
+		var dataService = this.dataService;
+		var	_data 		= 'cat';
+
+		window['App'].klass   = this;
+		var project_id 		  = localStorage.getItem('project_id');
 
 		//Show the modal and store it as a promise on the window
 	  	window['App'].loading = Loading.create({
@@ -45,14 +55,12 @@ export class Dashboard {
 	    });
 	  	this.navController.present(window['App'].loading);
 
-	  	this.data = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id);
-
-	    var _shouldStoreData = this.dataService.shouldStoreData(this.data, project_id);
-	    console.log('Should Store Data?: ' + _shouldStoreData);
-	    
-    	window.setTimeout(function(){
-	    	console.log('dashboard intialized');
-	    	window['App'].loading.dismiss();
-    	}, 500);
+	  	var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
+		.subscribe( resp => {
+			console.log('observable subscription firing');
+			// this.dataService.dataSubject.next(resp);
+			this.data = resp;
+			this.dataService.delegateData(project_id, this.data);
+		});
 	}
 }

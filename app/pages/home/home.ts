@@ -16,6 +16,6 @@ export class HomePage {
   public data: Object = {};
 
   constructor() {
-    console.log('Home Page Constructor');
+    console.log('HomePage:constructor');
   }
 }

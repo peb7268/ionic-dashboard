@@ -1,1 +1,1 @@
-{"version":3,"file":"globals.js","sourceRoot":"","sources":["globals.ts"],"names":[],"mappings":";AAKA;IAGC;QACC,OAAO,CAAC,GAAG,CAAC,eAAe,CAAC,CAAC;QAC7B,IAAI,CAAC,OAAO,GAAG,SAAS,CAAC;IAC1B,CAAC;IACF,UAAC;AAAD,CAAC,AAPD,IAOC;AAPY,WAAG,MAOf,CAAA"}
+{"version":3,"file":"globals.js","sourceRoot":"","sources":["globals.ts"],"names":[],"mappings":";AAKA;IAGC;QACC,IAAI,CAAC,OAAO,GAAG,SAAS,CAAC;IAC1B,CAAC;IACF,UAAC;AAAD,CAAC,AAND,IAMC;AANY,WAAG,MAMf,CAAA"}

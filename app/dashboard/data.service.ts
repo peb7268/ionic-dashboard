@@ -3,8 +3,8 @@ import { Injectable } 					from '@angular/core';
 import { Http } 						from '@angular/http';
 
 import { Observable } 					from 'rxjs/Observable';
-//import { Subject } 						from 'rxjs/Subject';
-import 'rxjs/rx';
+import { BehaviorSubject } 				from 'rxjs/BehaviorSubject';
+import 'rxjs/Rx';
 
 
 //import { App } 					    from './../globals';
@@ -12,39 +12,55 @@ import 'rxjs/rx';
 
 @Injectable()
 export class DataService {
-	public data;
+	public data:any;
+	public dataSubject:any;
 	public charts 		 = {};
 	public instances:any = {}; 
 
-	constructor(public http: Http){}
+	constructor(public http: Http){
+		console.log('DataService:constructor');
+		window['App'].self  = this;
+		this.dataSubject 	= new BehaviorSubject(this.data);
+	}
 
 	fetchData(localData, project_id = null, callback?){
-		debugger;
-		//TODO: Look up ES6 Features I can use to bypasss this
-		window['App'].self = this;
+		console.log('DataService:fetchData');
 
 		var cache = window.localStorage.getItem('cache_settings');
 			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
 		if(localData !== null && typeof localData == 'string' && cache == true) {
-			console.log('fetching cached data:');
-			this.data = JSON.parse(localData);
+			console.log('DataService:fetchData fetching cached data:');
+			var data  = JSON.parse(localData);
+			this.dataSubject.next(data);
 
+			return this.dataSubject.asObservable();
 		} else {
-			var observable = this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id).map( (data) => {
-		        return data.json();
-		      }).subscribe(data => {
-		        console.log('Observable setting data: Project specific data came back with: ', data);
-
-		        window.localStorage.setItem('project_data', JSON.stringify(data));
-		        window['App'].loading.dismiss();
-
-		        this.data = data;
-		        if(typeof callback !== 'undefined') callback();
-		    });
+			console.log('DataService:fetchData fetching data from source');
+			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id).map(resp => resp.json());
 		}
+	}
 
-		return this.data;
+	storeData(data){
+		console.log('Observable setting data: Project specific data came back with: ', data);
+        window.localStorage.setItem('project_data', JSON.stringify(data));
+        
+        this.data = data;
+        return data;
+	}
+
+	delegateData(project_id, data){        
+        var _shouldStoreData = this.shouldStoreData(data, project_id);
+	    console.log('Should Store Data?: ' + _shouldStoreData);
+
+	    data = this.storeData(data);
+		
+		console.log('DataService:delegateData');	    
+    	// window.setTimeout(function(){
+	    	
+	    // 	window['App'].loading.dismiss();
+    	// }, 500);
+    	return data;
 	}
 
 	/* Cached project matches project being fetched */
@@ -52,9 +68,8 @@ export class DataService {
 		return (projectId === newProjectId);
 	}
 
-	studiesDidChange(project_id, data = null){
-		var _data 	= this.fetchData(window.localStorage.getItem('project_data'), project_id); 
-		var data 	= (data !== null) ? data : _data;
+	studiesDidChange(project_id, data?){
+		if(data === null) return true;
 
 		return (project_id !== data.survey.id);
 	}
@@ -70,6 +85,13 @@ export class DataService {
 
 	getData(){
 		return this.data;
+	}
+
+	getDataCache(){
+		var _data = window.localStorage.getItem('project_data');
+			_data = (typeof _data == 'string') ? JSON.parse(_data) : null;
+		
+		return _data;
 	}
 
 	getProjectId(data = null){

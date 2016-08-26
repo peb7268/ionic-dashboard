@@ -1,7 +1,6 @@
 "use strict";
 var App = (function () {
     function App() {
-        console.log('making an App');
         this.loading = 'nothing';
     }
     return App;

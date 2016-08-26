@@ -9,15 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
 var ionic_angular_1 = require('ionic-angular');
 var ionic_native_1 = require('ionic-native');
 var tabs_1 = require('./pages/tabs/tabs');
+var login_1 = require('./pages/login/login');
+var data_service_1 = require('./dashboard/data.service');
 var MyApp = (function () {
     function MyApp(platform) {
         this.platform = platform;
-        //this.rootPage = LoginPage;
-        this.rootPage = tabs_1.TabsPage;
+        console.log('app:constructor');
+        var cache_settings = localStorage.getItem('cache_settings');
+        if (cache_settings === null) {
+            localStorage.clear();
+            this.rootPage = login_1.LoginPage;
+        }
+        else {
+            this.rootPage = tabs_1.TabsPage;
+        }
         platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -26,12 +34,13 @@ var MyApp = (function () {
     }
     MyApp = __decorate([
         core_1.Component({
-            template: '<ion-nav [root]="rootPage"></ion-nav>'
+            template: '<ion-nav [root]="rootPage"></ion-nav>',
+            providers: [data_service_1.DataService]
         }), 
         __metadata('design:paramtypes', [ionic_angular_1.Platform])
     ], MyApp);
     return MyApp;
 }());
 exports.MyApp = MyApp;
-ionic_angular_1.ionicBootstrap(MyApp, [http_1.HTTP_PROVIDERS]);
+ionic_angular_1.ionicBootstrap(MyApp, [data_service_1.DataService]);
 //# sourceMappingURL=app.js.map

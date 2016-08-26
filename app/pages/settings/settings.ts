@@ -19,11 +19,17 @@ export class SettingsPage {
 
   constructor(public platform: Platform, public nav: NavController) {
     console.log('settings constructor');
+    
     var creds            = window.localStorage.getItem('credentials');
     var projects         = window.localStorage.getItem('projects');
+    var project_id       = window.localStorage.getItem('project_id');
+    var cache_settings   = window.localStorage.getItem('cache_settings');
 
     window['App'].klass  = this;
     this.project         = {};
+    
+    if(typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0) this.project_id = project_id;
+    if(typeof cache_settings !== 'undefined' && cache_settings !== null && cache_settings.length > 0) this.project.cache_settings = cache_settings;
     
     if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
     if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);

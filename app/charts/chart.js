@@ -9,15 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-//TODO: Explore passing data into this compoonent from dashboard because I still dont think it's 100% right.
+var data_service_1 = require('../dashboard/data.service');
+//TODO: Figure out how to pass the data better using an observable and an event emitter
 var Chart = (function () {
-    function Chart() {
+    function Chart(dataService) {
+        this.dataService = dataService;
+        console.log('Chart:constructor');
+        this.data = this.dataService.getData();
     }
     //Fires on init
-    Chart.prototype.ngOnInit = function () { };
+    Chart.prototype.ngOnInit = function () { console.log('ngOnInit: this.data: ', this.data); };
     Chart.prototype.ngOnChanges = function (changes) {
-        //console.log('ngOnChanges');
-        this.composeBarChart(this.data);
+        console.log('ngOnChanges: this.data: ', this.data);
+        if (typeof this.data == 'undefined')
+            return;
+        if (this.data !== null && typeof this.data == 'object') {
+            this.composeChart(this.chartType, this.data.data);
+        }
     };
     Chart.prototype.getLabels = function (concepts) {
         var labels = concepts.map(function (concept) {
@@ -31,103 +39,113 @@ var Chart = (function () {
     * TODO: Need to refactor this so it can handle more than vwap charts
     * it should be able to delegate and return series data for multiple types of charts.
     */
-    Chart.prototype.getSeriesData = function (data) {
+    Chart.prototype.getSeriesData = function (vwapData) {
         var seriesData = [];
-        var _data = [];
-        for (var vwap in data.vwaps) {
-            var vwap_val = data.vwaps[vwap];
-            _data.push(vwap_val);
+        var best_data = [];
+        var worst_data = [];
+        for (var concept_id in vwapData.best_count) {
+            best_data.push(vwapData.best_count[concept_id][0]);
+            worst_data.push(vwapData.worst_count[concept_id][0]);
         }
-        seriesData.push(_data);
+        seriesData.push(best_data, worst_data);
         return seriesData;
     };
     /*
-    * To get the stacked effect:
-    * There needs to be multiple arrays with the indexes
-    * of each overlapping aka:
-      
-      var seriesData = [
-          [-800000, -1200000, 1400000, 1300000],
-          [-200000, -1000000, 800000, 1500000]
-      ];
-      
-      Where -8k and -2k correspond to the same bar but stacked.
-    
+    ** Get the Highest value to be plotted on the chart
+    ** plus some offset so the chart doesnt go all the way to the bounds.
     */
-    Chart.prototype.composeBarChart = function (resp) {
-        console.log('composeBarChart');
-        if (resp.length == 0)
+    Chart.prototype.getChartHigh = function (seriesData, offset) { };
+    Chart.prototype.getChartLow = function (seriesData, offset) { };
+    Chart.prototype.getYLabelVal = function (yCoord, yVal) {
+        var offset = 20;
+        var yLabelVal = (yVal > 0) ? yCoord + offset : yCoord - (offset - 10);
+        return yLabelVal;
+    };
+    //Delegates to whichever specific chart type we are working with
+    Chart.prototype.composeChart = function (chartType, data) {
+        console.log('composing a ' + this.chartType + ' chart.');
+        window['App'].klass = this;
+        if (data == null)
             return;
-        var resp = JSON.parse(resp);
-        debugger;
-        var labels = this.getLabels(resp.data.concepts);
-        //var labels = ['Q1', 'Q2', 'Q3', 'Q4'];
-        //var seriesData = this.getSeriesData(resp.data);
-        var seriesData = [
-            [-800000, -1200000, 1400000, 1300000],
-            [-200000, -1000000, 800000, 1500000]
-        ];
-        //TODO: Calculate Net Attraction and plot it in series
-        //TODO: Calculate Axis and plot it in labels
-        /*
-          Aggregate and sort Chart Data
-          [200000, 400000, 500000, 300000],
-          [100000, 200000, 400000, 600000]
-        */
-        var data = {
+        switch (chartType) {
+            case "netattraction":
+                var chart = this.composeBarChart(data);
+                this.dataService.pushChart(chartType, data, chart);
+                break;
+            default:
+                console.log('default switch matched');
+                break;
+        }
+    };
+    Chart.prototype.composeBarChart = function (data) {
+        var labels = this.getLabels(data.concepts);
+        var seriesData = this.getSeriesData(data);
+        var _data = {
             labels: labels,
             series: seriesData
         };
-        //Set the options
+        //Set the options: See the defauts for bar charts in chartist.js: ~3625
         var options = {
             stackBars: true,
+            stackMode: 'overlap',
+            //reverseData: true,
             axisY: {
                 labelInterpolationFnc: function (value) {
-                    return (value / 1000) + 'k';
+                    return (value);
+                    //return (value / 1000) + 'k';
                 }
             },
-            plugins: [
-                Chartist.plugins.ctPointLabels({
-                    textAnchor: 'middle'
-                })
-            ]
+            high: 50,
+            low: -50,
+            plugins: []
         };
         //Instantiate the chart
         var chart = new Chartist.Bar('.ct-chart', {
-            labels: data.labels,
-            series: data.series
+            labels: _data.labels,
+            series: _data.series
         }, options);
-        //Add Customization
+        //Add Custom labels
         chart.on('draw', function (data) {
             if (data.type === 'bar') {
                 data.element.attr({
-                    style: 'stroke-width: 30px'
+                    style: 'stroke-width: 50px'
                 });
+                if (typeof window['App'].klass.getYLabelVal !== 'function')
+                    return;
+                /* Bar labels //
+                ** data.value.y: The value that is being demonstrated on the graph
+                ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
+                var xVal = data.x1;
+                var yVal = window['App'].klass.getYLabelVal(data.y2, data.value.y);
                 data.group.elem('text', {
-                    x: data.x1,
-                    y: data.y1,
+                    x: xVal,
+                    y: yVal,
                     style: 'text-anchor: middle'
-                }, 'barLabel').text(data.value.x + ', ' + data.value.y);
+                }, 'barLabel').text(data.value.y);
             }
         });
+        //Add hover behavior
+        chart.on('hover', function (data) {
+            console.log('hovering: ', data);
+            if (data.type === 'bar') { }
+        });
+        //For changing nav
         chart.on('created', function (data) {
             setTimeout(function () {
                 window['App'].loading.destroy();
-            }, 3500);
+                window.dispatchEvent(new Event('resize'));
+            }, 500);
         });
+        return chart;
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object)
-    ], Chart.prototype, "data", void 0);
     Chart = __decorate([
         core_1.Component({
             selector: 'chart',
-            //templateUrl: 'dashboard/dashboard.html',
-            inputs: ['data', 'chartType', 'test'],
-            template: "\n  <div class='ct-chart ct-perfect-fourth'></div> \n "
+            templateUrl: "build/charts/chart.html",
+            inputs: ['data', 'chartType'],
+            outputs: ['dataEvent']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [data_service_1.DataService])
     ], Chart);
     return Chart;
 }());

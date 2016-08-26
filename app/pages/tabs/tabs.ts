@@ -17,10 +17,9 @@ export class TabsPage {
   private tab1Root: 	  any;
   private tab2Root: 	  any;
   private currentTab: 	any;
-  public  data: Object;
 
   constructor(public nav: NavController, public dataService: DataService) {
-    console.log('Tabs Page Constructor');
+    console.log('TabsPage:constructor');
     // this tells the tabs component which Pages
     // should be each tab's root Page
     var currentTab  = window.localStorage.getItem('cache_settings');
@@ -33,16 +32,18 @@ export class TabsPage {
 
   //TODO: When you click the dashboard page and you have changed studies load the data from the new study
   initDash(){
-    console.log('Initializing Dashboard');
-    var project_id = this.dataService.getProjectId();
+    console.log('TabsPage:initDash Initializing Dashboard');
 
-    if(this.dataService.studiesDidChange(project_id)){
+    var project_id = this.dataService.getProjectId();
+    var data_cache = this.dataService.getDataCache();
+
+    if(this.dataService.studiesDidChange(project_id, data_cache)){
       //reload data
       console.log('Reloading The Data From Web Service');
       window.localStorage.removeItem('project_data');
       
       this.dataService.removeCharts();
-      this.data = this.dataService.fetchData(null, project_id, this.dataService.reloadCharts);
+      this.dataService.reloadCharts();
     } else {
       console.log('Displaying the dash with cache');
     }

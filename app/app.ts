@@ -20,6 +20,8 @@ export class MyApp {
   private rootPage:any;
 
   constructor(private platform: Platform) {
+    console.log('app:constructor');
+    
     var cache_settings = localStorage.getItem('cache_settings');
     if(cache_settings === null){
       localStorage.clear();

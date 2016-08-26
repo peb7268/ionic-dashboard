@@ -9,12 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+// import { NgModel }   from '@angular/common'
 var ionic_angular_1 = require('ionic-angular');
+var login_1 = require('../login/login');
 var SettingsPage = (function () {
     function SettingsPage(platform, nav) {
         this.platform = platform;
         this.nav = nav;
+        console.log('settings constructor');
+        var creds = window.localStorage.getItem('credentials');
+        var projects = window.localStorage.getItem('projects');
+        var project_id = window.localStorage.getItem('project_id');
+        if (typeof project_id !== 'undefined' && project_id.length > 0)
+            this.project_id = project_id;
+        window['App'].klass = this;
+        this.project = {};
+        if (typeof creds !== 'undefined')
+            this.creds = JSON.parse(creds);
+        if (typeof projects !== 'undefined')
+            this.projects = JSON.parse(projects);
     }
+    SettingsPage.prototype.saveSelections = function (evt) {
+        evt.preventDefault();
+        //Save project id
+        if (typeof this.project_id !== 'undefined')
+            window.localStorage.setItem('project_id', this.project_id);
+        if (typeof this.project.cache_settings !== 'undefined' && this.project.cache_settings === true)
+            window.localStorage.setItem('cache_settings', 'true');
+        //Send to dash page
+        this.nav.parent.select(0);
+    };
     SettingsPage.prototype.openMenu = function () {
         var actionSheet = ionic_angular_1.ActionSheet.create({
             title: 'Quick Actions',
@@ -39,7 +63,8 @@ var SettingsPage = (function () {
                     role: 'logout',
                     icon: !this.platform.is('ios') ? 'close' : null,
                     handler: function () {
-                        console.log('Cancel clicked');
+                        window.localStorage.clear();
+                        window['App'].klass.nav.push(login_1.LoginPage);
                     }
                 }
             ]
