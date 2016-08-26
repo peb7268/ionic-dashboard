@@ -129,6 +129,7 @@ export class Chart {
       ]
     };
 
+    console.log('cheching chart existence');
     var _chart:any = document.querySelectorAll('.ct-chart');
     if( _chart.length == 0){
       var dashboard = document.querySelectorAll('dashboard')[0];
@@ -175,10 +176,12 @@ export class Chart {
 
     //For changing nav
     chart.on('created', function (data) {
+      console.log('chart created');
       setTimeout(function(){
-        window['App'].loading.destroy();
+        window['App'].loading.dismiss();
+        chart.off('created');
         window.dispatchEvent(new Event('resize'));
-      }, 500);
+      }, 100);
     });
 
     return chart;

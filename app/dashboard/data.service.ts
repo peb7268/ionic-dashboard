@@ -56,10 +56,7 @@ export class DataService {
 	    data = this.storeData(data);
 		
 		console.log('DataService:delegateData');	    
-    	// window.setTimeout(function(){
-	    	
-	    // 	window['App'].loading.dismiss();
-    	// }, 500);
+
     	return data;
 	}
 
