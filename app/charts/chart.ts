@@ -22,6 +22,7 @@ export class Chart {
   constructor(public dataService: DataService){
     console.log('Chart:constructor');
     this.data = this.dataService.getData();
+    window['App'].instances.chart = this;
   }
 
   //Fires on init
@@ -35,6 +36,10 @@ export class Chart {
     if(this.data !== null && typeof this.data == 'object') {
       this.composeChart(this.chartType, this.data.data);
     }
+  }
+
+  throwChartError(){
+    console.log('throwing chart error');
   }
 
   getLabels(concepts){
@@ -176,13 +181,10 @@ export class Chart {
 
     //For changing nav
     chart.on('created', function (data) {
-      chart.off('created');
       console.log('chart created');
-
-      setTimeout(function(){
-        window.dispatchEvent(new Event('resize'));
-        window['App'].loading.dismiss();
-      }, 100);
+      chart.off('created');
+      var self = window['App'].instances.dashboard;
+      self.dismissLoader(250);
     });
 
     return chart;

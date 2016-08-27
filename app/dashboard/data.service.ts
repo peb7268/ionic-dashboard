@@ -2,10 +2,13 @@
 import { Injectable } 					from '@angular/core';
 import { Http } 						from '@angular/http';
 
+import { Alert }						from 'ionic-angular';
+
 import { Observable } 					from 'rxjs/Observable';
 import { BehaviorSubject } 				from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
 
+import { SettingsPage }					from '../pages/settings/settings';
 
 //import { App } 					    from './../globals';
 
@@ -15,20 +18,26 @@ export class DataService {
 	public data:any;
 	public dataSubject:any;
 	public charts 		 = {};
-	public instances:any = {}; 
+	public instances:any = {};
+	public SettingsPage; 
 
 	constructor(public http: Http){
 		console.log('DataService:constructor');
 		window['App'].instances.dataService  = this;
+		this.SettingsPage = SettingsPage;
 		this.dataSubject 	= new BehaviorSubject(this.data);
 	}
 
 	fetchData(localData, project_id = null, callback?){
 		console.log('DataService:fetchData');
+		if(this.dataFetchInProgress()){
+			window['App'].instances.dashboard.dismissLoader(500);
+			return this.dataSubject.asObservable();
+		}
 
 		var cache = window.localStorage.getItem('cache_settings');
 			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
-
+		
 		if(localData !== null && typeof localData == 'string' && cache == true) {
 			console.log('DataService:fetchData fetching cached data:');
 			var data  = JSON.parse(localData);
@@ -36,9 +45,49 @@ export class DataService {
 
 			return this.dataSubject.asObservable();
 		} else {
+			window['App'].activeRequests++;
 			console.log('DataService:fetchData fetching data from source');
-			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id).map(resp => resp.json());
+			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
+		   .map(resp => resp.json())
+		   .catch(this.catchError);
 		}
+	}
+
+	catchError(error){
+		var errMsg = 'Error ' + error.status + ' ' + error.statusText;
+		console.error(errMsg);
+
+		window['App'].confirm = Alert.create({
+			'title' : 'Oops!',
+			'message': 'Looks like there was an error loading your project.',
+			'buttons': [
+				{
+					text: 'Retry',
+					handler: () => {
+						console.log('Try the request again');
+					}
+				},
+				{
+					text: 'Select Another',
+					handler: () => {
+						console.log('Returning to the settings screen.');
+						window['App'].confirm.dismiss().then( () => {
+							var SettingsPage = window['App'].instances.dataService.SettingsPage;
+							window['App'].instances.dashboard.nav.push(SettingsPage);
+						})
+					}
+				}
+			]
+		});
+
+		window['App'].instances.dashboard.dismissLoader(250);
+		window['App'].instances.dashboard.nav.present(window['App'].confirm);				
+
+		return Observable.throw(errMsg);
+	}
+
+	dataFetchInProgress(){
+		return window['App'].activeRequests > 0;
 	}
 
 	storeData(data){
@@ -66,6 +115,7 @@ export class DataService {
 	}
 
 	studiesDidChange(project_id, data?){
+		// && window['App'].activeRequests == 0
 		if(data === null) return true;
 
 		return (project_id !== data.survey.id);

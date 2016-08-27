@@ -6,6 +6,7 @@ import { NavController, Loading } 					from 'ionic-angular';
 import { Chart }       								from '../charts/chart';
 import { DataService }   							from '../dashboard/data.service'
 
+import { Observable }								from 'rxjs/Observable';
 
 //TODO: Make this the main component - aka remove the main componenet and have this as the top level component.
 
@@ -20,9 +21,9 @@ import { DataService }   							from '../dashboard/data.service'
 
 export class Dashboard {
 	public data: any;
-	public pet = 'cat';
+	public caught: any;
 
-	constructor(private navController: NavController, public dataService: DataService){
+	constructor(private nav: NavController, public dataService: DataService){
 		console.log('Dashboard:constructor');
 
 		window['App'].instances.dashboard = this;
@@ -44,14 +45,8 @@ export class Dashboard {
 		//window['App'].klass   = this;
 		var project_id 		  = localStorage.getItem('project_id');
 
-		//Show the modal and store it as a promise on the window
-	  	window['App'].loading = Loading.create({
-	      content: "Loading...",
-	      duration: 0,
-	      dismissOnPageChange: false
-	    });
-	  	this.navController.present(window['App'].loading);
-
+		this.presentLoader(window['App']);
+	  
 	  	var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
 		.subscribe( resp => {
 			console.log('observable subscription firing');
@@ -60,4 +55,23 @@ export class Dashboard {
 			this.dataService.delegateData(project_id, this.data);
 		});
 	}
+
+	presentLoader(App){
+		App.loading = Loading.create({
+	      content: "Loading...",
+	      duration: 0,
+	      dismissOnPageChange: false
+	    });
+
+	  	this.nav.present(App.loading);
+	}
+
+	dismissLoader(timer){
+	    console.log('Dashboard:dismissLoader');
+	    window.setTimeout(function(){
+	      window.dispatchEvent(new Event('resize'));
+	      var self = window['App'].instances.dashboard;
+	      window['App'].loading.dismiss();
+	    }, timer);
+ 	}
 }

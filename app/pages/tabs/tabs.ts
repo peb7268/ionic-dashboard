@@ -19,6 +19,8 @@ export class TabsPage {
   private currentTab: 	any;
 
   constructor(public nav: NavController, public dataService: DataService) {
+    window['App'].instances.tabsPage = this;
+
     console.log('TabsPage:constructor');
     // this tells the tabs component which Pages
     // should be each tab's root Page
