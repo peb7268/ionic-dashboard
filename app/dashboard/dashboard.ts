@@ -8,7 +8,7 @@ import { DataService }   							from '../dashboard/data.service'
 
 import { Observable }								from 'rxjs/Observable';
 
-//TODO: Make this the main component - aka remove the main componenet and have this as the top level component.
+//TODO: Finish error handinling
 
 @Component({
   selector: 'dashboard',
