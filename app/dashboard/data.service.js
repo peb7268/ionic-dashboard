@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-var Observable_1 = require('rxjs/Observable');
+var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
 require('rxjs/Rx');
 //import { App } 					    from './../globals';
 var DataService = (function () {
@@ -19,31 +19,24 @@ var DataService = (function () {
         this.charts = {};
         this.instances = {};
         console.log('DataService:constructor');
+        window['App'].self = this;
+        this.dataSubject = new BehaviorSubject_1.BehaviorSubject(this.data);
     }
     DataService.prototype.fetchData = function (localData, project_id, callback) {
-        var _this = this;
         if (project_id === void 0) { project_id = null; }
         console.log('DataService:fetchData');
-        var observable, data;
-        //TODO: Look up ES6 Features I can use to bypasss this
-        window['App'].self = this;
         var cache = window.localStorage.getItem('cache_settings');
         cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
         if (localData !== null && typeof localData == 'string' && cache == true) {
             console.log('DataService:fetchData fetching cached data:');
-            data = JSON.parse(localData);
-            observable = Observable_1.Observable.create(function (observer) {
-                _this.data = data;
-                observer.next(data);
-                observer.complete();
-            });
-            return observable;
+            var data = JSON.parse(localData);
+            this.dataSubject.next(data);
+            return this.dataSubject.asObservable();
         }
         else {
             console.log('DataService:fetchData fetching data from source');
-            observable = this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id);
+            return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id).map(function (resp) { return resp.json(); });
         }
-        return observable;
     };
     DataService.prototype.storeData = function (data) {
         console.log('Observable setting data: Project specific data came back with: ', data);
@@ -55,10 +48,7 @@ var DataService = (function () {
         var _shouldStoreData = this.shouldStoreData(data, project_id);
         console.log('Should Store Data?: ' + _shouldStoreData);
         data = this.storeData(data);
-        window.setTimeout(function () {
-            console.log('dashboard intialized');
-            window['App'].loading.dismiss();
-        }, 500);
+        console.log('DataService:delegateData');
         return data;
     };
     /* Cached project matches project being fetched */

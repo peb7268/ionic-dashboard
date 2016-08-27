@@ -19,7 +19,7 @@ export class DataService {
 
 	constructor(public http: Http){
 		console.log('DataService:constructor');
-		window['App'].self  = this;
+		window['App'].instances.dataService  = this;
 		this.dataSubject 	= new BehaviorSubject(this.data);
 	}
 
@@ -109,6 +109,6 @@ export class DataService {
 	}
 
 	reloadCharts(){
-		window['App'].self.instances.Dashboard.initializeDashboard();
+		window['App'].instances.dashboard.initializeDashboard();
 	}
 }

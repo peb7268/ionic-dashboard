@@ -25,7 +25,8 @@ export class SettingsPage {
     var project_id       = window.localStorage.getItem('project_id');
     var cache_settings   = window.localStorage.getItem('cache_settings');
 
-    window['App'].klass  = this;
+    window['App'].instances.settingsPage  = this;
+
     this.project         = {};
     
     if(typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0) this.project_id = project_id;
@@ -71,7 +72,7 @@ export class SettingsPage {
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
             window.localStorage.clear();
-            window['App'].klass.nav.push(LoginPage);
+            window['App'].instances.settingsPage.nav.push(LoginPage);
           }
         }
       ]

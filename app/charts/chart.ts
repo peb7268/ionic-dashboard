@@ -84,7 +84,7 @@ export class Chart {
   //Delegates to whichever specific chart type we are working with
   composeChart(chartType, data){
     console.log('composing a ' + this.chartType + ' chart.');
-    window['App'].klass = this;
+    window['App'].instances.chart = this;
 
     if(data == null) return;
 
@@ -152,13 +152,13 @@ export class Chart {
           style: 'stroke-width: 50px'
         });
 
-        if(typeof window['App'].klass.getYLabelVal !== 'function') return;
+        if(typeof window['App'].instances.chart.getYLabelVal !== 'function') return;
 
         /* Bar labels //
         ** data.value.y: The value that is being demonstrated on the graph
         ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
         var xVal = data.x1;
-        var yVal = window['App'].klass.getYLabelVal(data.y2, data.value.y);
+        var yVal = window['App'].instances.chart.getYLabelVal(data.y2, data.value.y);
 
         data.group.elem('text', {
           x: xVal,
@@ -176,11 +176,12 @@ export class Chart {
 
     //For changing nav
     chart.on('created', function (data) {
+      chart.off('created');
       console.log('chart created');
+
       setTimeout(function(){
-        window['App'].loading.dismiss();
-        chart.off('created');
         window.dispatchEvent(new Event('resize'));
+        window['App'].loading.dismiss();
       }, 100);
     });
 

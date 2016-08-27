@@ -20,10 +20,14 @@ var SettingsPage = (function () {
         var creds = window.localStorage.getItem('credentials');
         var projects = window.localStorage.getItem('projects');
         var project_id = window.localStorage.getItem('project_id');
-        if (typeof project_id !== 'undefined' && project_id.length > 0)
-            this.project_id = project_id;
-        window['App'].klass = this;
+        var cache_settings = window.localStorage.getItem('cache_settings');
+        debugger;
+        window['App'].instances.settingsPage = this;
         this.project = {};
+        if (typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0)
+            this.project_id = project_id;
+        if (typeof cache_settings !== 'undefined' && cache_settings !== null && cache_settings.length > 0)
+            this.project.cache_settings = cache_settings;
         if (typeof creds !== 'undefined')
             this.creds = JSON.parse(creds);
         if (typeof projects !== 'undefined')
@@ -64,7 +68,7 @@ var SettingsPage = (function () {
                     icon: !this.platform.is('ios') ? 'close' : null,
                     handler: function () {
                         window.localStorage.clear();
-                        window['App'].klass.nav.push(login_1.LoginPage);
+                        window['App'].klass.instances.settingsPage.nav.push(login_1.LoginPage);
                     }
                 }
             ]

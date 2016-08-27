@@ -3,9 +3,6 @@ import { Component, Input, Output, EventEmitter }   from '@angular/core';
 
 import { NavController, Loading } 					from 'ionic-angular';
 
-import { App } 					          			from './../globals';
-window['App'] = new App();
-
 import { Chart }       								from '../charts/chart';
 import { DataService }   							from '../dashboard/data.service'
 
@@ -28,7 +25,7 @@ export class Dashboard {
 	constructor(private navController: NavController, public dataService: DataService){
 		console.log('Dashboard:constructor');
 
-		this.dataService.instances['Dashboard'] = this;
+		window['App'].instances.dashboard = this;
 		this.initializeDashboard();
 	}
 
@@ -44,7 +41,7 @@ export class Dashboard {
 		var dataService = this.dataService;
 		var	_data 		= 'cat';
 
-		window['App'].klass   = this;
+		//window['App'].klass   = this;
 		var project_id 		  = localStorage.getItem('project_id');
 
 		//Show the modal and store it as a promise on the window

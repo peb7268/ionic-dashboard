@@ -20,7 +20,7 @@ var Chart = (function () {
     //Fires on init
     Chart.prototype.ngOnInit = function () { console.log('ngOnInit: this.data: ', this.data); };
     Chart.prototype.ngOnChanges = function (changes) {
-        console.log('ngOnChanges: this.data: ', this.data);
+        console.log('Chart:ngOnChanges: this.data: ', this.data);
         if (typeof this.data == 'undefined')
             return;
         if (this.data !== null && typeof this.data == 'object') {
@@ -64,7 +64,7 @@ var Chart = (function () {
     //Delegates to whichever specific chart type we are working with
     Chart.prototype.composeChart = function (chartType, data) {
         console.log('composing a ' + this.chartType + ' chart.');
-        window['App'].klass = this;
+        window['App'].klass.instances.chart = this;
         if (data == null)
             return;
         switch (chartType) {
@@ -99,6 +99,14 @@ var Chart = (function () {
             low: -50,
             plugins: []
         };
+        console.log('cheching chart existence');
+        var _chart = document.querySelectorAll('.ct-chart');
+        if (_chart.length == 0) {
+            var dashboard = document.querySelectorAll('dashboard')[0];
+            _chart = document.createElement('ct-chart');
+            _chart.classList.add('ct-chart');
+            dashboard.appendChild(_chart);
+        }
         //Instantiate the chart
         var chart = new Chartist.Bar('.ct-chart', {
             labels: _data.labels,
@@ -110,13 +118,13 @@ var Chart = (function () {
                 data.element.attr({
                     style: 'stroke-width: 50px'
                 });
-                if (typeof window['App'].klass.getYLabelVal !== 'function')
+                if (typeof window['App'].klass.instances.chart.getYLabelVal !== 'function')
                     return;
                 /* Bar labels //
                 ** data.value.y: The value that is being demonstrated on the graph
                 ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
                 var xVal = data.x1;
-                var yVal = window['App'].klass.getYLabelVal(data.y2, data.value.y);
+                var yVal = window['App'].klass.instances.chart.getYLabelVal(data.y2, data.value.y);
                 data.group.elem('text', {
                     x: xVal,
                     y: yVal,
@@ -131,10 +139,12 @@ var Chart = (function () {
         });
         //For changing nav
         chart.on('created', function (data) {
+            chart.off('created');
+            console.log('chart created');
             setTimeout(function () {
-                window['App'].loading.destroy();
                 window.dispatchEvent(new Event('resize'));
-            }, 500);
+                window['App'].loading.dismiss();
+            }, 100);
         });
         return chart;
     };

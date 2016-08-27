@@ -22,7 +22,7 @@ export class LoginPage {
 
   login(evt){
   	evt.preventDefault();
-    window['App'].klass = this;
+    window['App'].instances.loginPage = this;
 
   	var username = this.user.username.trim().toLowerCase();
   	var password = this.user.password.trim().toLowerCase();
@@ -43,7 +43,7 @@ export class LoginPage {
       }).subscribe(resp => {
         this.data = resp;
         window.localStorage.setItem('projects', JSON.stringify(resp));
-        window['App'].klass.nav.push(TabsPage);  //Push to tabs page once request is successful
+        window['App'].instances.loginPage.nav.push(TabsPage);  //Push to tabs page once request is successful
       });      
     }
   }

@@ -5,6 +5,8 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import { Platform, ionicBootstrap } from 'ionic-angular';
 import { StatusBar }      from 'ionic-native';
 
+import { App }                           from './globals';
+
 import { TabsPage }       from './pages/tabs/tabs';
 import { LoginPage }      from './pages/login/login';
 
@@ -21,6 +23,7 @@ export class MyApp {
 
   constructor(private platform: Platform) {
     console.log('app:constructor');
+    window['App']     = new App();
     
     var cache_settings = localStorage.getItem('cache_settings');
     if(cache_settings === null){
