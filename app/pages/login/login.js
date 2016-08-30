@@ -15,15 +15,24 @@ require('rxjs/Rx');
 var tabs_1 = require('../tabs/tabs');
 var LoginPage = (function () {
     function LoginPage(platform, nav, http) {
+        var _this = this;
         this.platform = platform;
         this.nav = nav;
         this.http = http;
         this.user = {};
+        window['App'].instances.loginPage = this;
+        platform.ready().then(function () {
+            if (typeof samsung !== 'undefined') {
+                samsung.spass.initializeSpass(_this.bootStrapAuth, _this.errorCallback);
+                samsung.spass.isFeatureEnabled(0, _this.fingerprintEnabled, _this.errorCallback);
+                samsung.spass.initializeSpassFingerprint(_this.presentFingerprintDialog, _this.errorCallback);
+                samsung.spass.startIdentifyWithDialog(true, _this.authSuccess, _this.authError);
+            }
+        });
     }
     LoginPage.prototype.login = function (evt) {
         var _this = this;
         evt.preventDefault();
-        window['App'].klass = this;
         var username = this.user.username.trim().toLowerCase();
         var password = this.user.password.trim().toLowerCase();
         var auth = (username == 'peb7268@gmail.com' && password == 'testpass') ? true : false;
@@ -39,9 +48,35 @@ var LoginPage = (function () {
             }).subscribe(function (resp) {
                 _this.data = resp;
                 window.localStorage.setItem('projects', JSON.stringify(resp));
-                window['App'].klass.nav.push(tabs_1.TabsPage); //Push to tabs page once request is successful
+                window['App'].instances.loginPage.nav.push(tabs_1.TabsPage); //Push to tabs page once request is successful
             });
         }
+    };
+    LoginPage.prototype.bootStrapAuth = function (msg) {
+        alert(msg);
+        //alert('Fingerprint bootstrapped');
+    };
+    LoginPage.prototype.fingerprintEnabled = function () {
+        //alert('Fingerprint enabled');
+    };
+    LoginPage.prototype.presentFingerprintDialog = function () {
+        //alert('Presenting fingerprint dialog');
+    };
+    LoginPage.prototype.authSuccess = function (status) {
+        alert(status.state);
+        if (status.state == 'ON_FINISHED') {
+            alert('auth finished');
+            alert(typeof window['App'].instances.loginPage.nav);
+            alert(typeof tabs_1.TabsPage);
+            window['App'].instances.loginPage.nav.push(tabs_1.TabsPage);
+            return false;
+        }
+    };
+    LoginPage.prototype.authError = function (status) {
+        alert('auth error');
+    };
+    LoginPage.prototype.errorCallback = function () {
+        alert('Fingerprint not working');
     };
     LoginPage = __decorate([
         core_1.Component({

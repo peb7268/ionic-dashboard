@@ -1,4 +1,8 @@
 
+console.log('Karma Test Shim');
+console.log('Karma Files');
+console.log(window.__karma__.files);
+
 // Tun on full stack traces in errors to help debugging
 Error.stackTraceLimit = Infinity;
 
@@ -19,9 +23,9 @@ System.config({
 });
 
 System.import('@angular/platform-browser/esm/src/browser/browser_adapter.js')
-    .then(function(browser_adapter) { browser_adapter.BrowserDomAdapter.makeCurrent(); })
-    .then(function() { return Promise.all(resolveTestFiles()); })
-    .then(function() { __karma__.start(); }, function(error) { __karma__.error(error.stack || error); });
+.then(function(browser_adapter) { browser_adapter.BrowserDomAdapter.makeCurrent(); })
+.then(function() { return Promise.all(resolveTestFiles()); })
+.then(function() { __karma__.start(); }, function(error) { __karma__.error(error.stack || error); });
 
 function createPathRecords(pathsMapping, appPath) {
     // creates local module name mapping to global path with karma's fingerprint in path, e.g.:
@@ -35,19 +39,27 @@ function createPathRecords(pathsMapping, appPath) {
 }
 
 function onlyAppFiles(filePath) {
-    return /\/base\/dist\/(?!.*\.spec\.js$).*\.js$/.test(filePath);
+    //console.log('karma-shim:onlyAppFiles path: ' + filePath); 
+    var matched = /\/www\/js\/(?!.*\.spec\.js$).*\.js$/.test(filePath);
+    // console.log('onlyAppFiles:matched ' + matched);  
+     
+    return matched;
 }
 
 function onlySpecFiles(path) {
+    console.log('karma-shim:onlySpecFiles')
     return /\.spec\.js$/.test(path);
 }
 
 function resolveTestFiles() {
+    console.log('karma-shim:resolveTestFiles')
     return Object.keys(window.__karma__.files)  // All files served by Karma.
         .filter(onlySpecFiles)
         .map(function(moduleName) {
             // loads all spec files via their global module names (e.g.
-            // 'base/dist/vg-player/vg-player.spec')
+            
+            console.log('module to load by karma: ');
+            console.log(moduleName);
             return System.import(moduleName);
         });
 }

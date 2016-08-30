@@ -18,6 +18,7 @@ var TabsPage = (function () {
     function TabsPage(nav, dataService) {
         this.nav = nav;
         this.dataService = dataService;
+        window['App'].instances.tabsPage = this;
         console.log('TabsPage:constructor');
         // this tells the tabs component which Pages
         // should be each tab's root Page

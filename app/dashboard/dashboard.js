@@ -12,14 +12,13 @@ var core_1 = require('@angular/core');
 var ionic_angular_1 = require('ionic-angular');
 var chart_1 = require('../charts/chart');
 var data_service_1 = require('../dashboard/data.service');
-//TODO: Make this the main component - aka remove the main componenet and have this as the top level component.
+//TODO: Finish error handinling
 var Dashboard = (function () {
-    function Dashboard(navController, dataService) {
-        this.navController = navController;
+    function Dashboard(nav, dataService) {
+        this.nav = nav;
         this.dataService = dataService;
-        this.pet = 'cat';
         console.log('Dashboard:constructor');
-        this.dataService.instances['Dashboard'] = this;
+        window['App'].instances.dashboard = this;
         this.initializeDashboard();
     }
     Dashboard.prototype.ngOnChanges = function (changes) {
@@ -34,13 +33,7 @@ var Dashboard = (function () {
         var _data = 'cat';
         //window['App'].klass   = this;
         var project_id = localStorage.getItem('project_id');
-        //Show the modal and store it as a promise on the window
-        window['App'].loading = ionic_angular_1.Loading.create({
-            content: "Loading...",
-            duration: 0,
-            dismissOnPageChange: false
-        });
-        this.navController.present(window['App'].loading);
+        this.presentLoader(window['App']);
         var observable = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
             .subscribe(function (resp) {
             console.log('observable subscription firing');
@@ -48,6 +41,22 @@ var Dashboard = (function () {
             _this.data = resp;
             _this.dataService.delegateData(project_id, _this.data);
         });
+    };
+    Dashboard.prototype.presentLoader = function (App) {
+        App.loading = ionic_angular_1.Loading.create({
+            content: "Loading...",
+            duration: 0,
+            dismissOnPageChange: false
+        });
+        this.nav.present(App.loading);
+    };
+    Dashboard.prototype.dismissLoader = function (timer) {
+        console.log('Dashboard:dismissLoader');
+        window.setTimeout(function () {
+            window.dispatchEvent(new Event('resize'));
+            var self = window['App'].instances.dashboard;
+            window['App'].loading.dismiss();
+        }, timer);
     };
     Dashboard = __decorate([
         core_1.Component({

@@ -16,6 +16,7 @@ var Chart = (function () {
         this.dataService = dataService;
         console.log('Chart:constructor');
         this.data = this.dataService.getData();
+        window['App'].instances.chart = this;
     }
     //Fires on init
     Chart.prototype.ngOnInit = function () { console.log('ngOnInit: this.data: ', this.data); };
@@ -26,6 +27,9 @@ var Chart = (function () {
         if (this.data !== null && typeof this.data == 'object') {
             this.composeChart(this.chartType, this.data.data);
         }
+    };
+    Chart.prototype.throwChartError = function () {
+        console.log('throwing chart error');
     };
     Chart.prototype.getLabels = function (concepts) {
         var labels = concepts.map(function (concept) {
@@ -64,7 +68,7 @@ var Chart = (function () {
     //Delegates to whichever specific chart type we are working with
     Chart.prototype.composeChart = function (chartType, data) {
         console.log('composing a ' + this.chartType + ' chart.');
-        window['App'].klass.instances.chart = this;
+        window['App'].instances.chart = this;
         if (data == null)
             return;
         switch (chartType) {
@@ -118,13 +122,13 @@ var Chart = (function () {
                 data.element.attr({
                     style: 'stroke-width: 50px'
                 });
-                if (typeof window['App'].klass.instances.chart.getYLabelVal !== 'function')
+                if (typeof window['App'].instances.chart.getYLabelVal !== 'function')
                     return;
                 /* Bar labels //
                 ** data.value.y: The value that is being demonstrated on the graph
                 ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
                 var xVal = data.x1;
-                var yVal = window['App'].klass.instances.chart.getYLabelVal(data.y2, data.value.y);
+                var yVal = window['App'].instances.chart.getYLabelVal(data.y2, data.value.y);
                 data.group.elem('text', {
                     x: xVal,
                     y: yVal,
@@ -139,12 +143,10 @@ var Chart = (function () {
         });
         //For changing nav
         chart.on('created', function (data) {
-            chart.off('created');
             console.log('chart created');
-            setTimeout(function () {
-                window.dispatchEvent(new Event('resize'));
-                window['App'].loading.dismiss();
-            }, 100);
+            chart.off('created');
+            var self = window['App'].instances.dashboard;
+            self.dismissLoader(250);
         });
         return chart;
     };

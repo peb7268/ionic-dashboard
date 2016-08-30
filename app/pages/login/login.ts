@@ -7,8 +7,9 @@ import { Http, Headers}                    from '@angular/http';
 
 import 'rxjs/Rx';
 
+import { TabsPage } from '../tabs/tabs';
 
-import {TabsPage} from '../tabs/tabs';
+declare var samsung:any;
 
 @Component({
   templateUrl: 'build/pages/login/login.html'
@@ -18,11 +19,21 @@ export class LoginPage {
   public user: any = {};
   public data: Object;
 
-  constructor(public platform: Platform, public nav: NavController, public http: Http){}
+  constructor(public platform: Platform, public nav: NavController, public http: Http){
+    window['App'].instances.loginPage = this;
+
+    platform.ready().then(() => {
+      if(typeof samsung !== 'undefined'){
+        samsung.spass.initializeSpass(this.bootStrapAuth, this.errorCallback);
+        samsung.spass.isFeatureEnabled(0, this.fingerprintEnabled, this.errorCallback);
+        samsung.spass.initializeSpassFingerprint(this.presentFingerprintDialog, this.errorCallback);
+        samsung.spass.startIdentifyWithDialog (true, this.authSuccess, this.authError);
+      }
+    });
+  }
 
   login(evt){
   	evt.preventDefault();
-    window['App'].instances.loginPage = this;
 
   	var username = this.user.username.trim().toLowerCase();
   	var password = this.user.password.trim().toLowerCase();
@@ -46,5 +57,40 @@ export class LoginPage {
         window['App'].instances.loginPage.nav.push(TabsPage);  //Push to tabs page once request is successful
       });      
     }
+  }
+
+  bootStrapAuth(msg){
+    alert(msg);
+    //alert('Fingerprint bootstrapped');
+  }
+
+  fingerprintEnabled(){
+    //alert('Fingerprint enabled');
+  }
+
+  presentFingerprintDialog(){
+    //alert('Presenting fingerprint dialog');
+  }
+
+  authSuccess(status){
+    alert(status.state);
+
+    if(status.state == 'ON_FINISHED'){
+      alert('auth finished');
+      
+      alert(typeof window['App'].instances.loginPage.nav);
+      alert(typeof TabsPage);
+      
+      window['App'].instances.loginPage.nav.push(TabsPage);
+      return false;
+    }
+  }
+
+  authError(status){
+    alert('auth error');
+  }
+
+  errorCallback(){
+    alert('Fingerprint not working');
   }
 }

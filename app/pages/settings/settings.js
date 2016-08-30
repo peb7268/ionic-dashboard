@@ -21,7 +21,6 @@ var SettingsPage = (function () {
         var projects = window.localStorage.getItem('projects');
         var project_id = window.localStorage.getItem('project_id');
         var cache_settings = window.localStorage.getItem('cache_settings');
-        debugger;
         window['App'].instances.settingsPage = this;
         this.project = {};
         if (typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0)
@@ -68,7 +67,7 @@ var SettingsPage = (function () {
                     icon: !this.platform.is('ios') ? 'close' : null,
                     handler: function () {
                         window.localStorage.clear();
-                        window['App'].klass.instances.settingsPage.nav.push(login_1.LoginPage);
+                        window['App'].instances.settingsPage.nav.push(login_1.LoginPage);
                     }
                 }
             ]

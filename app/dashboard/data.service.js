@@ -10,8 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var ionic_angular_1 = require('ionic-angular');
+var Observable_1 = require('rxjs/Observable');
 var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
 require('rxjs/Rx');
+var settings_1 = require('../pages/settings/settings');
 //import { App } 					    from './../globals';
 var DataService = (function () {
     function DataService(http) {
@@ -19,12 +22,17 @@ var DataService = (function () {
         this.charts = {};
         this.instances = {};
         console.log('DataService:constructor');
-        window['App'].self = this;
+        window['App'].instances.dataService = this;
+        this.SettingsPage = settings_1.SettingsPage;
         this.dataSubject = new BehaviorSubject_1.BehaviorSubject(this.data);
     }
     DataService.prototype.fetchData = function (localData, project_id, callback) {
         if (project_id === void 0) { project_id = null; }
         console.log('DataService:fetchData');
+        if (this.dataFetchInProgress()) {
+            window['App'].instances.dashboard.dismissLoader(500);
+            return this.dataSubject.asObservable();
+        }
         var cache = window.localStorage.getItem('cache_settings');
         cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
         if (localData !== null && typeof localData == 'string' && cache == true) {
@@ -34,9 +42,44 @@ var DataService = (function () {
             return this.dataSubject.asObservable();
         }
         else {
+            window['App'].activeRequests++;
             console.log('DataService:fetchData fetching data from source');
-            return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id).map(function (resp) { return resp.json(); });
+            return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
+                .map(function (resp) { return resp.json(); })
+                .catch(this.catchError);
         }
+    };
+    DataService.prototype.catchError = function (error) {
+        var errMsg = 'Error ' + error.status + ' ' + error.statusText;
+        console.error(errMsg);
+        window['App'].confirm = ionic_angular_1.Alert.create({
+            'title': 'Oops!',
+            'message': 'Looks like there was an error loading your project.',
+            'buttons': [
+                {
+                    text: 'Retry',
+                    handler: function () {
+                        console.log('Try the request again');
+                    }
+                },
+                {
+                    text: 'Select Another',
+                    handler: function () {
+                        console.log('Returning to the settings screen.');
+                        window['App'].confirm.dismiss().then(function () {
+                            var SettingsPage = window['App'].instances.dataService.SettingsPage;
+                            window['App'].instances.dashboard.nav.push(SettingsPage);
+                        });
+                    }
+                }
+            ]
+        });
+        window['App'].instances.dashboard.dismissLoader(250);
+        window['App'].instances.dashboard.nav.present(window['App'].confirm);
+        return Observable_1.Observable.throw(errMsg);
+    };
+    DataService.prototype.dataFetchInProgress = function () {
+        return window['App'].activeRequests > 0;
     };
     DataService.prototype.storeData = function (data) {
         console.log('Observable setting data: Project specific data came back with: ', data);
@@ -56,6 +99,7 @@ var DataService = (function () {
         return (projectId === newProjectId);
     };
     DataService.prototype.studiesDidChange = function (project_id, data) {
+        // && window['App'].activeRequests == 0
         if (data === null)
             return true;
         return (project_id !== data.survey.id);
@@ -91,7 +135,7 @@ var DataService = (function () {
         }
     };
     DataService.prototype.reloadCharts = function () {
-        window['App'].self.instances.Dashboard.initializeDashboard();
+        window['App'].instances.dashboard.initializeDashboard();
     };
     DataService = __decorate([
         core_1.Injectable(), 

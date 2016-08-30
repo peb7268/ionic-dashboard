@@ -1,7 +1,9 @@
 "use strict";
 var App = (function () {
     function App() {
-        this.loading = 'nothing';
+        this.loading = '';
+        this.instances = {};
+        this.activeRequests = 0;
     }
     return App;
 }());
