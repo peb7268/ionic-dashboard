@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/pages/login/login.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/pages/login/</a> login.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">43.08% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>28/65</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">74.36% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/39</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">21.43% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">34.69% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>17/49</span>
+      </div>
+      <div class='fl pad1y'>
+        <span class="strong">3 statements, 15 branches</span>
+        <span class="quiet">Ignored</span>  &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+import { Platform, NavController }         from 'ionic-angular';
+&nbsp;
+import { Component, EventEmitter, Output } from '@angular/core'
+import { NgModel }                         from '@angular/common'
+import { Http, Headers}                    from '@angular/http';
+&nbsp;
+import 'rxjs/Rx';
+&nbsp;
+import { TabsPage } from '../tabs/tabs';
+&nbsp;
+declare var samsung:any;
+&nbsp;
+@Component({
+  templateUrl: 'build/pages/login/login.html'
+})
+&nbsp;
+<span class="cstat-no" title="statement not covered" >export class LoginPage {</span>
+  public <span class="cstat-no" title="statement not covered" >user: any = {</span>};
+  public data: Object;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(public <span class="cstat-no" title="statement not covered" >p</span>latform: Platform, public <span class="cstat-no" title="statement not covered" >n</span>av: NavController, public <span class="cstat-no" title="statement not covered" >h</span></span>ttp: Http){
+<span class="cstat-no" title="statement not covered" >    window['App'].instances.loginPage = t</span>his;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    platform.ready().then(<span class="fstat-no" title="function not covered" >(</span>) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      if(typeof samsung !== 'undefined'){</span>
+<span class="cstat-no" title="statement not covered" >        samsung.spass.initializeSpass(this.bootStrapAuth, this.e</span>rrorCallback);
+<span class="cstat-no" title="statement not covered" >        samsung.spass.isFeatureEnabled(0, this.fingerprintEnabled, this.e</span>rrorCallback);
+<span class="cstat-no" title="statement not covered" >        samsung.spass.initializeSpassFingerprint(this.presentFingerprintDialog, this.e</span>rrorCallback);
+<span class="cstat-no" title="statement not covered" >        samsung.spass.startIdentifyWithDialog (true, this.authSuccess, this.a</span>uthError);
+      }
+    });
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  login(e</span>vt){</span>
+<span class="cstat-no" title="statement not covered" >  	evt.p</span>reventDefault();
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  	var username = this.user.username.trim().t</span>oLowerCase();
+<span class="cstat-no" title="statement not covered" >  	var password = this.user.password.trim().t</span>oLowerCase();
+<span class="cstat-no" title="statement not covered" >  	var auth = (username == 'peb7268@gmail.com' &amp;&amp; password == 'testpass') ? true : f</span>alse;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var headers = new Headers(</span>);
+<span class="cstat-no" title="statement not covered" >    headers.append('Content-Type', '</span>application/x-www-form-urlencoded');
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  	if(auth == true) {</span>
+<span class="cstat-no" title="statement not covered" >      var creds     = JSON.stringify({'username' : username, 'password' : p</span>assword });
+<span class="cstat-no" title="statement not covered" >      window.localStorage.setItem('credentials', c</span>reds);
+&nbsp;
+      //www.intengoresearch
+      //market7qvnra.
+<span class="cstat-no" title="statement not covered" >      var observable = this.http.post('http://www.intengoresearch.com/dash/login', {'credentials' : creds }).map( <span class="fstat-no" title="function not covered" >(r</span>esp) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        return resp.j</span>son();
+      }).subscribe(<span class="fstat-no" title="function not covered" >r</span>esp =&gt; {
+<span class="cstat-no" title="statement not covered" >        this.data = r</span>esp;
+<span class="cstat-no" title="statement not covered" >        window.localStorage.setItem('projects', JSON.stringify(r</span>esp));
+<span class="cstat-no" title="statement not covered" >        window['App'].instances.loginPage.nav.push(TabsPage)</span>;  //Push to tabs page once request is successful
+      });      
+    }
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  bootStrapAuth(m</span>sg){
+<span class="cstat-no" title="statement not covered" >    alert(m</span>sg);
+    //alert('Fingerprint bootstrapped');
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  f</span>ingerprintEnabled(){
+    //alert('Fingerprint enabled');
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  p</span>resentFingerprintDialog(){
+    //alert('Presenting fingerprint dialog');
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  authSuccess(s</span>tatus){
+<span class="cstat-no" title="statement not covered" >    alert(status.s</span>tate);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if(status.state == 'ON_FINISHED'){</span>
+<span class="cstat-no" title="statement not covered" >      alert('</span>auth finished');
+      
+<span class="cstat-no" title="statement not covered" >      alert(typeof window['App'].instances.loginPage.n</span>av);
+<span class="cstat-no" title="statement not covered" >      alert(typeof TabsPage)</span>;
+      
+<span class="cstat-no" title="statement not covered" >      window['App'].instances.loginPage.nav.push(TabsPage)</span>;
+<span class="cstat-no" title="statement not covered" >      return f</span>alse;
+    }
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  authError(s</span>tatus){
+<span class="cstat-no" title="statement not covered" >    alert('</span>auth error');
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  e</span>rrorCallback(){
+<span class="cstat-no" title="statement not covered" >    alert('</span>Fingerprint not working');
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 31 2016 15:30:17 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

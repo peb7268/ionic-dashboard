@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/dashboard/dashboard.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/dashboard/</a> dashboard.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>24/48</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">30% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">38.24% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>13/34</span>
+      </div>
+      <div class='fl pad1y'>
+        <span class="strong">3 statements, 15 branches</span>
+        <span class="quiet">Ignored</span>  &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+import { Component, Input, Output, EventEmitter }   from '@angular/core';
+&nbsp;
+import { NavController, Loading } 					from 'ionic-angular';
+&nbsp;
+import { Chart }       								from '../charts/chart';
+import { DataService }   							from '../dashboard/data.service'
+&nbsp;
+import { Observable }								from 'rxjs/Observable';
+&nbsp;
+//TODO: Finish error handinling
+&nbsp;
+@Component({
+  selector: 'dashboard',
+  directives: [Chart],
+  templateUrl: 'build/dashboard/dashboard.html',
+&nbsp;
+  inputs:  ['data'],
+  outputs: ['dataEvent']
+})
+&nbsp;
+export class Dashboard {
+	public data: any;
+	public caught: any;
+&nbsp;
+<span class="fstat-no" title="function not covered" >	constructor(private <span class="cstat-no" title="statement not covered" >n</span>av: NavController, public <span class="cstat-no" title="statement not covered" >d</span></span>ataService: DataService){
+<span class="cstat-no" title="statement not covered" >		console.log('</span>Dashboard:constructor');
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		window['App'].instances.dashboard = t</span>his;
+<span class="cstat-no" title="statement not covered" >		this.i</span>nitializeDashboard();
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	ngOnChanges(c</span>hanges:any):void {
+<span class="cstat-no" title="statement not covered" >    	console.log('Dashboard:ngOnChanges: this.data: ', this.d</span>ata);
+  	}
+&nbsp;
+	//TODO: Use an observable instead of a timeout / callback
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >	i</span>nitializeDashboard(){</span>
+<span class="cstat-no" title="statement not covered" >		this.data = n</span>ull;
+<span class="cstat-no" title="statement not covered" >		console.log('</span>Dashboard:initializeDashboard');
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		var dataService = this.d</span>ataService;
+<span class="cstat-no" title="statement not covered" >		var	_data 		= '</span>cat';
+&nbsp;
+		//window['App'].klass   = this;
+<span class="cstat-no" title="statement not covered" >		var project_id 		  = localStorage.getItem('</span>project_id');
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		this.presentLoader(window['</span>App']);
+	  
+<span class="cstat-no" title="statement not covered" >	  	var observable  = t</span>his.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
+		.subscribe( <span class="fstat-no" title="function not covered" >r</span>esp =&gt; {
+<span class="cstat-no" title="statement not covered" >			console.log('</span>observable subscription firing');
+			// this.dataService.dataSubject.next(resp);
+<span class="cstat-no" title="statement not covered" >			this.data = r</span>esp;
+<span class="cstat-no" title="statement not covered" >			this.dataService.delegateData(project_id, this.d</span>ata);
+		});
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	presentLoader(A</span>pp){
+<span class="cstat-no" title="statement not covered" >		App.loading = L</span>oading.create({
+	      content: "Loading...",
+	      duration: 0,
+	      dismissOnPageChange: false
+	    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	  	this.nav.present(App.l</span>oading);
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	dismissLoader(t</span>imer){
+<span class="cstat-no" title="statement not covered" >	    console.log('</span>Dashboard:dismissLoader');
+<span class="cstat-no" title="statement not covered" >	    window.setTimeout(<span class="fstat-no" title="function not covered" >f</span>unction(){</span>
+<span class="cstat-no" title="statement not covered" >	      window.dispatchEvent(new Event('</span>resize'));
+<span class="cstat-no" title="statement not covered" >	      var self = window['App'].instances.d</span>ashboard;
+<span class="cstat-no" title="statement not covered" >	      window['App'].loading.d</span>ismiss();
+	    }, timer);
+ 	}
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 31 2016 15:30:17 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/pages/settings/settings.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/pages/settings/</a> settings.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">41.18% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>21/51</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">52.73% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/55</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">33.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">31.25% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>10/32</span>
+      </div>
+      <div class='fl pad1y'>
+        <span class="strong">3 statements, 15 branches</span>
+        <span class="quiet">Ignored</span>  &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component } from '@angular/core';
+// import { NgModel }   from '@angular/common'
+&nbsp;
+import {Platform, ActionSheet, NavController} from 'ionic-angular';
+&nbsp;
+import { LoginPage } from '../login/login';
+import { TabsPage }  from '../tabs/tabs';
+import { HomePage }  from '../home/home';
+&nbsp;
+@Component({
+  templateUrl: 'build/pages/settings/settings.html'
+})
+&nbsp;
+export class SettingsPage {
+  private creds:any;
+  public  projects:any;
+  public  <span class="cstat-no" title="statement not covered" >project:any = {</span>};
+  public  project_id:any;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(public <span class="cstat-no" title="statement not covered" >p</span>latform: Platform, public <span class="cstat-no" title="statement not covered" >n</span></span>av: NavController) {
+<span class="cstat-no" title="statement not covered" >    console.log('</span>settings constructor');
+<span class="cstat-no" title="statement not covered" >    console.log(typeof window.l</span>ocalStorage);
+    
+<span class="cstat-no" title="statement not covered" >    var creds            = window.localStorage.getItem('</span>credentials');
+<span class="cstat-no" title="statement not covered" >    var projects         = window.localStorage.getItem('</span>projects');
+<span class="cstat-no" title="statement not covered" >    var project_id       = window.localStorage.getItem('</span>project_id');
+<span class="cstat-no" title="statement not covered" >    var cache_settings   = window.localStorage.getItem('</span>cache_settings');
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    window['App'].instances.settingsPage  = t</span>his;
+    
+<span class="cstat-no" title="statement not covered" >    if(typeof project_id !== 'undefined' &amp;&amp; project_id !== null &amp;&amp; project_id.length &gt; 0) <span class="cstat-no" title="statement not covered" >this.project_id = p</span></span>roject_id;
+<span class="cstat-no" title="statement not covered" >    if(typeof cache_settings !== 'undefined' &amp;&amp; cache_settings !== null &amp;&amp; cache_settings.length &gt; 0) <span class="cstat-no" title="statement not covered" >this.project.cache_settings = c</span></span>ache_settings;
+    
+<span class="cstat-no" title="statement not covered" >    if(typeof creds !== 'undefined')    <span class="cstat-no" title="statement not covered" >this.creds = JSON.parse(c</span></span>reds);
+<span class="cstat-no" title="statement not covered" >    if(typeof projects !== 'undefined') <span class="cstat-no" title="statement not covered" >this.projects = JSON.parse(p</span></span>rojects);
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  saveSelections(e</span>vt){
+<span class="cstat-no" title="statement not covered" >    evt.p</span>reventDefault();
+&nbsp;
+    //Save project id
+<span class="cstat-no" title="statement not covered" >    if(typeof this.project_id !== 'undefined') <span class="cstat-no" title="statement not covered" >window.localStorage.setItem('project_id', this.p</span></span>roject_id);
+<span class="cstat-no" title="statement not covered" >    if(typeof this.project.cache_settings !== 'undefined' &amp;&amp; this.project.cache_settings === true ) <span class="cstat-no" title="statement not covered" >window.localStorage.setItem('cache_settings', '</span></span>true');
+&nbsp;
+    //Send to dash page
+<span class="cstat-no" title="statement not covered" >    this.nav.parent.select(0</span>);
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  o</span>penMenu() {
+<span class="cstat-no" title="statement not covered" >    let actionSheet = A</span>ctionSheet.create({
+      title: 'Quick Actions',
+      cssClass: 'action-sheets-basic-page',
+      buttons: [
+        {
+          text: 'Share',
+          icon: !this.platform.is('ios') ? 'share' : null,
+          handler: <span class="fstat-no" title="function not covered" >(</span>) =&gt; {
+<span class="cstat-no" title="statement not covered" >            console.log('</span>Share clicked');
+          }
+        },
+        {
+          text: 'Remember',
+          icon: !this.platform.is('ios') ? 'heart-outline' : null,
+          handler: <span class="fstat-no" title="function not covered" >(</span>) =&gt; {
+<span class="cstat-no" title="statement not covered" >            console.log('</span>Favorite clicked');
+          }
+        },
+        {
+          text: 'Logout',
+          role: 'logout', // will always sort to be on the bottom
+          icon: !this.platform.is('ios') ? 'close' : null,
+          handler: <span class="fstat-no" title="function not covered" >(</span>) =&gt; {
+<span class="cstat-no" title="statement not covered" >            window.localStorage.c</span>lear();
+<span class="cstat-no" title="statement not covered" >            window['App'].instances.settingsPage.nav.push(LoginPage)</span>;
+          }
+        }
+      ]
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this.nav.present(a</span>ctionSheet);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 31 2016 15:30:17 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

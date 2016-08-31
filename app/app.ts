@@ -22,7 +22,6 @@ export class MyApp {
   public  cache_settings: any = null;
 
   constructor(private platform: Platform) {
-    console.log('app:constructor');
     window['App'] = new App();
    
     platform.ready().then(() => {

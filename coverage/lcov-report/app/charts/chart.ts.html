@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/charts/chart.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/charts/</a> chart.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">31.18% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>29/93</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">59.18% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/49</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">15.79% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">22.37% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>17/76</span>
+      </div>
+      <div class='fl pad1y'>
+        <span class="strong">4 statements, 15 branches</span>
+        <span class="quiet">Ignored</span>  &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+import { Component, Input, Output, EventEmitter }   from '@angular/core';
+import { NavController, Loading }                   from 'ionic-angular';
+&nbsp;
+import { DataService }                              from '../dashboard/data.service'
+&nbsp;
+declare var Chartist: any;
+&nbsp;
+//TODO: Figure out how to pass the data better using an observable and an event emitter
+@Component({
+  selector: 'chart',
+  templateUrl: "build/charts/chart.html",
+&nbsp;
+  inputs:  ['data', 'chartType'],
+  outputs: ['dataEvent']
+})
+&nbsp;
+export class Chart {
+  public data: any;
+  public chartType: String;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(public <span class="cstat-no" title="statement not covered" >d</span></span>ataService: DataService){
+<span class="cstat-no" title="statement not covered" >    console.log('</span>Chart:constructor');
+<span class="cstat-no" title="statement not covered" >    this.data = this.dataService.g</span>etData();
+<span class="cstat-no" title="statement not covered" >    window['App'].instances.chart = t</span>his;
+  }
+&nbsp;
+  //Fires on init
+<span class="fstat-no" title="function not covered" >  n</span>gOnInit() { <span class="cstat-no" title="statement not covered" >console.log('ngOnInit: this.data: ', this.d</span>ata); }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  ngOnChanges(c</span>hanges:any):void {
+<span class="cstat-no" title="statement not covered" >    console.log('Chart:ngOnChanges: this.data: ', this.d</span>ata);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if(typeof this.data == 'undefined') <span class="cstat-no" title="statement not covered" >r</span></span>eturn;
+    
+<span class="cstat-no" title="statement not covered" >    if(this.data !== null &amp;&amp; typeof this.data == 'object') {</span>
+<span class="cstat-no" title="statement not covered" >      this.composeChart(this.chartType, this.data.d</span>ata);
+    }
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  t</span>hrowChartError(){
+<span class="cstat-no" title="statement not covered" >    console.log('</span>throwing chart error');
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  getLabels(c</span>oncepts){
+<span class="cstat-no" title="statement not covered" >    var labels = c</span>oncepts.map(<span class="fstat-no" title="function not covered" >function(c</span>oncept){
+<span class="cstat-no" title="statement not covered" >     return concept.n</span>ame;
+    });
+&nbsp;
+    //console.log('labels: ', labels);
+<span class="cstat-no" title="statement not covered" >    return l</span>abels;
+  }
+&nbsp;
+  /*
+  * Return an array of arrays representing series data
+  * TODO: Need to refactor this so it can handle more than vwap charts
+  * it should be able to delegate and return series data for multiple types of charts.
+  */
+<span class="fstat-no" title="function not covered" >  getSeriesData(v</span>wapData){
+<span class="cstat-no" title="statement not covered" >    var seriesData = [</span>];
+    
+<span class="cstat-no" title="statement not covered" >    var best_data   = [</span>];
+<span class="cstat-no" title="statement not covered" >    var worst_data  = [</span>];
+    
+<span class="cstat-no" title="statement not covered" >    for(let concept_id in vwapData.best_count){</span>
+<span class="cstat-no" title="statement not covered" >      best_data.push(vwapData.best_count[concept_id][0</span>]);
+<span class="cstat-no" title="statement not covered" >      worst_data.push(vwapData.worst_count[concept_id][0</span>]);
+    }
+<span class="cstat-no" title="statement not covered" >    seriesData.push(best_data, w</span>orst_data);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return s</span>eriesData;
+  }
+&nbsp;
+  /*
+  ** Get the Highest value to be plotted on the chart
+  ** plus some offset so the chart doesnt go all the way to the bounds.
+  */
+<span class="fstat-no" title="function not covered" >  getChartHigh(seriesData, offset){}</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  getChartLow(seriesData, offset){}</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  getYLabelVal(yCoord, y</span>Val){
+<span class="cstat-no" title="statement not covered" >    var offset      = 2</span>0;
+<span class="cstat-no" title="statement not covered" >    var yLabelVal   = (yVal &gt; 0) ? yCoord + offset : yCoord - ( offset - 1</span>0 );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return y</span>LabelVal;
+  }
+&nbsp;
+  //Delegates to whichever specific chart type we are working with
+<span class="fstat-no" title="function not covered" >  composeChart(chartType, d</span>ata){
+<span class="cstat-no" title="statement not covered" >    console.log('composing a ' + this.chartType + '</span> chart.');
+<span class="cstat-no" title="statement not covered" >    window['App'].instances.chart = t</span>his;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if(data == null) <span class="cstat-no" title="statement not covered" >r</span></span>eturn;
+&nbsp;
+    switch (chartType) {
+      case "netattraction":
+<span class="cstat-no" title="statement not covered" >        var chart     = this.composeBarChart(d</span>ata);
+<span class="cstat-no" title="statement not covered" >        this.dataService.pushChart(chartType, data, c</span>hart); 
+<span class="cstat-no" title="statement not covered" >      b</span>reak;
+      
+      default:
+<span class="cstat-no" title="statement not covered" >        console.log('</span>default switch matched');  
+<span class="cstat-no" title="statement not covered" >      b</span>reak;
+    }
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  composeBarChart(d</span>ata){
+<span class="cstat-no" title="statement not covered" >    var labels     = this.getLabels(data.c</span>oncepts);
+<span class="cstat-no" title="statement not covered" >    var seriesData = this.getSeriesData(d</span>ata);
+    
+<span class="cstat-no" title="statement not covered" >    var _data: { labels?: string[], series?: any } = { </span>
+      labels: labels,
+      series: seriesData
+    };
+&nbsp;
+    //Set the options: See the defauts for bar charts in chartist.js: ~3625
+<span class="cstat-no" title="statement not covered" >    var options = {</span>
+      stackBars: true,
+      stackMode: 'overlap',
+      //reverseData: true,
+      axisY: {
+        labelInterpolationFnc: <span class="fstat-no" title="function not covered" >function (v</span>alue) {
+<span class="cstat-no" title="statement not covered" >          return (v</span>alue);
+          //return (value / 1000) + 'k';
+        }
+      },
+      high: 50,
+      low: -50,
+      plugins: [
+        // Chartist.plugins.ctPointLabels({
+        //   textAnchor: 'middle'
+        // })
+      ]
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log('</span>cheching chart existence');
+<span class="cstat-no" title="statement not covered" >    var _chart:any = document.querySelectorAll('</span>.ct-chart');
+<span class="cstat-no" title="statement not covered" >    if( _chart.length == 0){</span>
+<span class="cstat-no" title="statement not covered" >      var dashboard = document.querySelectorAll('dashboard')[0</span>];
+<span class="cstat-no" title="statement not covered" >      _chart = document.createElement('</span>ct-chart');
+<span class="cstat-no" title="statement not covered" >      _chart.classList.add('</span>ct-chart');
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      dashboard.appendChild(_</span>chart);
+    }
+&nbsp;
+    //Instantiate the chart
+<span class="cstat-no" title="statement not covered" >    var chart = new Chartist.Bar('.ct-chart', {</span>
+      labels: _data.labels,
+      series: _data.series
+    }, options);
+&nbsp;
+    //Add Custom labels
+<span class="cstat-no" title="statement not covered" >    chart.on('draw', <span class="fstat-no" title="function not covered" >function (d</span>ata) {</span>
+<span class="cstat-no" title="statement not covered" >      if (data.type === 'bar') {</span>
+<span class="cstat-no" title="statement not covered" >        data.element.attr({</span>
+          style: 'stroke-width: 50px'
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if(typeof window['App'].instances.chart.getYLabelVal !== 'function') <span class="cstat-no" title="statement not covered" >r</span></span>eturn;
+&nbsp;
+        /* Bar labels //
+        ** data.value.y: The value that is being demonstrated on the graph
+        ** data.y1 / data.y2: The points to plot the bars on the graph ( start and stop of the bar ) */
+<span class="cstat-no" title="statement not covered" >        var xVal = data.x</span>1;
+<span class="cstat-no" title="statement not covered" >        var yVal = window['App'].instances.chart.getYLabelVal(data.y2, data.value.y</span>);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        data.group.elem('text', {</span>
+          x: xVal,
+          y: yVal,
+          style: 'text-anchor: middle'
+        }, 'barLabel').text(data.value.y);
+      }
+    });
+&nbsp;
+    //Add hover behavior
+<span class="cstat-no" title="statement not covered" >    chart.on('hover', <span class="fstat-no" title="function not covered" >function (d</span>ata) {</span>
+<span class="cstat-no" title="statement not covered" >      console.log('hovering: ', d</span>ata);
+<span class="cstat-no" title="statement not covered" >      if (data.type === 'bar') {}</span>
+    });
+&nbsp;
+    //For changing nav
+<span class="cstat-no" title="statement not covered" >    chart.on('created', <span class="fstat-no" title="function not covered" >function (d</span>ata) {</span>
+<span class="cstat-no" title="statement not covered" >      console.log('</span>chart created');
+<span class="cstat-no" title="statement not covered" >      chart.off('</span>created');
+<span class="cstat-no" title="statement not covered" >      var self = window['App'].instances.d</span>ashboard;
+<span class="cstat-no" title="statement not covered" >      self.dismissLoader(2</span>50);
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return c</span>hart;
+  }
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 31 2016 15:30:17 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

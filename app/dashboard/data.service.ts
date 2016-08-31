@@ -22,9 +22,8 @@ export class DataService {
 	public SettingsPage; 
 
 	constructor(public http: Http){
-		console.log('DataService:constructor');
 		window['App'].instances.dataService  = this;
-		this.SettingsPage = SettingsPage;
+		this.SettingsPage 	= SettingsPage;
 		this.dataSubject 	= new BehaviorSubject(this.data);
 	}
 

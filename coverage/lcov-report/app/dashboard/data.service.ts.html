@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/dashboard/data.service.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/dashboard/</a> data.service.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">45.1% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>46/102</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">53.7% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/54</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">17.39% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>4/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">37.65% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>32/85</span>
+      </div>
+      <div class='fl pad1y'>
+        <span class="strong">5 statements, 15 branches</span>
+        <span class="quiet">Ignored</span>  &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+import { Injectable } 					from '@angular/core';
+import { Http } 						from '@angular/http';
+&nbsp;
+import { Alert }						from 'ionic-angular';
+&nbsp;
+import { Observable } 					from 'rxjs/Observable';
+import { BehaviorSubject } 				from 'rxjs/BehaviorSubject';
+import 'rxjs/Rx';
+&nbsp;
+import { SettingsPage }					from '../pages/settings/settings';
+&nbsp;
+//import { App } 					    from './../globals';
+&nbsp;
+&nbsp;
+@Injectable()
+export class DataService {
+	public data:any;
+	public dataSubject:any;
+	public charts 		 = {};
+	public instances:any = {};
+	public SettingsPage; 
+&nbsp;
+	constructor(public http: Http){
+		window['App'].instances.dataService  = this;
+		this.SettingsPage 	= SettingsPage;
+		this.dataSubject 	= new BehaviorSubject(this.data);
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	fetchData(localData, <span class="cstat-no" title="statement not covered" >project_id = null,</span> c</span>allback?){
+<span class="cstat-no" title="statement not covered" >		console.log('</span>DataService:fetchData');
+<span class="cstat-no" title="statement not covered" >		if(this.dataFetchInProgress()){</span>
+<span class="cstat-no" title="statement not covered" >			window['App'].instances.dashboard.dismissLoader(5</span>00);
+<span class="cstat-no" title="statement not covered" >			return this.dataSubject.a</span>sObservable();
+		}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		var cache = window.localStorage.getItem('</span>cache_settings');
+<span class="cstat-no" title="statement not covered" >			cache = (typeof cache !== 'undefined' &amp;&amp; cache == 'true') ? true : f</span>alse;
+		
+<span class="cstat-no" title="statement not covered" >		if(localData !== null &amp;&amp; typeof localData == 'string' &amp;&amp; cache == true) {</span>
+<span class="cstat-no" title="statement not covered" >			console.log('</span>DataService:fetchData fetching cached data:');
+<span class="cstat-no" title="statement not covered" >			var data  = JSON.parse(l</span>ocalData);
+<span class="cstat-no" title="statement not covered" >			this.dataSubject.next(d</span>ata);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >			return this.dataSubject.a</span>sObservable();
+		} else {
+<span class="cstat-no" title="statement not covered" >			window['App'].a</span>ctiveRequests++;
+<span class="cstat-no" title="statement not covered" >			console.log('</span>DataService:fetchData fetching data from source');
+<span class="cstat-no" title="statement not covered" >			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)</span>
+		   .map(<span class="fstat-no" title="function not covered" >r</span>esp =&gt; <span class="cstat-no" title="statement not covered" >r</span>esp.json())
+		   .catch(this.catchError);
+		}
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	catchError(e</span>rror){
+<span class="cstat-no" title="statement not covered" >		var errMsg = 'Error ' + error.status + ' ' + error.s</span>tatusText;
+<span class="cstat-no" title="statement not covered" >		console.error(e</span>rrMsg);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		window['App'].confirm = A</span>lert.create({
+			'title' : 'Oops!',
+			'message': 'Looks like there was an error loading your project.',
+			'buttons': [
+				{
+					text: 'Retry',
+					handler: <span class="fstat-no" title="function not covered" >(</span>) =&gt; {
+<span class="cstat-no" title="statement not covered" >						console.log('</span>Try the request again');
+					}
+				},
+				{
+					text: 'Select Another',
+					handler: <span class="fstat-no" title="function not covered" >(</span>) =&gt; {
+<span class="cstat-no" title="statement not covered" >						console.log('</span>Returning to the settings screen.');
+<span class="cstat-no" title="statement not covered" >						window['App'].confirm.dismiss().then( <span class="fstat-no" title="function not covered" >(</span>) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >							var SettingsPage = window['App'].instances.dataService.S</span>ettingsPage;
+<span class="cstat-no" title="statement not covered" >							window['App'].instances.dashboard.nav.push(S</span>ettingsPage);
+						})
+					}
+				}
+			]
+		});
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		window['App'].instances.dashboard.dismissLoader(2</span>50);
+<span class="cstat-no" title="statement not covered" >		window['App'].instances.dashboard.nav.present(window['App'].c</span>onfirm);				
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		return Observable.throw(e</span>rrMsg);
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	d</span>ataFetchInProgress(){
+<span class="cstat-no" title="statement not covered" >		return window['App'].activeRequests &gt; 0</span>;
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	storeData(d</span>ata){
+<span class="cstat-no" title="statement not covered" >		console.log('Observable setting data: Project specific data came back with: ', d</span>ata);
+<span class="cstat-no" title="statement not covered" >        window.localStorage.setItem('project_data', JSON.stringify(d</span>ata));
+        
+<span class="cstat-no" title="statement not covered" >        this.data = d</span>ata;
+<span class="cstat-no" title="statement not covered" >        return d</span>ata;
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	delegateData(project_id, d</span>ata){        
+<span class="cstat-no" title="statement not covered" >        var _shouldStoreData = this.shouldStoreData(data, p</span>roject_id);
+<span class="cstat-no" title="statement not covered" >	    console.log('Should Store Data?: ' + _</span>shouldStoreData);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	    data = this.storeData(d</span>ata);
+		
+<span class="cstat-no" title="statement not covered" >		console.log('</span>DataService:delegateData');	    
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    	return d</span>ata;
+	}
+&nbsp;
+	/* Cached project matches project being fetched */
+<span class="fstat-no" title="function not covered" >	isCurrentProject(projectId, n</span>ewProjectId){
+<span class="cstat-no" title="statement not covered" >		return (projectId === n</span>ewProjectId);
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	studiesDidChange(project_id, d</span>ata?){
+		// &amp;&amp; window['App'].activeRequests == 0
+<span class="cstat-no" title="statement not covered" >		if(data === null) <span class="cstat-no" title="statement not covered" >return t</span></span>rue;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		return (project_id !== data.survey.i</span>d);
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	shouldStoreData(data, p</span>roject_id){
+<span class="cstat-no" title="statement not covered" >		return (this.dataIsValid(data) &amp;&amp; this.isCurrentProject(project_id, data.survey.i</span>d));
+	}
+&nbsp;
+	/* Confirms data from local storage is an acutal response object */
+<span class="fstat-no" title="function not covered" >	dataIsValid(d</span>ata){
+<span class="cstat-no" title="statement not covered" >		return (typeof data == 'object' &amp;&amp; data !== n</span>ull);
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	g</span>etData(){
+<span class="cstat-no" title="statement not covered" >		return this.d</span>ata;
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	g</span>etDataCache(){
+<span class="cstat-no" title="statement not covered" >		var _data = window.localStorage.getItem('</span>project_data');
+<span class="cstat-no" title="statement not covered" >			_data = (typeof _data == 'string') ? JSON.parse(_data) : n</span>ull;
+		
+<span class="cstat-no" title="statement not covered" >		return _</span>data;
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	getProjectId(<span class="cstat-no" title="statement not covered" >d</span>ata = null)</span>{
+<span class="cstat-no" title="statement not covered" >		return (this.dataIsValid(data)) ? data.id : window.localStorage.getItem('</span>project_id');
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	pushChart(chartType, data, c</span>hart){
+<span class="cstat-no" title="statement not covered" >		var chart_id = chartType + '-' + data.survey.i</span>d;
+<span class="cstat-no" title="statement not covered" >		this.charts[chart_id] = c</span>hart;
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	r</span>emoveCharts(){
+<span class="cstat-no" title="statement not covered" >		for(var chartName in this.charts){</span>
+<span class="cstat-no" title="statement not covered" >			var chart = this.charts[c</span>hartName];
+<span class="cstat-no" title="statement not covered" >			chart.d</span>etach();
+<span class="cstat-no" title="statement not covered" >			chart.container.r</span>emove();
+		}
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	r</span>eloadCharts(){
+<span class="cstat-no" title="statement not covered" >		window['App'].instances.dashboard.i</span>nitializeDashboard();
+	}
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 31 2016 15:30:17 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+
+<ion-content>
+  <section class="group">
+    <ion-list>
+      <ion-list-header bold>
+        Login
+      </ion-list-header>
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input type="text" value="{{ creds.username }}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" value="{{ creds.password }}"></ion-input>
+      </ion-item>
+    </ion-list>
+  </section>
+  
+  <section class="group">
+    <ion-list>
+      <ion-list-header>Dash Settings</ion-list-header> 
+    
+      <ion-item>
+        <ion-label>Select Project</ion-label>
+        <ion-select [(ngModel)]="project_id">
+          <ion-option *ngFor="let project of projects" value="{{project.id}}" selected="{{project.id == project_id }}">{{ project.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Remember Settings</ion-label>
+        <ion-checkbox [(ngModel)]="project.cache_settings"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </section>
+  
+  <button block (click)="saveSelections($event)">Save</button>
+
+  <button fab primary fab-bottom fab-right (click)="openMenu()">
+    <ion-icon name="more"></ion-icon>
+  </button>
+</ion-content>

@@ -50,3 +50,7 @@ export class MockClass {
     });
   }
 }
+
+export class HttpMock {
+  
+}

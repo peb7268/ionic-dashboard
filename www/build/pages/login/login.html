@@ -1,0 +1,26 @@
+
+<ion-view view-title="Login" name="login-view">
+	<ion-header>
+	  <ion-navbar>
+	    <ion-title>
+	      Login
+	    </ion-title>
+	  </ion-navbar>
+	</ion-header>
+
+	<ion-content padding class="login">
+		<ion-list>
+		  <ion-item>
+		    <ion-label floating>Username</ion-label>
+		    <ion-input type="text" [(ngModel)]="user.username" required></ion-input>
+		  </ion-item>
+
+		  <ion-item>
+		    <ion-label floating>Password</ion-label>
+		    <ion-input type="password" [(ngModel)]="user.password" required></ion-input>
+		  </ion-item>
+		</ion-list>
+		
+		<button class="button button-block button-calm" (click)="login($event)">Login</button>
+	</ion-content>
+</ion-view>

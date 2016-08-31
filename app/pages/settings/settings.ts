@@ -13,12 +13,13 @@ import { HomePage }  from '../home/home';
 
 export class SettingsPage {
   private creds:any;
-  public  projects: any;
-  public  project: any;
-  public  project_id: any;
+  public  projects:any;
+  public  project:any = {};
+  public  project_id:any;
 
   constructor(public platform: Platform, public nav: NavController) {
     console.log('settings constructor');
+    console.log(typeof window.localStorage);
     
     var creds            = window.localStorage.getItem('credentials');
     var projects         = window.localStorage.getItem('projects');
@@ -26,8 +27,6 @@ export class SettingsPage {
     var cache_settings   = window.localStorage.getItem('cache_settings');
 
     window['App'].instances.settingsPage  = this;
-
-    this.project         = {};
     
     if(typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0) this.project_id = project_id;
     if(typeof cache_settings !== 'undefined' && cache_settings !== null && cache_settings.length > 0) this.project.cache_settings = cache_settings;
