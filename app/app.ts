@@ -12,6 +12,9 @@ import { LoginPage }      from './pages/login/login';
 
 import { DataService }    from './dashboard/data.service'
 
+//TODO: make sure this doesnt break native
+let Cordova: any;
+
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
   providers: [DataService]
@@ -27,7 +30,7 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
+      if(typeof Cordova !== 'undefined') StatusBar.styleDefault();
 
       this.cache_settings = localStorage.getItem('cache_settings');
       if(this.cache_settings === null){

@@ -28,20 +28,21 @@ export class DataService {
 	}
 
 	fetchData(localData, project_id = null, callback?){
+		var useCachedData = this.useCachedData(localData);
+
 		if(this.dataFetchInProgress()){
 			window['App'].instances.dashboard.dismissLoader(500);
 			return this.dataSubject.asObservable();
 		}
 
-		if(this.useCachedData(localData)) {
-			console.log('DataService:fetchData fetching cached data:');
+		if(useCachedData) {
 			var data  = JSON.parse(localData);
 			this.dataSubject.next(data);
 
 			return this.dataSubject.asObservable();
 		} else {
 			window['App'].activeRequests++;
-			console.log('DataService:fetchData fetching data from source');
+
 			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
 		   .map(resp => resp.json())
 		   .catch(this.catchError);
@@ -85,9 +86,10 @@ export class DataService {
 		return window['App'].activeRequests > 0;
 	}
 
-	storeData(data){
-		console.log('Observable setting data: Project specific data came back with: ', data);
-        window.localStorage.setItem('project_data', JSON.stringify(data));
+	//Change this to just store. Obviously its storing data
+	//Adapt it to store / stringify all types of data
+	storeData(data, persist?){
+        if(typeof persist == 'undefined' || persist == true) window.localStorage.setItem('project_data', JSON.stringify(data));
         
         this.data = data;
         return data;
@@ -104,6 +106,7 @@ export class DataService {
     	return data;
 	}
 
+	//TODO: Combine isCurrentProject and studiesDidChange. Seem redundant
 	/* Cached project matches project being fetched */
 	isCurrentProject(projectId, newProjectId){
 		return (projectId === newProjectId);
@@ -120,6 +123,7 @@ export class DataService {
 		return (this.dataIsValid(data) && this.isCurrentProject(project_id, data.survey.id));
 	}
 
+	//TODO: make a retrieval mechanism where data is returned and validity is checked.
 	/* Confirms data from local storage is an acutal response object */
 	dataIsValid(data){
 		return (typeof data == 'object' && data !== null);
@@ -129,18 +133,20 @@ export class DataService {
 		var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_settings') : cache;
 		cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
-		return (data !== null && typeof data == 'string' && cache == true);
+		var use_cached = (data !== null && typeof data == 'string' && cache == true);
+
+		return use_cached;
 	}
 
-	getData(){
-		return this.data;
-	}
-
-	getDataCache(){
-		var _data = window.localStorage.getItem('project_data');
+	getData(returnCached?){
+		if(returnCached !== 'undefined' && returnCached == true){
+			var _data = window.localStorage.getItem('project_data');
 			_data = (typeof _data == 'string') ? JSON.parse(_data) : null;
 		
-		return _data;
+			return _data;
+		}
+		
+		return this.data;
 	}
 
 	getProjectId(data = null){

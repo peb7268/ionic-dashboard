@@ -18,14 +18,6 @@ import { addProviders,
 
 import { MockClass, NavMock, HttpMock }      from './../../mocks';
 
-
-
-//So TS doesnt freak
-declare var require: any
-declare var describe: any
-declare var expect: any
-declare var it: any
-
 let settingsPage:any;
 let tcb;
 

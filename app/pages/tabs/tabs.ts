@@ -37,7 +37,7 @@ export class TabsPage {
     console.log('TabsPage:initDash Initializing Dashboard');
 
     var project_id = this.dataService.getProjectId();
-    var data_cache = this.dataService.getDataCache();
+    var data_cache = this.dataService.getData(true);
 
     if(this.dataService.studiesDidChange(project_id, data_cache)){
       //reload data

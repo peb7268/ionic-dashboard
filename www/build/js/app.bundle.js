@@ -16,6 +16,8 @@ var globals_1 = require('./globals');
 var tabs_1 = require('./pages/tabs/tabs');
 var login_1 = require('./pages/login/login');
 var data_service_1 = require('./dashboard/data.service');
+//TODO: make sure this doesnt break native
+var Cordova;
 var MyApp = (function () {
     function MyApp(platform) {
         var _this = this;
@@ -25,7 +27,8 @@ var MyApp = (function () {
         platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
-            ionic_native_1.StatusBar.styleDefault();
+            if (typeof Cordova !== 'undefined')
+                ionic_native_1.StatusBar.styleDefault();
             _this.cache_settings = localStorage.getItem('cache_settings');
             if (_this.cache_settings === null) {
                 localStorage.clear();
@@ -253,7 +256,7 @@ var Dashboard = (function () {
         this.presentLoader(window['App']);
         var observable = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
             .subscribe(function (resp) {
-            console.log('observable subscription firing');
+            console.log('Dashboard:initializeDashboard observable subscription firing');
             // this.dataService.dataSubject.next(resp);
             _this.data = resp;
             _this.dataService.delegateData(project_id, _this.data);
@@ -319,19 +322,18 @@ var DataService = (function () {
     }
     DataService.prototype.fetchData = function (localData, project_id, callback) {
         if (project_id === void 0) { project_id = null; }
+        var useCachedData = this.useCachedData(localData);
         if (this.dataFetchInProgress()) {
             window['App'].instances.dashboard.dismissLoader(500);
             return this.dataSubject.asObservable();
         }
-        if (this.useCachedData(localData)) {
-            console.log('DataService:fetchData fetching cached data:');
+        if (useCachedData) {
             var data = JSON.parse(localData);
             this.dataSubject.next(data);
             return this.dataSubject.asObservable();
         }
         else {
             window['App'].activeRequests++;
-            console.log('DataService:fetchData fetching data from source');
             return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
                 .map(function (resp) { return resp.json(); })
                 .catch(this.catchError);
@@ -369,9 +371,11 @@ var DataService = (function () {
     DataService.prototype.dataFetchInProgress = function () {
         return window['App'].activeRequests > 0;
     };
-    DataService.prototype.storeData = function (data) {
-        console.log('Observable setting data: Project specific data came back with: ', data);
-        window.localStorage.setItem('project_data', JSON.stringify(data));
+    //Change this to just store. Obviously its storing data
+    //Adapt it to store / stringify all types of data
+    DataService.prototype.storeData = function (data, persist) {
+        if (typeof persist == 'undefined' || persist == true)
+            window.localStorage.setItem('project_data', JSON.stringify(data));
         this.data = data;
         return data;
     };
@@ -382,6 +386,7 @@ var DataService = (function () {
         console.log('DataService:delegateData');
         return data;
     };
+    //TODO: Combine isCurrentProject and studiesDidChange. Seem redundant
     /* Cached project matches project being fetched */
     DataService.prototype.isCurrentProject = function (projectId, newProjectId) {
         return (projectId === newProjectId);
@@ -395,6 +400,7 @@ var DataService = (function () {
     DataService.prototype.shouldStoreData = function (data, project_id) {
         return (this.dataIsValid(data) && this.isCurrentProject(project_id, data.survey.id));
     };
+    //TODO: make a retrieval mechanism where data is returned and validity is checked.
     /* Confirms data from local storage is an acutal response object */
     DataService.prototype.dataIsValid = function (data) {
         return (typeof data == 'object' && data !== null);
@@ -402,15 +408,16 @@ var DataService = (function () {
     DataService.prototype.useCachedData = function (data, cache) {
         var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_settings') : cache;
         cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
-        return (data !== null && typeof data == 'string' && cache == true);
+        var use_cached = (data !== null && typeof data == 'string' && cache == true);
+        return use_cached;
     };
-    DataService.prototype.getData = function () {
+    DataService.prototype.getData = function (returnCached) {
+        if (returnCached !== 'undefined' && returnCached == true) {
+            var _data = window.localStorage.getItem('project_data');
+            _data = (typeof _data == 'string') ? JSON.parse(_data) : null;
+            return _data;
+        }
         return this.data;
-    };
-    DataService.prototype.getDataCache = function () {
-        var _data = window.localStorage.getItem('project_data');
-        _data = (typeof _data == 'string') ? JSON.parse(_data) : null;
-        return _data;
     };
     DataService.prototype.getProjectId = function (data) {
         if (data === void 0) { data = null; }
@@ -695,7 +702,7 @@ var TabsPage = (function () {
     TabsPage.prototype.initDash = function () {
         console.log('TabsPage:initDash Initializing Dashboard');
         var project_id = this.dataService.getProjectId();
-        var data_cache = this.dataService.getDataCache();
+        var data_cache = this.dataService.getData(true);
         if (this.dataService.studiesDidChange(project_id, data_cache)) {
             //reload data
             console.log('Reloading The Data From Web Service');
