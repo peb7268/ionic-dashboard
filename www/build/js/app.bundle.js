@@ -319,14 +319,11 @@ var DataService = (function () {
     }
     DataService.prototype.fetchData = function (localData, project_id, callback) {
         if (project_id === void 0) { project_id = null; }
-        console.log('DataService:fetchData');
         if (this.dataFetchInProgress()) {
             window['App'].instances.dashboard.dismissLoader(500);
             return this.dataSubject.asObservable();
         }
-        var cache = window.localStorage.getItem('cache_settings');
-        cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
-        if (localData !== null && typeof localData == 'string' && cache == true) {
+        if (this.useCachedData(localData)) {
             console.log('DataService:fetchData fetching cached data:');
             var data = JSON.parse(localData);
             this.dataSubject.next(data);
@@ -401,6 +398,11 @@ var DataService = (function () {
     /* Confirms data from local storage is an acutal response object */
     DataService.prototype.dataIsValid = function (data) {
         return (typeof data == 'object' && data !== null);
+    };
+    DataService.prototype.useCachedData = function (data, cache) {
+        var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_settings') : cache;
+        cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
+        return (data !== null && typeof data == 'string' && cache == true);
     };
     DataService.prototype.getData = function () {
         return this.data;
@@ -588,9 +590,10 @@ var SettingsPage = (function () {
     function SettingsPage(platform, nav) {
         this.platform = platform;
         this.nav = nav;
+        this.creds = null;
+        this.projects = [];
         this.project = {};
-        console.log('settings constructor');
-        console.log(typeof window.localStorage);
+        this.project_id = 0;
         var creds = window.localStorage.getItem('credentials');
         var projects = window.localStorage.getItem('projects');
         var project_id = window.localStorage.getItem('project_id');

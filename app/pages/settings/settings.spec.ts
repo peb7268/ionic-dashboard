@@ -30,7 +30,7 @@ let settingsPage:any;
 let tcb;
 
 //Our parent block
-describe('SettingsPage', () => {
+xdescribe('SettingsPage', () => {
     beforeEach(() => {
         addProviders([
             { provide: Platform, 
@@ -39,20 +39,34 @@ describe('SettingsPage', () => {
             { provide: NavController, 
               useClass: NavMock  
             },
-        ])
+        ]);
     });
 	
-    it('Should render the settings page', inject([TestComponentBuilder], (_tcb) => { 
-       tcb = _tcb;
-       return tcb.createAsync(SettingsPage).then(fixture => {
-            let settingsPage = fixture.componentInstance, 
-            element = fixture.nativeElement;
-            
-            debugger;
-            //fixture.detectChanges(); //trigger change detection
-            
-            expect(element.querySelector('h1').innerText).toBe('Hello World!');
-        })
-        .catch(e => console.log(e));
-    }))
+    describe('Component Creation', () => {
+        it('Should render the settings page', inject([TestComponentBuilder], (builder) => { 
+           tcb = builder;
+           tcb.createAsync(SettingsPage).then(fixture => {
+                settingsPage = fixture.componentInstance;
+                let element  = fixture.nativeElement;
+                
+                let text = element.querySelectorAll('.dash-settings')[0].innerText.toLowerCase();
+                
+                //fixture.detectChanges(); //trigger change detection
+                
+                expect(text).toBe('dash settings');
+            })
+            .catch(e => console.log(e));
+        }));
+
+        it('Should have default values', inject([TestComponentBuilder], (builder) => { 
+           tcb = builder;
+           tcb.createAsync(SettingsPage).then(fixture => {
+                settingsPage = fixture.componentInstance;
+                let element  = fixture.nativeElement;
+                
+                expect(settingsPage.project_id).toBe(0);
+            })
+            .catch(e => console.log(e));
+        }));
+    })
 });

@@ -12,15 +12,12 @@ import { HomePage }  from '../home/home';
 })
 
 export class SettingsPage {
-  private creds:any;
-  public  projects:any;
-  public  project:any = {};
-  public  project_id:any;
+  private creds:any       = null;
+  public  projects:any    = [];
+  public  project:any     = {};
+  public  project_id:any  = 0;
 
   constructor(public platform: Platform, public nav: NavController) {
-    console.log('settings constructor');
-    console.log(typeof window.localStorage);
-    
     var creds            = window.localStorage.getItem('credentials');
     var projects         = window.localStorage.getItem('projects');
     var project_id       = window.localStorage.getItem('project_id');

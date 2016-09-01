@@ -28,16 +28,12 @@ export class DataService {
 	}
 
 	fetchData(localData, project_id = null, callback?){
-		console.log('DataService:fetchData');
 		if(this.dataFetchInProgress()){
 			window['App'].instances.dashboard.dismissLoader(500);
 			return this.dataSubject.asObservable();
 		}
 
-		var cache = window.localStorage.getItem('cache_settings');
-			cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
-		
-		if(localData !== null && typeof localData == 'string' && cache == true) {
+		if(this.useCachedData(localData)) {
 			console.log('DataService:fetchData fetching cached data:');
 			var data  = JSON.parse(localData);
 			this.dataSubject.next(data);
@@ -127,6 +123,13 @@ export class DataService {
 	/* Confirms data from local storage is an acutal response object */
 	dataIsValid(data){
 		return (typeof data == 'object' && data !== null);
+	}
+
+	useCachedData(data, cache?){
+		var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_settings') : cache;
+		cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
+
+		return (data !== null && typeof data == 'string' && cache == true);
 	}
 
 	getData(){

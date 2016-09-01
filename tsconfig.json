@@ -4,6 +4,8 @@
     "module": "commonjs",
     
     "sourceMap" : true,
+    "inlineSourceMap": true,
+
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "suppressExcessPropertyErrors" : true

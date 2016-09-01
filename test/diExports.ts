@@ -3,7 +3,7 @@ import { ComponentFixture, TestComponentBuilder }     from '@angular/compiler/te
 import { inject, async }                              from '@angular/core/testing';
 //import { disableDeprecatedForms, provideForms, FormControl } from '@angular/forms';
 import { App, Config, Form, NavController, Platform } from 'ionic-angular';
-import { ConfigMock, NavMock }                        from './mocks';
+import { ConfigMock, NavMock }                        from '../app/mocks';
 //import { Utils }                                      from '../app/services/utils';
 export { TestUtils }                                  from './testUtils';
 
