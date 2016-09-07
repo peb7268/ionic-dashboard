@@ -47,7 +47,7 @@ xdescribe('SettingsPage', () => {
                 
                 expect(text).toBe('dash settings');
             })
-            .catch(e => console.log(e));
+            .catch(e => console.log(e.stack));
         }));
 
         it('Should have default values', inject([TestComponentBuilder], (builder) => { 
@@ -58,7 +58,7 @@ xdescribe('SettingsPage', () => {
                 
                 expect(settingsPage.project_id).toBe(0);
             })
-            .catch(e => console.log(e));
+            .catch(e => console.log(e.stack));
         }));
     })
 });

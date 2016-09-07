@@ -50,6 +50,7 @@ export class DataService {
 	}
 
 	catchError(error){
+		console.log('DataService Error Caught: ');
 		var errMsg = 'Error ' + error.status + ' ' + error.statusText;
 		console.error(errMsg);
 
@@ -97,11 +98,11 @@ export class DataService {
 
 	delegateData(project_id, data){        
         var _shouldStoreData = this.shouldStoreData(data, project_id);
-	    console.log('Should Store Data?: ' + _shouldStoreData);
+	    //console.log('Should Store Data?: ' + _shouldStoreData);
 
 	    data = this.storeData(data);
 		
-		console.log('DataService:delegateData');	    
+		//console.log('DataService:delegateData');	    
 
     	return data;
 	}
@@ -164,9 +165,19 @@ export class DataService {
 			chart.detach();
 			chart.container.remove();
 		}
+		this.charts = {};
 	}
 
 	reloadCharts(){
-		window['App'].instances.dashboard.initializeDashboard();
+		window['App'].instances.dashboard.init();
+	}
+
+	getChartCount(charts){
+	    var chartCount = 0;
+	    for(var name in charts){
+	        if(name.indexOf('netattraction') > -1) chartCount++;
+	    }
+
+	    return chartCount;
 	}
 }

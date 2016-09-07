@@ -24,37 +24,34 @@ export class Dashboard {
 	public caught: any;
 
 	constructor(private nav: NavController, public dataService: DataService){
-		console.log('Dashboard:constructor');
-
 		window['App'].instances.dashboard = this;
-		this.initializeDashboard();
 	}
 
-	ngOnChanges(changes:any):void {
-    	console.log('Dashboard:ngOnChanges: this.data: ', this.data);
-  	}
-
-	//TODO: Use an observable instead of a timeout / callback
-	initializeDashboard(){
-		this.data = null;
-		console.log('Dashboard:initializeDashboard');
+	init(){ 
+		this.data 		= null;
 
 		var dataService = this.dataService;
-		var	_data 		= 'cat';
-
-		//window['App'].klass   = this;
-		var project_id 		  = localStorage.getItem('project_id');
+		var project_id 	= localStorage.getItem('project_id');
 
 		this.presentLoader(window['App']);
-	  
+	  	
 	  	var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
 		.subscribe( resp => {
-			console.log('Dashboard:initializeDashboard observable subscription firing');
+			//console.log('Dashboard:initializeDashboard observable subscription firing');
 			// this.dataService.dataSubject.next(resp);
 			this.data = resp;
 			this.dataService.delegateData(project_id, this.data);
 		});
 	}
+
+	ngOnInit(){
+		//console.log('Dashboard:init');
+		this.init();
+	}
+
+	ngOnChanges(changes:any):void {
+    	console.log('Dashboard:ngOnChanges: this.data: ', this.data);
+  	}
 
 	presentLoader(App){
 		App.loading = Loading.create({

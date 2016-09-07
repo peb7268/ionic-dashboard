@@ -67,8 +67,8 @@ var data_service_1 = require('../dashboard/data.service');
 //TODO: Figure out how to pass the data better using an observable and an event emitter
 var Chart = (function () {
     function Chart(dataService) {
+        //console.log('Chart:constructor');
         this.dataService = dataService;
-        console.log('Chart:constructor');
         this.data = this.dataService.getData();
         window['App'].instances.chart = this;
     }
@@ -237,30 +237,28 @@ var Dashboard = (function () {
     function Dashboard(nav, dataService) {
         this.nav = nav;
         this.dataService = dataService;
-        console.log('Dashboard:constructor');
         window['App'].instances.dashboard = this;
-        this.initializeDashboard();
     }
-    Dashboard.prototype.ngOnChanges = function (changes) {
-        console.log('Dashboard:ngOnChanges: this.data: ', this.data);
-    };
-    //TODO: Use an observable instead of a timeout / callback
-    Dashboard.prototype.initializeDashboard = function () {
+    Dashboard.prototype.init = function () {
         var _this = this;
         this.data = null;
-        console.log('Dashboard:initializeDashboard');
         var dataService = this.dataService;
-        var _data = 'cat';
-        //window['App'].klass   = this;
         var project_id = localStorage.getItem('project_id');
         this.presentLoader(window['App']);
         var observable = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
             .subscribe(function (resp) {
-            console.log('Dashboard:initializeDashboard observable subscription firing');
+            //console.log('Dashboard:initializeDashboard observable subscription firing');
             // this.dataService.dataSubject.next(resp);
             _this.data = resp;
             _this.dataService.delegateData(project_id, _this.data);
         });
+    };
+    Dashboard.prototype.ngOnInit = function () {
+        //console.log('Dashboard:init');
+        this.init();
+    };
+    Dashboard.prototype.ngOnChanges = function (changes) {
+        console.log('Dashboard:ngOnChanges: this.data: ', this.data);
     };
     Dashboard.prototype.presentLoader = function (App) {
         App.loading = ionic_angular_1.Loading.create({
@@ -340,6 +338,7 @@ var DataService = (function () {
         }
     };
     DataService.prototype.catchError = function (error) {
+        console.log('DataService Error Caught: ');
         var errMsg = 'Error ' + error.status + ' ' + error.statusText;
         console.error(errMsg);
         window['App'].confirm = ionic_angular_1.Alert.create({
@@ -381,9 +380,9 @@ var DataService = (function () {
     };
     DataService.prototype.delegateData = function (project_id, data) {
         var _shouldStoreData = this.shouldStoreData(data, project_id);
-        console.log('Should Store Data?: ' + _shouldStoreData);
+        //console.log('Should Store Data?: ' + _shouldStoreData);
         data = this.storeData(data);
-        console.log('DataService:delegateData');
+        //console.log('DataService:delegateData');	    
         return data;
     };
     //TODO: Combine isCurrentProject and studiesDidChange. Seem redundant
@@ -433,9 +432,18 @@ var DataService = (function () {
             chart.detach();
             chart.container.remove();
         }
+        this.charts = {};
     };
     DataService.prototype.reloadCharts = function () {
-        window['App'].instances.dashboard.initializeDashboard();
+        window['App'].instances.dashboard.init();
+    };
+    DataService.prototype.getChartCount = function (charts) {
+        var chartCount = 0;
+        for (var name in charts) {
+            if (name.indexOf('netattraction') > -1)
+                chartCount++;
+        }
+        return chartCount;
     };
     DataService = __decorate([
         core_1.Injectable(), 

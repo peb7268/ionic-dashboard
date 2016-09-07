@@ -7,6 +7,7 @@ import { Platform, ionicBootstrap } from 'ionic-angular';
 import { StatusBar}                 from 'ionic-native';
 
 import { MyApp }                    from './app';
+import { App   }                    from './globals';
 import { TabsPage }                 from './pages/tabs/tabs';
 import { LoginPage }                from './pages/login/login';
 import { DataService }              from './dashboard/data.service'
@@ -18,18 +19,8 @@ import { MockClass }                from './mocks';
 
 setBaseTestProviders(TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS, TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
 
-
-//So TS doesnt freak
-declare var require: any
-declare var describe: any
-declare var expect: any
-declare var it: any
-
-//During the test the env variable is set to test
-// process.env.NODE_ENV = 'test';
-
-
-let myApp = null;
+window['App'] = new App();
+let myApp     = null;
 
 //Our parent block
 describe('App', () => {

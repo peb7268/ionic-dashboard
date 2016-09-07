@@ -20,7 +20,8 @@ export class Chart {
   public chartType: String;
 
   constructor(public dataService: DataService){
-    console.log('Chart:constructor');
+    //console.log('Chart:constructor');
+    
     this.data = this.dataService.getData();
     window['App'].instances.chart = this;
   }

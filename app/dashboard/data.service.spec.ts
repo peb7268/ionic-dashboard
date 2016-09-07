@@ -3,7 +3,7 @@
 import { Injectable }                      from '@angular/core';
 import { Http }                            from '@angular/http';
 
-import { Alert }                           from 'ionic-angular';
+import { Alert, NavController }            from 'ionic-angular';
 
 import { Observable }                      from 'rxjs/Observable';
 import { BehaviorSubject }                 from 'rxjs/BehaviorSubject';
@@ -17,19 +17,25 @@ import { TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS,  TEST_BROWSER_DYNAMIC_PLATF
 import { addProviders }                    from '@angular/core/testing';
 
 //Mock Setup Stuff
-import { MockClass }                       from './../mocks';
-import { HttpMock }                        from './../mocks';
+import { 
+    MockClass, 
+    HttpMock, 
+    NavMock,
+    MockDataService
+} from './../mocks';
 
 let dataService         = null;
 let httpService:any     = new HttpMock();
+let mockDataSercice     = new MockDataService(httpService);
 
 //Our parent block
-describe('DataService', () => {
+xdescribe('DataService', () => {
     var platform:any;
 
     beforeEach(() => {
       addProviders([
-            {provide: Http, useClass: HttpMock}
+            {provide: Http, useClass: HttpMock},
+            {provide: NavController, useClass: NavMock}
       ])
       platform     = new MockClass();
       dataService  = new DataService(httpService);
@@ -251,6 +257,70 @@ describe('DataService', () => {
             
             expect(data).toBeDefined();
             expect(typeof data).toBe('object');
+        });
+    });
+
+    describe('Should retrieve the project_id', () => {
+        it('Should retrieve the project_id from a passed data set', () => {
+            var mockData     = platform.getData().survey;
+            var project_id   = dataService.getProjectId(mockData);
+
+            expect(project_id).toBeDefined();
+            expect(typeof project_id).toBe('string');
+            expect(project_id).toBe('5');
+        });
+
+        it('Should retrieve the project_id from local storage', () => {
+            window.localStorage.setItem('project_id', '5');
+            var project_id   = dataService.getProjectId();
+
+            expect(project_id).toBeDefined();
+            expect(typeof project_id).toBe('string');
+            expect(project_id).toBe('5');
+        });
+    });
+
+    describe('Should add and remove charts from the charts property', () => {
+        it('can add a chart to dataService.charts when pushChart is called', () => {
+            var charts     = dataService.charts;
+            var chartCount = dataService.getChartCount(charts);
+            var data       = platform.getData();
+            var chartType  = 'netattraction';
+            var chart      = {};
+
+            expect(chartCount).toEqual(0);
+
+            dataService.pushChart(chartType, data, chart);
+
+            chartCount     = dataService.getChartCount(charts);
+
+            expect(chartCount).toEqual(1);
+        });
+
+        xit('can add a chart to dataService.charts when pushChart is called', () => {
+            var charts     = dataService.charts;
+            var chartCount = dataService.getChartCount(charts);
+            var data       = platform.getData();
+            var chartType  = 'netattraction';
+            var chart      = {
+                detach: function(){},
+                container: {
+                    remove: function(){}
+                }
+            };
+
+            expect(chartCount).toEqual(0);
+
+            dataService.pushChart(chartType, data, chart);
+            chartCount     = dataService.getChartCount(charts);
+
+            expect(chartCount).toEqual(1);
+
+            dataService.removeCharts();
+            chartCount     = dataService.getChartCount(charts);
+
+            console.log('chartCount: ', chartCount);
+            expect(chartCount).toEqual(0);            
         });
     });
 });

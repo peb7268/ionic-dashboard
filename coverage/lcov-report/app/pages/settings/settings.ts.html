@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">41.18% </span>
+        <span class="strong">73.08% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/51</span>
+        <span class='fraction'>38/52</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">52.73% </span>
+        <span class="strong">67.27% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>29/55</span>
+        <span class='fraction'>37/55</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">33.33% </span>
+        <span class="strong">44.44% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/9</span>
+        <span class='fraction'>4/9</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">31.25% </span>
+        <span class="strong">69.7% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>10/32</span>
+        <span class='fraction'>23/33</span>
       </div>
       <div class='fl pad1y'>
         <span class="strong">3 statements, 15 branches</span>
@@ -45,7 +45,7 @@
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -126,10 +126,7 @@
 77
 78
 79
-80
-81
-82
-83</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+80</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -143,27 +140,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -225,27 +219,24 @@ import { HomePage }  from '../home/home';
 })
 &nbsp;
 export class SettingsPage {
-  private creds:any;
-  public  projects:any;
-  public  <span class="cstat-no" title="statement not covered" >project:any = {</span>};
-  public  project_id:any;
+  private creds:any       = null;
+  public  projects:any    = [];
+  public  project:any     = {};
+  public  project_id:any  = 0;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor(public <span class="cstat-no" title="statement not covered" >p</span>latform: Platform, public <span class="cstat-no" title="statement not covered" >n</span></span>av: NavController) {
-<span class="cstat-no" title="statement not covered" >    console.log('</span>settings constructor');
-<span class="cstat-no" title="statement not covered" >    console.log(typeof window.l</span>ocalStorage);
-    
-<span class="cstat-no" title="statement not covered" >    var creds            = window.localStorage.getItem('</span>credentials');
-<span class="cstat-no" title="statement not covered" >    var projects         = window.localStorage.getItem('</span>projects');
-<span class="cstat-no" title="statement not covered" >    var project_id       = window.localStorage.getItem('</span>project_id');
-<span class="cstat-no" title="statement not covered" >    var cache_settings   = window.localStorage.getItem('</span>cache_settings');
+  constructor(public platform: Platform, public nav: NavController) {
+    var creds            = window.localStorage.getItem('credentials');
+    var projects         = window.localStorage.getItem('projects');
+    var project_id       = window.localStorage.getItem('project_id');
+    var cache_settings   = window.localStorage.getItem('cache_settings');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    window['App'].instances.settingsPage  = t</span>his;
+    window['App'].instances.settingsPage  = this;
     
-<span class="cstat-no" title="statement not covered" >    if(typeof project_id !== 'undefined' &amp;&amp; project_id !== null &amp;&amp; project_id.length &gt; 0) <span class="cstat-no" title="statement not covered" >this.project_id = p</span></span>roject_id;
-<span class="cstat-no" title="statement not covered" >    if(typeof cache_settings !== 'undefined' &amp;&amp; cache_settings !== null &amp;&amp; cache_settings.length &gt; 0) <span class="cstat-no" title="statement not covered" >this.project.cache_settings = c</span></span>ache_settings;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if(typeof project_id !== 'undefined' &amp;&amp; project_id !== null &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >project_id.length &gt; 0</span>) <span class="cstat-no" title="statement not covered" >this.project_id = p</span>roject_id;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if(typeof cache_settings !== 'undefined' &amp;&amp; cache_settings !== null &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >cache_settings.length &gt; 0</span>) <span class="cstat-no" title="statement not covered" >this.project.cache_settings = c</span>ache_settings;
     
-<span class="cstat-no" title="statement not covered" >    if(typeof creds !== 'undefined')    <span class="cstat-no" title="statement not covered" >this.creds = JSON.parse(c</span></span>reds);
-<span class="cstat-no" title="statement not covered" >    if(typeof projects !== 'undefined') <span class="cstat-no" title="statement not covered" >this.projects = JSON.parse(p</span></span>rojects);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(typeof creds !== 'undefined')    this.creds = JSON.parse(creds);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  saveSelections(e</span>vt){
@@ -299,7 +290,7 @@ export class SettingsPage {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 31 2016 15:30:17 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Sep 06 2016 10:23:58 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../../prettify.js"></script>
