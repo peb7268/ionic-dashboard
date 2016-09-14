@@ -1,6 +1,8 @@
 
-import { Injectable } 					from '@angular/core';
+import { Injectable, Inject }			from '@angular/core';
 import { Http } 						from '@angular/http';
+
+import { HttpMock }						from './../mocks';
 
 import { Alert }						from 'ionic-angular';
 
@@ -21,13 +23,13 @@ export class DataService {
 	public instances:any = {};
 	public SettingsPage; 
 
-	constructor(public http: Http){
+	constructor(public  http: Http){
 		window['App'].instances.dataService  = this;
 		this.SettingsPage 	= SettingsPage;
 		this.dataSubject 	= new BehaviorSubject(this.data);
 	}
 
-	fetchData(localData, project_id = null, callback?){
+	fetchData(localData, project_id = null){
 		var useCachedData = this.useCachedData(localData);
 
 		if(this.dataFetchInProgress()){

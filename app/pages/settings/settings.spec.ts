@@ -22,7 +22,7 @@ let settingsPage:any;
 let tcb;
 
 //Our parent block
-xdescribe('SettingsPage', () => {
+describe('SettingsPage', () => {
     beforeEach(() => {
         addProviders([
             { provide: Platform, 
@@ -40,11 +40,12 @@ xdescribe('SettingsPage', () => {
            tcb.createAsync(SettingsPage).then(fixture => {
                 settingsPage = fixture.componentInstance;
                 let element  = fixture.nativeElement;
-                
-                let text = element.querySelectorAll('.dash-settings')[0].innerText.toLowerCase();
+                let target   = element.querySelectorAll('.dashboard');
+
+                let text = target[0].innerText.toLowerCase();
                 
                 //fixture.detectChanges(); //trigger change detection
-                
+               
                 expect(text).toBe('dash settings');
             })
             .catch(e => console.log(e.stack));

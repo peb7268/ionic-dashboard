@@ -1,0 +1,19 @@
+<ion-grid class='table netattraction' *ngIf="data">
+		<ion-row>
+			<ion-col width-16></ion-col>
+			<ion-col width-16>vwap</ion-col>
+			<ion-col width-16>vwap index</ion-col>
+			<ion-col width-16>net attraction</ion-col>
+			<ion-col width-16>best</ion-col>
+			<ion-col width-16>worst</ion-col>
+		</ion-row>
+
+		<ion-row  *ngFor="let concept of data.concepts; let i = index; trackBy:concept?.id">
+			<ion-col width-16>{{ concept.name }}</ion-col>
+			<ion-col width-16>{{data.vwaps[concept.id]| currency:'USD':true:'1.2-2'}}</ion-col>
+			<ion-col width-16>133</ion-col>
+			<ion-col width-16>{{ concept.netattraction }}</ion-col>
+			<ion-col width-16>{{data.best_count[concept.id]}}</ion-col>
+			<ion-col width-16>{{data.worst_count[concept.id]}}</ion-col>
+		</ion-row>
+</ion-grid>

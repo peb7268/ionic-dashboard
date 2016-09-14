@@ -35,4 +35,10 @@ describe('App', () => {
     		expect(cache_settings).toBeNull();
     	});
     });
+
+    xdescribe('Should update metrics when studies are changed', () => {
+        it('should update the netattraction chart when a new study is selected', () => {
+            expect(1).toEqual(2);
+        })
+    });
 });

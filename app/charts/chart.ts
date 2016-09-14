@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter }   from '@angular/core';
 import { NavController, Loading }                   from 'ionic-angular';
 
 import { DataService }                              from '../dashboard/data.service'
+import { HttpMock, MockDataService }                from '../mocks';
 
 declare var Chartist: any;
 
@@ -10,7 +11,11 @@ declare var Chartist: any;
 @Component({
   selector: 'chart',
   templateUrl: "build/charts/chart.html",
-
+  providers: [
+    MockDataService,
+    DataService, 
+    HttpMock
+  ],
   inputs:  ['data', 'chartType'],
   outputs: ['dataEvent']
 })
@@ -18,22 +23,22 @@ declare var Chartist: any;
 export class Chart {
   public data: any;
   public chartType: String;
+  public changed: boolean = false;
+  public instance: any;
+  public events: string[] = [];
 
-  constructor(public dataService: DataService){
-    //console.log('Chart:constructor');
-    
-    this.data = this.dataService.getData();
+  constructor(public dataService: DataService){    
+    this.data = this.dataService.getData(true);
     window['App'].instances.chart = this;
   }
 
   //Fires on init
-  ngOnInit() { console.log('ngOnInit: this.data: ', this.data); }
+  ngOnInit(){}
 
   ngOnChanges(changes:any):void {
-    console.log('Chart:ngOnChanges: this.data: ', this.data);
-
     if(typeof this.data == 'undefined') return;
-    
+    this.changed = true;  //for testing - maybe take this out
+
     if(this.data !== null && typeof this.data == 'object') {
       this.composeChart(this.chartType, this.data.data);
     }
@@ -89,7 +94,7 @@ export class Chart {
 
   //Delegates to whichever specific chart type we are working with
   composeChart(chartType, data){
-    console.log('composing a ' + this.chartType + ' chart.');
+    //console.log('composing a ' + this.chartType + ' chart.');
     window['App'].instances.chart = this;
 
     if(data == null) return;
@@ -97,6 +102,7 @@ export class Chart {
     switch (chartType) {
       case "netattraction":
         var chart     = this.composeBarChart(data);
+        this.instance = chart;
         this.dataService.pushChart(chartType, data, chart); 
       break;
       
@@ -135,7 +141,6 @@ export class Chart {
       ]
     };
 
-    console.log('cheching chart existence');
     var _chart:any = document.querySelectorAll('.ct-chart');
     if( _chart.length == 0){
       var dashboard = document.querySelectorAll('dashboard')[0];
@@ -152,7 +157,10 @@ export class Chart {
     }, options);
 
     //Add Custom labels
-    chart.on('draw', function (data) {
+    chart.on('draw', (data) => {
+      //console.log('pushing draw event');
+      window['App'].instances.chart.events.push('draw');
+
       if (data.type === 'bar') {
         data.element.attr({
           style: 'stroke-width: 50px'
@@ -182,10 +190,9 @@ export class Chart {
 
     //For changing nav
     chart.on('created', function (data) {
-      console.log('chart created');
       chart.off('created');
       var self = window['App'].instances.dashboard;
-      self.dismissLoader(250);
+      self.dismissLoader(1500);
     });
 
     return chart;

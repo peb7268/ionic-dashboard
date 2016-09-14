@@ -4,15 +4,25 @@ import { Component, Input, Output, EventEmitter }   from '@angular/core';
 import { NavController, Loading } 					from 'ionic-angular';
 
 import { Chart }       								from '../charts/chart';
+import { Netattraction }       						from '../tables/netattraction';
 import { DataService }   							from '../dashboard/data.service'
 
 import { Observable }								from 'rxjs/Observable';
+
+import { HttpMock, MockDataService }     			from '../mocks';
 
 //TODO: Finish error handinling
 
 @Component({
   selector: 'dashboard',
-  directives: [Chart],
+  directives: [Chart, Netattraction],
+
+  providers: [ 
+  	HttpMock,
+  	MockDataService,
+  	DataService	
+  ],
+
   templateUrl: 'build/dashboard/dashboard.html',
 
   inputs:  ['data'],
@@ -34,7 +44,7 @@ export class Dashboard {
 		var project_id 	= localStorage.getItem('project_id');
 
 		this.presentLoader(window['App']);
-	  	
+		
 	  	var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
 		.subscribe( resp => {
 			//console.log('Dashboard:initializeDashboard observable subscription firing');
@@ -64,7 +74,7 @@ export class Dashboard {
 	}
 
 	dismissLoader(timer){
-	    console.log('Dashboard:dismissLoader');
+	    //console.log('Dashboard:dismissLoader');
 	    window.setTimeout(function(){
 	      window.dispatchEvent(new Event('resize'));
 	      var self = window['App'].instances.dashboard;

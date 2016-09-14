@@ -18,7 +18,13 @@ module.exports = function(config) {
       'node_modules/zone.js/dist/jasmine-patch.js',
       'node_modules/zone.js/dist/async-test.js',
       'node_modules/zone.js/dist/fake-async-test.js',
-      'app/**/*.spec.ts',
+      
+      'node_modules/chartist/dist/chartist.js',
+      'node_modules/chartist/dist/chartist.css',
+
+      'app/**/*.spec.ts',                         //Loads all of the tests
+
+
       {pattern: 'node_modules/reflect-metadata/Reflect.js.map', included: false, served: true}, // 404 on the same
       {pattern: 'www/build/**/*.html', included: false},
     ],

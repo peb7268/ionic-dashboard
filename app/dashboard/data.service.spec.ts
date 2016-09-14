@@ -29,7 +29,7 @@ let httpService:any     = new HttpMock();
 let mockDataSercice     = new MockDataService(httpService);
 
 //Our parent block
-xdescribe('DataService', () => {
+describe('DataService', () => {
     var platform:any;
 
     beforeEach(() => {
