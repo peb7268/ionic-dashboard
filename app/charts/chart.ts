@@ -26,6 +26,7 @@ export class Chart {
   public changed: boolean = false;
   public instance: any;
   public events: string[] = [];
+  public yLabelMinOffset  = 20;
 
   constructor(public dataService: DataService){    
     this.data = this.dataService.getData(true);
@@ -81,15 +82,43 @@ export class Chart {
   ** Get the Highest value to be plotted on the chart
   ** plus some offset so the chart doesnt go all the way to the bounds.
   */
-  getChartHigh(seriesData, offset){}
+  getChartHigh(seriesData, offset){
+    var offset = offset || 0;
+    var highs  = [Math.max.apply(Math, seriesData[0]), Math.max.apply(Math, seriesData[1])];
+    Math.min.apply(Math, highs);
+    var high   = Number(highs[0]) + offset;
+    
+    return high;
+  }
 
-  getChartLow(seriesData, offset){}
+  getChartLow(seriesData, offset){
+    var offset = offset || 0;
+    var lows   = [Math.min.apply(Math, seriesData[0]), Math.min.apply(Math, seriesData[1])];
+    var low    = Number(Math.min.apply(Math, lows)) + offset;
+
+    if(low > 0){
+      let negatives = lows.filter((num) => {
+        return num < 0;
+      });
+
+      low = Number(Math.min.apply(Math, negatives)) + offset;
+    }
+
+    return low;
+  }
 
   getYLabelVal(yCoord, yVal){
-    var offset      = 20;
+    var offset      = this.getYLabelOffset(yCoord, yVal);
     var yLabelVal   = (yVal > 0) ? yCoord + offset : yCoord - ( offset - 10 );
 
     return yLabelVal;
+  }
+
+  getYLabelOffset(coord, val){
+    var offset = (val > 0) ? -5 : -(5);
+    console.log('offset: ', offset);
+
+    return offset;
   }
 
   //Delegates to whichever specific chart type we are working with
@@ -132,8 +161,8 @@ export class Chart {
           //return (value / 1000) + 'k';
         }
       },
-      high: 50,
-      low: -50,
+      high: this.getChartHigh(_data.series, 100),
+      low:  this.getChartLow(_data.series, -100),
       plugins: [
         // Chartist.plugins.ctPointLabels({
         //   textAnchor: 'middle'

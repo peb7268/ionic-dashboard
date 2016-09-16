@@ -49,20 +49,6 @@ export class SettingsPage {
       cssClass: 'action-sheets-basic-page',
       buttons: [
         {
-          text: 'Share',
-          icon: !this.platform.is('ios') ? 'share' : null,
-          handler: () => {
-            console.log('Share clicked');
-          }
-        },
-        {
-          text: 'Remember',
-          icon: !this.platform.is('ios') ? 'heart-outline' : null,
-          handler: () => {
-            console.log('Favorite clicked');
-          }
-        },
-        {
           text: 'Logout',
           role: 'logout', // will always sort to be on the bottom
           icon: !this.platform.is('ios') ? 'close' : null,

@@ -71,6 +71,7 @@ var Chart = (function () {
         this.dataService = dataService;
         this.changed = false;
         this.events = [];
+        this.yLabelMinOffset = 20;
         this.data = this.dataService.getData(true);
         window['App'].instances.chart = this;
     }
@@ -114,12 +115,34 @@ var Chart = (function () {
     ** Get the Highest value to be plotted on the chart
     ** plus some offset so the chart doesnt go all the way to the bounds.
     */
-    Chart.prototype.getChartHigh = function (seriesData, offset) { };
-    Chart.prototype.getChartLow = function (seriesData, offset) { };
+    Chart.prototype.getChartHigh = function (seriesData, offset) {
+        var offset = offset || 0;
+        var highs = [Math.max.apply(Math, seriesData[0]), Math.max.apply(Math, seriesData[1])];
+        Math.min.apply(Math, highs);
+        var high = Number(highs[0]) + offset;
+        return high;
+    };
+    Chart.prototype.getChartLow = function (seriesData, offset) {
+        var offset = offset || 0;
+        var lows = [Math.min.apply(Math, seriesData[0]), Math.min.apply(Math, seriesData[1])];
+        var low = Number(Math.min.apply(Math, lows)) + offset;
+        if (low > 0) {
+            var negatives = lows.filter(function (num) {
+                return num < 0;
+            });
+            low = Number(Math.min.apply(Math, negatives)) + offset;
+        }
+        return low;
+    };
     Chart.prototype.getYLabelVal = function (yCoord, yVal) {
-        var offset = 20;
+        var offset = this.getYLabelOffset(yCoord, yVal);
         var yLabelVal = (yVal > 0) ? yCoord + offset : yCoord - (offset - 10);
         return yLabelVal;
+    };
+    Chart.prototype.getYLabelOffset = function (coord, val) {
+        var offset = (val > 0) ? -5 : -(5);
+        console.log('offset: ', offset);
+        return offset;
     };
     //Delegates to whichever specific chart type we are working with
     Chart.prototype.composeChart = function (chartType, data) {
@@ -156,8 +179,8 @@ var Chart = (function () {
                     //return (value / 1000) + 'k';
                 }
             },
-            high: 50,
-            low: -50,
+            high: this.getChartHigh(_data.series, 100),
+            low: this.getChartLow(_data.series, -100),
             plugins: []
         };
         var _chart = document.querySelectorAll('.ct-chart');
@@ -781,20 +804,6 @@ var SettingsPage = (function () {
             title: 'Quick Actions',
             cssClass: 'action-sheets-basic-page',
             buttons: [
-                {
-                    text: 'Share',
-                    icon: !this.platform.is('ios') ? 'share' : null,
-                    handler: function () {
-                        console.log('Share clicked');
-                    }
-                },
-                {
-                    text: 'Remember',
-                    icon: !this.platform.is('ios') ? 'heart-outline' : null,
-                    handler: function () {
-                        console.log('Favorite clicked');
-                    }
-                },
                 {
                     text: 'Logout',
                     role: 'logout',
