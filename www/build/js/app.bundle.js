@@ -105,9 +105,9 @@ var Chart = (function () {
         var seriesData = [];
         var best_data = [];
         var worst_data = [];
-        for (var concept_id in vwapData.best_count) {
-            best_data.push(vwapData.best_count[concept_id]);
-            worst_data.push(vwapData.worst_count[concept_id]);
+        for (var concept_id in vwapData.best_count_per_concept) {
+            best_data.push(vwapData.best_count_per_concept[concept_id]);
+            worst_data.push(vwapData.worst_count_per_concept[concept_id]);
         }
         seriesData.push(best_data, worst_data);
         return seriesData;
@@ -924,9 +924,9 @@ var Netattraction = (function () {
     };
     Netattraction.prototype.setNetAttraction = function (data) {
         var concepts = data.concepts;
-        var best_count = data.best_count;
+        var best_count = data.best_count_per_concept;
         for (var idx in best_count) {
-            var netattraction = best_count[idx][0] - Math.abs(data.worst_count[idx][0]); //82
+            var netattraction = best_count[idx] - Math.abs(data.worst_count_per_concept[idx]); //82
             for (var cidx = 0; cidx < concepts.length; cidx++) {
                 var concept = concepts[cidx];
                 if (concept.id == idx)

@@ -69,9 +69,9 @@ export class Chart {
     var best_data   = [];
     var worst_data  = [];
     
-    for(let concept_id in vwapData.best_count){
-      best_data.push(vwapData.best_count[concept_id]);
-      worst_data.push(vwapData.worst_count[concept_id]);
+    for(let concept_id in vwapData.best_count_per_concept){
+      best_data.push(vwapData.best_count_per_concept[concept_id]);
+      worst_data.push(vwapData.worst_count_per_concept[concept_id]);
     }
     seriesData.push(best_data, worst_data);
 

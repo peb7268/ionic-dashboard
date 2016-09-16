@@ -45,10 +45,10 @@ export class Netattraction {
 
   setNetAttraction(data){
   	var concepts   = data.concepts;
-  	var best_count = data.best_count;
+  	var best_count = data.best_count_per_concept;
 
   	for(var idx in best_count){
-  		var netattraction = best_count[idx][0] - Math.abs(data.worst_count[idx][0]); //82
+  		var netattraction = best_count[idx] - Math.abs(data.worst_count_per_concept[idx]); //82
   		
   		for(var cidx = 0; cidx < concepts.length; cidx++){
   			var concept = concepts[cidx];
