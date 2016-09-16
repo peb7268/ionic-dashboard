@@ -9,5 +9,18 @@
 
 
 @import "../pages/settings/settings";
-
 @import "../pages/home/home";
+
+//Global Stuff
+h2.project_name {
+	$color: #555;
+	color: $color;
+	text-align: center;
+	text-transform: capitalize;
+	font-size: 11pt;
+	padding: 5px 0;
+	margin-top: 5px;
+	border: 1px solid $color;
+	border-right: none;
+	border-left: none;
+}

@@ -1,5 +1,5 @@
 
-import { Component }      from '@angular/core';
+import { Component, enableProdMode }      from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 
 import { Platform, ionicBootstrap } from 'ionic-angular';
@@ -11,6 +11,8 @@ import { TabsPage }       from './pages/tabs/tabs';
 import { LoginPage }      from './pages/login/login';
 
 import { DataService }    from './dashboard/data.service'
+
+enableProdMode();
 
 //TODO: make sure this doesnt break native
 let Cordova: any;

@@ -13,6 +13,6 @@ export class HomePage {
   public data: Object = {};
 
   constructor() {
-    console.log('HomePage:constructor');
+    //console.log('HomePage:constructor');
   }
 }

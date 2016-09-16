@@ -1,3 +1,7 @@
-<chart chartType="netattraction" [data]="data"></chart>
 
-<netattraction [data]='data'></netattraction>
+<div class="content" *ngIf="data">
+	<h2 class="project_name">{{data.survey.name}}</h2>
+	<chart chartType="netattraction" [data]="data"></chart>
+
+	<netattraction [data]='data'></netattraction>
+</div>

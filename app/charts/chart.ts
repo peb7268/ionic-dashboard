@@ -41,7 +41,7 @@ export class Chart {
     this.changed = true;  //for testing - maybe take this out
 
     if(this.data !== null && typeof this.data == 'object') {
-      this.composeChart(this.chartType, this.data.data);
+      this.composeChart(this.chartType, this.data);
     }
   }
 
@@ -70,8 +70,8 @@ export class Chart {
     var worst_data  = [];
     
     for(let concept_id in vwapData.best_count){
-      best_data.push(vwapData.best_count[concept_id][0]);
-      worst_data.push(vwapData.worst_count[concept_id][0]);
+      best_data.push(vwapData.best_count[concept_id]);
+      worst_data.push(vwapData.worst_count[concept_id]);
     }
     seriesData.push(best_data, worst_data);
 
@@ -116,21 +116,21 @@ export class Chart {
 
   getYLabelOffset(coord, val){
     var offset = (val > 0) ? -5 : -(5);
-    console.log('offset: ', offset);
 
     return offset;
   }
 
   //Delegates to whichever specific chart type we are working with
   composeChart(chartType, data){
+    var _data = data.data;
     //console.log('composing a ' + this.chartType + ' chart.');
     window['App'].instances.chart = this;
 
-    if(data == null) return;
+    if(_data == null) return;
 
     switch (chartType) {
       case "netattraction":
-        var chart     = this.composeBarChart(data);
+        var chart     = this.composeBarChart(_data);
         this.instance = chart;
         this.dataService.pushChart(chartType, data, chart); 
       break;
@@ -161,8 +161,8 @@ export class Chart {
           //return (value / 1000) + 'k';
         }
       },
-      high: this.getChartHigh(_data.series, 100),
-      low:  this.getChartLow(_data.series, -100),
+      high: this.getChartHigh(_data.series, 50),
+      low:  this.getChartLow(_data.series, -50),
       plugins: [
         // Chartist.plugins.ctPointLabels({
         //   textAnchor: 'middle'

@@ -47,9 +47,9 @@ export class Dashboard {
 		
 	  	var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
 		.subscribe( resp => {
-			//console.log('Dashboard:initializeDashboard observable subscription firing');
-			// this.dataService.dataSubject.next(resp);
 			this.data = resp;
+			console.log('resp: ', resp);
+			
 			this.dataService.delegateData(project_id, this.data);
 		});
 	}

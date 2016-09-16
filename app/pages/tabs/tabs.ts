@@ -20,8 +20,8 @@ export class TabsPage {
 
   constructor(public nav: NavController, public dataService: DataService) {
     window['App'].instances.tabsPage = this;
+    //console.log('TabsPage:constructor');
 
-    console.log('TabsPage:constructor');
     // this tells the tabs component which Pages
     // should be each tab's root Page
     var currentTab  = window.localStorage.getItem('cache_settings');
@@ -34,7 +34,7 @@ export class TabsPage {
 
   //TODO: When you click the dashboard page and you have changed studies load the data from the new study
   initDash(){
-    console.log('TabsPage:initDash Initializing Dashboard');
+    //console.log('TabsPage:initDash Initializing Dashboard');
 
     var project_id = this.dataService.getProjectId();
     var data_cache = this.dataService.getData(true);

@@ -16,6 +16,7 @@ var globals_1 = require('./globals');
 var tabs_1 = require('./pages/tabs/tabs');
 var login_1 = require('./pages/login/login');
 var data_service_1 = require('./dashboard/data.service');
+core_1.enableProdMode();
 //TODO: make sure this doesnt break native
 var Cordova;
 var MyApp = (function () {
@@ -82,7 +83,7 @@ var Chart = (function () {
             return;
         this.changed = true; //for testing - maybe take this out
         if (this.data !== null && typeof this.data == 'object') {
-            this.composeChart(this.chartType, this.data.data);
+            this.composeChart(this.chartType, this.data);
         }
     };
     Chart.prototype.throwChartError = function () {
@@ -105,8 +106,8 @@ var Chart = (function () {
         var best_data = [];
         var worst_data = [];
         for (var concept_id in vwapData.best_count) {
-            best_data.push(vwapData.best_count[concept_id][0]);
-            worst_data.push(vwapData.worst_count[concept_id][0]);
+            best_data.push(vwapData.best_count[concept_id]);
+            worst_data.push(vwapData.worst_count[concept_id]);
         }
         seriesData.push(best_data, worst_data);
         return seriesData;
@@ -141,18 +142,18 @@ var Chart = (function () {
     };
     Chart.prototype.getYLabelOffset = function (coord, val) {
         var offset = (val > 0) ? -5 : -(5);
-        console.log('offset: ', offset);
         return offset;
     };
     //Delegates to whichever specific chart type we are working with
     Chart.prototype.composeChart = function (chartType, data) {
+        var _data = data.data;
         //console.log('composing a ' + this.chartType + ' chart.');
         window['App'].instances.chart = this;
-        if (data == null)
+        if (_data == null)
             return;
         switch (chartType) {
             case "netattraction":
-                var chart = this.composeBarChart(data);
+                var chart = this.composeBarChart(_data);
                 this.instance = chart;
                 this.dataService.pushChart(chartType, data, chart);
                 break;
@@ -179,8 +180,8 @@ var Chart = (function () {
                     //return (value / 1000) + 'k';
                 }
             },
-            high: this.getChartHigh(_data.series, 100),
-            low: this.getChartLow(_data.series, -100),
+            high: this.getChartHigh(_data.series, 50),
+            low: this.getChartLow(_data.series, -50),
             plugins: []
         };
         var _chart = document.querySelectorAll('.ct-chart');
@@ -280,9 +281,8 @@ var Dashboard = (function () {
         this.presentLoader(window['App']);
         var observable = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
             .subscribe(function (resp) {
-            //console.log('Dashboard:initializeDashboard observable subscription firing');
-            // this.dataService.dataSubject.next(resp);
             _this.data = resp;
+            console.log('resp: ', resp);
             _this.dataService.delegateData(project_id, _this.data);
         });
     };
@@ -647,7 +647,7 @@ var dashboard_1 = require('../../dashboard/dashboard');
 var HomePage = (function () {
     function HomePage() {
         this.data = {};
-        console.log('HomePage:constructor');
+        //console.log('HomePage:constructor');
     }
     HomePage = __decorate([
         core_1.Component({
@@ -849,7 +849,7 @@ var TabsPage = (function () {
         this.nav = nav;
         this.dataService = dataService;
         window['App'].instances.tabsPage = this;
-        console.log('TabsPage:constructor');
+        //console.log('TabsPage:constructor');
         // this tells the tabs component which Pages
         // should be each tab's root Page
         var currentTab = window.localStorage.getItem('cache_settings');
@@ -860,7 +860,7 @@ var TabsPage = (function () {
     }
     //TODO: When you click the dashboard page and you have changed studies load the data from the new study
     TabsPage.prototype.initDash = function () {
-        console.log('TabsPage:initDash Initializing Dashboard');
+        //console.log('TabsPage:initDash Initializing Dashboard');
         var project_id = this.dataService.getProjectId();
         var data_cache = this.dataService.getData(true);
         if (this.dataService.studiesDidChange(project_id, data_cache)) {
