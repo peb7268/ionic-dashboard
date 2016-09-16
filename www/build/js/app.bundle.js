@@ -101,13 +101,14 @@ var Chart = (function () {
     * TODO: Need to refactor this so it can handle more than vwap charts
     * it should be able to delegate and return series data for multiple types of charts.
     */
-    Chart.prototype.getSeriesData = function (vwapData) {
+    Chart.prototype.getSeriesData = function (data) {
         var seriesData = [];
         var best_data = [];
         var worst_data = [];
-        for (var concept_id in vwapData.best_count_per_concept) {
-            best_data.push(vwapData.best_count_per_concept[concept_id]);
-            worst_data.push(vwapData.worst_count_per_concept[concept_id]);
+        for (var i = 0; i < data.concepts.length; i++) {
+            var cid = data.concepts[i].id;
+            best_data.push(data.netattraction[cid].best_percent);
+            worst_data.push(data.netattraction[cid].worst_percent);
         }
         seriesData.push(best_data, worst_data);
         return seriesData;
@@ -146,7 +147,7 @@ var Chart = (function () {
     };
     //Delegates to whichever specific chart type we are working with
     Chart.prototype.composeChart = function (chartType, data) {
-        var _data = data.data;
+        var _data = data;
         //console.log('composing a ' + this.chartType + ' chart.');
         window['App'].instances.chart = this;
         if (_data == null)
@@ -180,8 +181,8 @@ var Chart = (function () {
                     //return (value / 1000) + 'k';
                 }
             },
-            high: this.getChartHigh(_data.series, 50),
-            low: this.getChartLow(_data.series, -50),
+            high: this.getChartHigh(_data.series, 10),
+            low: this.getChartLow(_data.series, -10),
             plugins: []
         };
         var _chart = document.querySelectorAll('.ct-chart');
@@ -282,7 +283,6 @@ var Dashboard = (function () {
         var observable = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
             .subscribe(function (resp) {
             _this.data = resp;
-            console.log('resp: ', resp);
             _this.dataService.delegateData(project_id, _this.data);
         });
     };
@@ -915,25 +915,11 @@ var Netattraction = (function () {
         if (typeof this.data == 'undefined')
             return;
         if (this.data !== null && typeof this.data == 'object') {
-            this.data = this.data.data;
-            this.setNetAttraction(this.data);
+            this.data = this.data;
         }
     };
     Netattraction.prototype.getConceptId = function (idx, concept) {
         return concept.id;
-    };
-    Netattraction.prototype.setNetAttraction = function (data) {
-        var concepts = data.concepts;
-        var best_count = data.best_count_per_concept;
-        for (var idx in best_count) {
-            var netattraction = best_count[idx] - Math.abs(data.worst_count_per_concept[idx]); //82
-            for (var cidx = 0; cidx < concepts.length; cidx++) {
-                var concept = concepts[cidx];
-                if (concept.id == idx)
-                    concept.netattraction = netattraction;
-            }
-        }
-        this.data.concepts = concepts;
     };
     Netattraction = __decorate([
         core_1.Component({

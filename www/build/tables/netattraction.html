@@ -11,9 +11,9 @@
 		<ion-row  *ngFor="let concept of data.concepts; let i = index; trackBy:concept?.id">
 			<ion-col width-16>{{ concept.name }}</ion-col>
 			<ion-col width-16>{{data.vwaps[concept.id]| currency:'USD':true:'1.2-2'}}</ion-col>
-			<ion-col width-16>133</ion-col>
-			<ion-col width-16>{{ concept.netattraction }}</ion-col>
-			<ion-col width-16>{{data.best_count_per_concept[concept.id]}}</ion-col>
-			<ion-col width-16>{{data.worst_count_per_concept[concept.id]}}</ion-col>
+			<ion-col width-16>{{ data.vwap_indexes[concept.id] }}</ion-col>
+			<ion-col width-16>{{ data.netattraction[concept.id].net }}</ion-col>
+			<ion-col width-16>{{ data.netattraction[concept.id].best_percent }}</ion-col>
+			<ion-col width-16>{{ data.netattraction[concept.id].worst_percent }}</ion-col>
 		</ion-row>
 </ion-grid>

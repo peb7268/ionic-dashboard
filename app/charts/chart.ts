@@ -63,15 +63,16 @@ export class Chart {
   * TODO: Need to refactor this so it can handle more than vwap charts
   * it should be able to delegate and return series data for multiple types of charts.
   */
-  getSeriesData(vwapData){
+  getSeriesData(data){
     var seriesData = [];
-    
     var best_data   = [];
     var worst_data  = [];
     
-    for(let concept_id in vwapData.best_count_per_concept){
-      best_data.push(vwapData.best_count_per_concept[concept_id]);
-      worst_data.push(vwapData.worst_count_per_concept[concept_id]);
+    for(let i = 0; i < data.concepts.length; i++){
+      let cid = data.concepts[i].id;
+      
+      best_data.push(data.netattraction[cid].best_percent);
+      worst_data.push(data.netattraction[cid].worst_percent);
     }
     seriesData.push(best_data, worst_data);
 
@@ -122,7 +123,7 @@ export class Chart {
 
   //Delegates to whichever specific chart type we are working with
   composeChart(chartType, data){
-    var _data = data.data;
+    var _data = data;
     //console.log('composing a ' + this.chartType + ' chart.');
     window['App'].instances.chart = this;
 
@@ -161,8 +162,8 @@ export class Chart {
           //return (value / 1000) + 'k';
         }
       },
-      high: this.getChartHigh(_data.series, 50),
-      low:  this.getChartLow(_data.series, -50),
+      high: this.getChartHigh(_data.series, 10),
+      low:  this.getChartLow(_data.series, -10),
       plugins: [
         // Chartist.plugins.ctPointLabels({
         //   textAnchor: 'middle'

@@ -34,29 +34,12 @@ export class Netattraction {
   	if(typeof this.data == 'undefined') return;
 
   	if(this.data !== null && typeof this.data == 'object'){
-	  	this.data = this.data.data;
-	  	this.setNetAttraction(this.data);
+	  	this.data = this.data;  	
   	}
   }
 
   getConceptId(idx, concept){
   	return concept.id;
-  }
-
-  setNetAttraction(data){
-  	var concepts   = data.concepts;
-  	var best_count = data.best_count_per_concept;
-
-  	for(var idx in best_count){
-  		var netattraction = best_count[idx] - Math.abs(data.worst_count_per_concept[idx]); //82
-  		
-  		for(var cidx = 0; cidx < concepts.length; cidx++){
-  			var concept = concepts[cidx];
-  			if(concept.id == idx) concept.netattraction = netattraction;
-  		}
-  	}
-
-  	this.data.concepts = concepts;
   }
 }
 
