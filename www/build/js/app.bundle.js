@@ -32,7 +32,7 @@ var MyApp = (function () {
                 ionic_native_1.StatusBar.styleDefault();
             _this.cache_settings = localStorage.getItem('cache_settings');
             if (_this.cache_settings === null) {
-                localStorage.clear();
+                window.localStorage.clear();
                 _this.rootPage = login_1.LoginPage;
             }
             else {
@@ -679,19 +679,18 @@ require('rxjs/Rx');
 var tabs_1 = require('../tabs/tabs');
 var LoginPage = (function () {
     function LoginPage(platform, nav, http) {
-        var _this = this;
         this.platform = platform;
         this.nav = nav;
         this.http = http;
         this.user = {};
         window['App'].instances.loginPage = this;
         platform.ready().then(function () {
-            if (typeof samsung !== 'undefined') {
-                samsung.spass.initializeSpass(_this.bootStrapAuth, _this.errorCallback);
-                samsung.spass.isFeatureEnabled(0, _this.fingerprintEnabled, _this.errorCallback);
-                samsung.spass.initializeSpassFingerprint(_this.presentFingerprintDialog, _this.errorCallback);
-                samsung.spass.startIdentifyWithDialog(true, _this.authSuccess, _this.authError);
-            }
+            // if(typeof samsung !== 'undefined'){
+            //   samsung.spass.initializeSpass(this.bootStrapAuth, this.errorCallback);
+            //   samsung.spass.isFeatureEnabled(0, this.fingerprintEnabled, this.errorCallback);
+            //   samsung.spass.initializeSpassFingerprint(this.presentFingerprintDialog, this.errorCallback);
+            //   samsung.spass.startIdentifyWithDialog (true, this.authSuccess, this.authError);
+            // }
         });
     }
     LoginPage.prototype.login = function (evt) {

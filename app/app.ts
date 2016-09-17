@@ -36,7 +36,7 @@ export class MyApp {
 
       this.cache_settings = localStorage.getItem('cache_settings');
       if(this.cache_settings === null){
-        localStorage.clear();
+        window.localStorage.clear();
         this.rootPage   = LoginPage;
       } else {
         this.rootPage   = TabsPage;

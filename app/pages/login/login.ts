@@ -23,12 +23,12 @@ export class LoginPage {
     window['App'].instances.loginPage = this;
 
     platform.ready().then(() => {
-      if(typeof samsung !== 'undefined'){
-        samsung.spass.initializeSpass(this.bootStrapAuth, this.errorCallback);
-        samsung.spass.isFeatureEnabled(0, this.fingerprintEnabled, this.errorCallback);
-        samsung.spass.initializeSpassFingerprint(this.presentFingerprintDialog, this.errorCallback);
-        samsung.spass.startIdentifyWithDialog (true, this.authSuccess, this.authError);
-      }
+      // if(typeof samsung !== 'undefined'){
+      //   samsung.spass.initializeSpass(this.bootStrapAuth, this.errorCallback);
+      //   samsung.spass.isFeatureEnabled(0, this.fingerprintEnabled, this.errorCallback);
+      //   samsung.spass.initializeSpassFingerprint(this.presentFingerprintDialog, this.errorCallback);
+      //   samsung.spass.startIdentifyWithDialog (true, this.authSuccess, this.authError);
+      // }
     });
   }
 
