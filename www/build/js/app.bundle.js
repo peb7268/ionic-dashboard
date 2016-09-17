@@ -227,8 +227,7 @@ var Chart = (function () {
         //For changing nav
         chart.on('created', function (data) {
             chart.off('created');
-            var self = window['App'].instances.dashboard;
-            self.dismissLoader(1500);
+            window['App'].instances.dashboard.dataService.dismissLoader(1500);
         });
         return chart;
     };
@@ -262,15 +261,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var ionic_angular_1 = require('ionic-angular');
 var chart_1 = require('../charts/chart');
 var netattraction_1 = require('../tables/netattraction');
 var data_service_1 = require('../dashboard/data.service');
 var mocks_1 = require('../mocks');
 //TODO: Finish error handinling
 var Dashboard = (function () {
-    function Dashboard(nav, dataService) {
-        this.nav = nav;
+    function Dashboard(dataService) {
         this.dataService = dataService;
         window['App'].instances.dashboard = this;
     }
@@ -279,11 +276,12 @@ var Dashboard = (function () {
         this.data = null;
         var dataService = this.dataService;
         var project_id = localStorage.getItem('project_id');
-        this.presentLoader(window['App']);
-        var observable = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
-            .subscribe(function (resp) {
-            _this.data = resp;
-            _this.dataService.delegateData(project_id, _this.data);
+        this.dataService.presentLoader(window['App']).then(function () {
+            var observable = _this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
+                .subscribe(function (resp) {
+                _this.data = resp;
+                _this.dataService.delegateData(project_id, _this.data);
+            });
         });
     };
     Dashboard.prototype.ngOnInit = function () {
@@ -292,22 +290,6 @@ var Dashboard = (function () {
     };
     Dashboard.prototype.ngOnChanges = function (changes) {
         console.log('Dashboard:ngOnChanges: this.data: ', this.data);
-    };
-    Dashboard.prototype.presentLoader = function (App) {
-        App.loading = ionic_angular_1.Loading.create({
-            content: "Loading...",
-            duration: 0,
-            dismissOnPageChange: false
-        });
-        this.nav.present(App.loading);
-    };
-    Dashboard.prototype.dismissLoader = function (timer) {
-        //console.log('Dashboard:dismissLoader');
-        window.setTimeout(function () {
-            window.dispatchEvent(new Event('resize'));
-            var self = window['App'].instances.dashboard;
-            window['App'].loading.dismiss();
-        }, timer);
     };
     Dashboard = __decorate([
         core_1.Component({
@@ -322,13 +304,13 @@ var Dashboard = (function () {
             inputs: ['data'],
             outputs: ['dataEvent']
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController, data_service_1.DataService])
+        __metadata('design:paramtypes', [data_service_1.DataService])
     ], Dashboard);
     return Dashboard;
 }());
 exports.Dashboard = Dashboard;
 
-},{"../charts/chart":2,"../dashboard/data.service":4,"../mocks":6,"../tables/netattraction":11,"@angular/core":159,"ionic-angular":425}],4:[function(require,module,exports){
+},{"../charts/chart":2,"../dashboard/data.service":4,"../mocks":6,"../tables/netattraction":11,"@angular/core":159}],4:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -348,19 +330,22 @@ require('rxjs/Rx');
 var settings_1 = require('../pages/settings/settings');
 //import { App } 					    from './../globals';
 var DataService = (function () {
-    function DataService(http) {
+    function DataService(http, app) {
         this.http = http;
+        this.app = app;
         this.charts = {};
         this.instances = {};
+        this.nav = app.getActiveNav();
         window['App'].instances.dataService = this;
         this.SettingsPage = settings_1.SettingsPage;
         this.dataSubject = new BehaviorSubject_1.BehaviorSubject(this.data);
+        this.loading = this.createLoader();
     }
     DataService.prototype.fetchData = function (localData, project_id) {
         if (project_id === void 0) { project_id = null; }
         var useCachedData = this.useCachedData(localData);
         if (this.dataFetchInProgress()) {
-            window['App'].instances.dashboard.dismissLoader(500);
+            this.dismissLoader(500);
             return this.dataSubject.asObservable();
         }
         if (useCachedData) {
@@ -401,12 +386,38 @@ var DataService = (function () {
                 }
             ]
         });
+        debugger;
         window['App'].instances.dashboard.dismissLoader(250);
         window['App'].instances.dashboard.nav.present(window['App'].confirm);
         return Observable_1.Observable.throw(errMsg);
     };
     DataService.prototype.dataFetchInProgress = function () {
         return window['App'].activeRequests > 0;
+    };
+    DataService.prototype.createLoader = function () {
+        return ionic_angular_1.Loading.create({
+            content: "Loading...",
+            duration: 0,
+            dismissOnPageChange: false
+        });
+    };
+    DataService.prototype.presentLoader = function (App) {
+        console.log('presenting loader');
+        if (this.loading.state !== '') {
+            this.loading = this.createLoader();
+        }
+        var promise = this.nav.parent.present(this.loading);
+        return promise;
+    };
+    DataService.prototype.dismissLoader = function (timer) {
+        console.log('Dashboard:dismissLoader');
+        var promise = this.loading.dismiss();
+        promise.then(function () {
+            window.setTimeout(function () {
+                // debugger;
+                window.dispatchEvent(new Event('resize'));
+            }, timer);
+        });
     };
     //Change this to just store. Obviously its storing data
     //Adapt it to store / stringify all types of data
@@ -485,7 +496,7 @@ var DataService = (function () {
     };
     DataService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, ionic_angular_1.App])
     ], DataService);
     return DataService;
 }());
@@ -838,14 +849,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var ionic_angular_1 = require('ionic-angular');
 var home_1 = require('../home/home');
 var settings_1 = require('../settings/settings');
 var data_service_1 = require('../../dashboard/data.service');
 //import { Dashboard }  from '../../dashboard/dashboard';
 var TabsPage = (function () {
-    function TabsPage(nav, dataService) {
-        this.nav = nav;
+    function TabsPage(dataService) {
         this.dataService = dataService;
         window['App'].instances.tabsPage = this;
         //console.log('TabsPage:constructor');
@@ -878,13 +887,13 @@ var TabsPage = (function () {
             templateUrl: 'build/pages/tabs/tabs.html',
             outputs: ['data']
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController, data_service_1.DataService])
+        __metadata('design:paramtypes', [data_service_1.DataService])
     ], TabsPage);
     return TabsPage;
 }());
 exports.TabsPage = TabsPage;
 
-},{"../../dashboard/data.service":4,"../home/home":7,"../settings/settings":9,"@angular/core":159,"ionic-angular":425}],11:[function(require,module,exports){
+},{"../../dashboard/data.service":4,"../home/home":7,"../settings/settings":9,"@angular/core":159}],11:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;

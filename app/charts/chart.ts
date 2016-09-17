@@ -1,6 +1,5 @@
 
 import { Component, Input, Output, EventEmitter }   from '@angular/core';
-import { NavController, Loading }                   from 'ionic-angular';
 
 import { DataService }                              from '../dashboard/data.service'
 import { HttpMock, MockDataService }                from '../mocks';
@@ -221,8 +220,7 @@ export class Chart {
     //For changing nav
     chart.on('created', function (data) {
       chart.off('created');
-      var self = window['App'].instances.dashboard;
-      self.dismissLoader(1500);
+      window['App'].instances.dashboard.dataService.dismissLoader(1500);
     });
 
     return chart;

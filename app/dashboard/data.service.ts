@@ -4,7 +4,10 @@ import { Http } 						from '@angular/http';
 
 import { HttpMock }						from './../mocks';
 
-import { Alert }						from 'ionic-angular';
+import { Loading, 
+		 Alert, 
+		 App 
+	   }								from 'ionic-angular';
 
 import { Observable } 					from 'rxjs/Observable';
 import { BehaviorSubject } 				from 'rxjs/BehaviorSubject';
@@ -21,19 +24,25 @@ export class DataService {
 	public dataSubject:any;
 	public charts 		 = {};
 	public instances:any = {};
-	public SettingsPage; 
+	public SettingsPage;
+	public nav;
+	public loading;
 
-	constructor(public  http: Http){
+	constructor(public  http: Http, private app: App){
+		this.nav = app.getActiveNav();
 		window['App'].instances.dataService  = this;
+
 		this.SettingsPage 	= SettingsPage;
 		this.dataSubject 	= new BehaviorSubject(this.data);
+
+		this.loading 		= this.createLoader();
 	}
 
 	fetchData(localData, project_id = null){
 		var useCachedData = this.useCachedData(localData);
 
 		if(this.dataFetchInProgress()){
-			window['App'].instances.dashboard.dismissLoader(500);
+			this.dismissLoader(500);
 			return this.dataSubject.asObservable();
 		}
 
@@ -79,6 +88,7 @@ export class DataService {
 			]
 		});
 
+		debugger;
 		window['App'].instances.dashboard.dismissLoader(250);
 		window['App'].instances.dashboard.nav.present(window['App'].confirm);				
 
@@ -88,6 +98,35 @@ export class DataService {
 	dataFetchInProgress(){
 		return window['App'].activeRequests > 0;
 	}
+
+	createLoader(){
+		return Loading.create({
+	      content: "Loading...",
+	      duration: 0,
+	      dismissOnPageChange: false
+		});
+	}
+
+	presentLoader(App){
+		console.log('presenting loader');
+		if(this.loading.state !== '') {
+			this.loading = this.createLoader();
+		} 
+
+	  	var promise = this.nav.parent.present(this.loading);
+	  	return promise;
+	}
+
+	dismissLoader(timer){
+	    console.log('Dashboard:dismissLoader');
+	    var promise = this.loading.dismiss();
+	    promise.then(() => {
+	    	window.setTimeout(function(){
+	    	  // debugger;
+		      window.dispatchEvent(new Event('resize'));
+		    }, timer);
+	    });
+ 	}
 
 	//Change this to just store. Obviously its storing data
 	//Adapt it to store / stringify all types of data

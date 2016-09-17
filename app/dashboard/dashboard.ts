@@ -1,8 +1,6 @@
 
 import { Component, Input, Output, EventEmitter }   from '@angular/core';
 
-import { NavController, Loading } 					from 'ionic-angular';
-
 import { Chart }       								from '../charts/chart';
 import { Netattraction }       						from '../tables/netattraction';
 import { DataService }   							from '../dashboard/data.service'
@@ -33,7 +31,7 @@ export class Dashboard {
 	public data: any;
 	public caught: any;
 
-	constructor(private nav: NavController, public dataService: DataService){
+	constructor(public dataService: DataService){
 		window['App'].instances.dashboard = this;
 	}
 
@@ -43,12 +41,12 @@ export class Dashboard {
 		var dataService = this.dataService;
 		var project_id 	= localStorage.getItem('project_id');
 
-		this.presentLoader(window['App']);
-		
-	  	var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
-		.subscribe( resp => {
-			this.data = resp;
-			this.dataService.delegateData(project_id, this.data);
+		this.dataService.presentLoader(window['App']).then(() => {
+			var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
+			.subscribe( resp => {
+				this.data = resp;
+				this.dataService.delegateData(project_id, this.data);
+			});
 		});
 	}
 
@@ -60,23 +58,4 @@ export class Dashboard {
 	ngOnChanges(changes:any):void {
     	console.log('Dashboard:ngOnChanges: this.data: ', this.data);
   	}
-
-	presentLoader(App){
-		App.loading = Loading.create({
-	      content: "Loading...",
-	      duration: 0,
-	      dismissOnPageChange: false
-	    });
-
-	  	this.nav.present(App.loading);
-	}
-
-	dismissLoader(timer){
-	    //console.log('Dashboard:dismissLoader');
-	    window.setTimeout(function(){
-	      window.dispatchEvent(new Event('resize'));
-	      var self = window['App'].instances.dashboard;
-	      window['App'].loading.dismiss();
-	    }, timer);
- 	}
 }

@@ -1,6 +1,6 @@
 
 import { Component }                from '@angular/core'
-import { Platform, NavController }  from 'ionic-angular';
+import { Platform }                 from 'ionic-angular';
 
 import { HomePage }                 from '../home/home';
 import { SettingsPage }             from '../settings/settings';
@@ -18,7 +18,7 @@ export class TabsPage {
   private tab2Root: 	  any;
   private currentTab: 	any;
 
-  constructor(public nav: NavController, public dataService: DataService) {
+  constructor(public dataService: DataService) {
     window['App'].instances.tabsPage = this;
     //console.log('TabsPage:constructor');
 
