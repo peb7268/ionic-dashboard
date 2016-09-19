@@ -16,12 +16,17 @@ export class SettingsPage {
   public  projects:any    = [];
   public  project:any     = {};
   public  project_id:any  = 0;
+  public  admin;
+  public  endpoint:string = 'http://intengoresearch.com'
 
   constructor(public platform: Platform, public nav: NavController) {
     var creds            = window.localStorage.getItem('credentials');
     var projects         = window.localStorage.getItem('projects');
     var project_id       = window.localStorage.getItem('project_id');
     var cache_settings   = window.localStorage.getItem('cache_settings');
+    var isAdmin          = window.localStorage.getItem('admin');
+
+    this.admin = isAdmin;
 
     window['App'].instances.settingsPage  = this;
     
@@ -33,12 +38,12 @@ export class SettingsPage {
   }
 
   saveSelections(evt){
-    console.log('saving settings');
     evt.preventDefault();
 
     //Save project id
     if(typeof this.project_id !== 'undefined') window.localStorage.setItem('project_id', this.project_id);
     if(typeof this.project.cache_settings !== 'undefined' && this.project.cache_settings === true ) window.localStorage.setItem('cache_settings', 'true');
+    if(typeof this.endpoint !== 'undefined') window.localStorage.setItem('endpoint', JSON.stringify(this.endpoint));
 
     //Send to dash page
     this.nav.parent.select(0);

@@ -27,6 +27,7 @@ export class DataService {
 	public SettingsPage;
 	public nav;
 	public loading;
+	public endpoint;
 
 	constructor(public  http: Http, private app: App){
 		this.nav 			= app.getActiveNav();
@@ -36,6 +37,9 @@ export class DataService {
 		this.dataSubject 	= new BehaviorSubject(this.data);
 
 		this.loading 		= this.createLoader();
+
+		var endpoint 		= window.localStorage.getItem('endpoint');
+		this.endpoint 		= (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://intengoresearch.com';
 	}
 
 	fetchData(localData, project_id = null){
@@ -57,7 +61,7 @@ export class DataService {
 		} else {
 			console.log('dataService:fetchData getting data from source');
 			window['App'].activeRequests++;
-			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
+			return this.http.get(this.endpoint + '/dash/projects/' + project_id)
 		   .map(resp => resp.json())
 		   .catch(this.catchError);
 		}

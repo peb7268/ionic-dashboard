@@ -1,9 +1,9 @@
 
-import { Platform, NavController }         from 'ionic-angular';
+import { Platform, NavController, Toast}           from 'ionic-angular';
 
-import { Component, EventEmitter, Output } from '@angular/core'
-import { NgModel }                         from '@angular/common'
-import { Http, Headers}                    from '@angular/http';
+import { Component, EventEmitter, Output }          from '@angular/core'
+import { NgModel }                                  from '@angular/common'
+import { Http, Headers}                             from '@angular/http';
 
 import 'rxjs/Rx';
 
@@ -16,7 +16,8 @@ declare var samsung:any;
 })
 
 export class LoginPage {
-  public user: any = {};
+  public user: any  = {};
+  public creds: any = {};
   public data: Object;
 
   constructor(public platform: Platform, public nav: NavController, public http: Http){
@@ -34,30 +35,60 @@ export class LoginPage {
 
   login(evt){
   	evt.preventDefault();
+    var endpoint = window.localStorage.getItem('endpoint');
 
-  	var username = this.user.username.trim().toLowerCase();
-  	var password = this.user.password.trim().toLowerCase();
-  	var auth = (username == 'peb7268@gmail.com' && password == 'testpass') ? true : false;
+  	this.user.username = this.user.username.trim().toLowerCase();
+  	this.user.password = this.user.password.trim().toLowerCase();
+  	this.creds = {
+      'username'  : this.user.username,
+      'password'  : this.user.password 
+    };
+    var creds  = JSON.stringify(this.creds);
 
     var headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');    
+    endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://www.intengoresearch.com' : endpoint;
 
+    //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
+    var observable = this.http.post(endpoint + '/dash/login', {'credentials' : creds }).map( (resp) => {
+      console.log(resp);
+      if(resp.text() == 'error') {
+        this.showLoginError();
+        //this.destination.next({})
+        return false;
+      }
 
-  	if(auth == true) {
-      var creds     = JSON.stringify({'username' : username, 'password' : password });
-      window.localStorage.setItem('credentials', creds);
+      return resp.json();
+    }).subscribe(resp => {
+      if(resp.authed == true){
+        window.localStorage.setItem('admin', resp.isAdmin);
+        window.localStorage.setItem('credentials', JSON.stringify(this.creds));
 
-      //www.intengoresearch
-      //market7qvnra.
-      var observable = this.http.post('http://www.intengoresearch.com/dash/login', {'credentials' : creds }).map( (resp) => {
-        return resp.json();
-      }).subscribe(resp => {
-        this.data = resp;
-        window.localStorage.setItem('projects', JSON.stringify(resp));
+        this.data = resp.project_list;
+        window.localStorage.setItem('projects', JSON.stringify(this.data));
         window['App'].instances.loginPage.nav.push(TabsPage);  //Push to tabs page once request is successful
-      });      
-    }
-  }
+      } else {
+        //throw a login error message
+        this.showLoginError();
+      }
+    });      
+   }
+
+   showLoginError(){
+        let toast = Toast.create({
+          message: 'There was an error logging in. Please try again.',
+          position: 'bottom',
+          duration: 5000
+          // showCloseButton: true,
+          // cssClass: 'toast-error'
+        });
+     
+        toast.onDismiss(() => {
+          console.log('Dismissed toast');
+        });
+     
+        this.nav.present(toast);
+   }
 
   bootStrapAuth(msg){
     alert(msg);

@@ -39,11 +39,9 @@ export class TabsPage {
     var project_id = this.dataService.getProjectId();
     var data_cache = this.dataService.getData(true);
     
-    debugger;
-
     if(this.dataService.studiesDidChange(project_id, data_cache)){
       //reload data
-      console.log('Reloading The Data From Web Service');
+      //console.log('Reloading The Data From Web Service');
       window.localStorage.removeItem('project_data');
       
       this.dataService.removeCharts();

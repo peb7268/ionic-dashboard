@@ -43,11 +43,9 @@ export class Dashboard {
 		var project_id 	= localStorage.getItem('project_id');
 
 		var loadingPromise = this.dataService.presentLoader(window['App']);
-		debugger;
 		loadingPromise.then(() => {
 			var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
 			.subscribe( resp => {
-				debugger;
 				this.data = resp;
 				this.dataService.delegateData(project_id, this.data);
 			});

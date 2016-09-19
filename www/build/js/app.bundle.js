@@ -278,11 +278,9 @@ var Dashboard = (function () {
         var dataService = this.dataService;
         var project_id = localStorage.getItem('project_id');
         var loadingPromise = this.dataService.presentLoader(window['App']);
-        debugger;
         loadingPromise.then(function () {
             var observable = _this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
                 .subscribe(function (resp) {
-                debugger;
                 _this.data = resp;
                 _this.dataService.delegateData(project_id, _this.data);
             });
@@ -344,6 +342,8 @@ var DataService = (function () {
         this.SettingsPage = settings_1.SettingsPage;
         this.dataSubject = new BehaviorSubject_1.BehaviorSubject(this.data);
         this.loading = this.createLoader();
+        var endpoint = window.localStorage.getItem('endpoint');
+        this.endpoint = (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://intengoresearch.com';
     }
     DataService.prototype.fetchData = function (localData, project_id) {
         if (project_id === void 0) { project_id = null; }
@@ -362,7 +362,7 @@ var DataService = (function () {
         else {
             console.log('dataService:fetchData getting data from source');
             window['App'].activeRequests++;
-            return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
+            return this.http.get(this.endpoint + '/dash/projects/' + project_id)
                 .map(function (resp) { return resp.json(); })
                 .catch(this.catchError);
         }
@@ -705,6 +705,7 @@ var LoginPage = (function () {
         this.nav = nav;
         this.http = http;
         this.user = {};
+        this.creds = {};
         window['App'].instances.loginPage = this;
         platform.ready().then(function () {
             // if(typeof samsung !== 'undefined'){
@@ -718,24 +719,50 @@ var LoginPage = (function () {
     LoginPage.prototype.login = function (evt) {
         var _this = this;
         evt.preventDefault();
-        var username = this.user.username.trim().toLowerCase();
-        var password = this.user.password.trim().toLowerCase();
-        var auth = (username == 'peb7268@gmail.com' && password == 'testpass') ? true : false;
+        var endpoint = window.localStorage.getItem('endpoint');
+        this.user.username = this.user.username.trim().toLowerCase();
+        this.user.password = this.user.password.trim().toLowerCase();
+        this.creds = {
+            'username': this.user.username,
+            'password': this.user.password
+        };
+        var creds = JSON.stringify(this.creds);
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        if (auth == true) {
-            var creds = JSON.stringify({ 'username': username, 'password': password });
-            window.localStorage.setItem('credentials', creds);
-            //www.intengoresearch
-            //market7qvnra.
-            var observable = this.http.post('http://www.intengoresearch.com/dash/login', { 'credentials': creds }).map(function (resp) {
-                return resp.json();
-            }).subscribe(function (resp) {
-                _this.data = resp;
-                window.localStorage.setItem('projects', JSON.stringify(resp));
+        endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://www.intengoresearch.com' : endpoint;
+        //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
+        var observable = this.http.post(endpoint + '/dash/login', { 'credentials': creds }).map(function (resp) {
+            console.log(resp);
+            if (resp.text() == 'error') {
+                _this.showLoginError();
+                //this.destination.next({})
+                return false;
+            }
+            return resp.json();
+        }).subscribe(function (resp) {
+            if (resp.authed == true) {
+                window.localStorage.setItem('admin', resp.isAdmin);
+                window.localStorage.setItem('credentials', JSON.stringify(_this.creds));
+                _this.data = resp.project_list;
+                window.localStorage.setItem('projects', JSON.stringify(_this.data));
                 window['App'].instances.loginPage.nav.push(tabs_1.TabsPage); //Push to tabs page once request is successful
-            });
-        }
+            }
+            else {
+                //throw a login error message
+                _this.showLoginError();
+            }
+        });
+    };
+    LoginPage.prototype.showLoginError = function () {
+        var toast = ionic_angular_1.Toast.create({
+            message: 'There was an error logging in. Please try again.',
+            position: 'bottom',
+            duration: 5000
+        });
+        toast.onDismiss(function () {
+            console.log('Dismissed toast');
+        });
+        this.nav.present(toast);
     };
     LoginPage.prototype.bootStrapAuth = function (msg) {
         alert(msg);
@@ -796,10 +823,13 @@ var SettingsPage = (function () {
         this.projects = [];
         this.project = {};
         this.project_id = 0;
+        this.endpoint = 'http://intengoresearch.com';
         var creds = window.localStorage.getItem('credentials');
         var projects = window.localStorage.getItem('projects');
         var project_id = window.localStorage.getItem('project_id');
         var cache_settings = window.localStorage.getItem('cache_settings');
+        var isAdmin = window.localStorage.getItem('admin');
+        this.admin = isAdmin;
         window['App'].instances.settingsPage = this;
         if (typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0)
             this.project_id = project_id;
@@ -811,13 +841,14 @@ var SettingsPage = (function () {
             this.projects = JSON.parse(projects);
     }
     SettingsPage.prototype.saveSelections = function (evt) {
-        console.log('saving settings');
         evt.preventDefault();
         //Save project id
         if (typeof this.project_id !== 'undefined')
             window.localStorage.setItem('project_id', this.project_id);
         if (typeof this.project.cache_settings !== 'undefined' && this.project.cache_settings === true)
             window.localStorage.setItem('cache_settings', 'true');
+        if (typeof this.endpoint !== 'undefined')
+            window.localStorage.setItem('endpoint', JSON.stringify(this.endpoint));
         //Send to dash page
         this.nav.parent.select(0);
     };
@@ -883,10 +914,9 @@ var TabsPage = (function () {
         console.log('TabsPage:initDash');
         var project_id = this.dataService.getProjectId();
         var data_cache = this.dataService.getData(true);
-        debugger;
         if (this.dataService.studiesDidChange(project_id, data_cache)) {
             //reload data
-            console.log('Reloading The Data From Web Service');
+            //console.log('Reloading The Data From Web Service');
             window.localStorage.removeItem('project_data');
             this.dataService.removeCharts();
             this.dataService.reloadCharts();

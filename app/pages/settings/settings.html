@@ -1,5 +1,16 @@
 
 <ion-content>
+  <section class="group" *ngIf="admin">
+    <ion-list>
+      <ion-list-header bold>
+        Endpoint
+      </ion-list-header>
+      <ion-item>
+        <ion-input type="text" [(ngModel)]="endpoint"></ion-input>
+      </ion-item>
+    </ion-list>
+  </section>
+
   <section class="group">
     <ion-list>
       <ion-list-header bold>
