@@ -273,12 +273,16 @@ var Dashboard = (function () {
     }
     Dashboard.prototype.init = function () {
         var _this = this;
+        console.log('dashboard:init');
         this.data = null;
         var dataService = this.dataService;
         var project_id = localStorage.getItem('project_id');
-        this.dataService.presentLoader(window['App']).then(function () {
+        var loadingPromise = this.dataService.presentLoader(window['App']);
+        debugger;
+        loadingPromise.then(function () {
             var observable = _this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
                 .subscribe(function (resp) {
+                debugger;
                 _this.data = resp;
                 _this.dataService.delegateData(project_id, _this.data);
             });
@@ -286,7 +290,7 @@ var Dashboard = (function () {
     };
     Dashboard.prototype.ngOnInit = function () {
         //console.log('Dashboard:init');
-        this.init();
+        //this.init();
     };
     Dashboard.prototype.ngOnChanges = function (changes) {
         console.log('Dashboard:ngOnChanges: this.data: ', this.data);
@@ -345,15 +349,18 @@ var DataService = (function () {
         if (project_id === void 0) { project_id = null; }
         var useCachedData = this.useCachedData(localData);
         if (this.dataFetchInProgress()) {
+            console.log('dataService:fetchData fetch in progress');
             this.dismissLoader(500);
             return this.dataSubject.asObservable();
         }
         if (useCachedData) {
+            console.log('dataService:fetchData using cached data');
             var data = JSON.parse(localData);
             this.dataSubject.next(data);
             return this.dataSubject.asObservable();
         }
         else {
+            console.log('dataService:fetchData getting data from source');
             window['App'].activeRequests++;
             return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
                 .map(function (resp) { return resp.json(); })
@@ -386,8 +393,7 @@ var DataService = (function () {
                 }
             ]
         });
-        debugger;
-        window['App'].instances.dashboard.dismissLoader(250);
+        window['App'].instances.dashboard.dataService.dismissLoader(250);
         window['App'].instances.dashboard.nav.present(window['App'].confirm);
         return Observable_1.Observable.throw(errMsg);
     };
@@ -406,16 +412,21 @@ var DataService = (function () {
         if (this.loading.state !== '') {
             this.loading = this.createLoader();
         }
-        var promise = this.nav.parent.present(this.loading);
+        var promise = this.nav.present(this.loading);
         return promise;
     };
     DataService.prototype.dismissLoader = function (timer) {
-        console.log('Dashboard:dismissLoader');
+        console.log('dataService:dismissLoader');
         var promise = this.loading.dismiss();
         promise.then(function () {
             window.setTimeout(function () {
-                // debugger;
+                var loader = document.querySelectorAll('.loading-cmp')[0];
+                if (typeof loader !== 'undefined' && loader !== null)
+                    loader.remove();
                 window.dispatchEvent(new Event('resize'));
+                this.loading = null;
+                if (window['App'].activeRequests > 0)
+                    window['App'].activeRequests--;
             }, timer);
         });
     };
@@ -429,7 +440,7 @@ var DataService = (function () {
     };
     DataService.prototype.delegateData = function (project_id, data) {
         var _shouldStoreData = this.shouldStoreData(data, project_id);
-        //console.log('Should Store Data?: ' + _shouldStoreData);
+        console.log('Should Store Data?: ' + _shouldStoreData);
         data = this.storeData(data);
         //console.log('DataService:delegateData');	    
         return data;
@@ -800,6 +811,7 @@ var SettingsPage = (function () {
             this.projects = JSON.parse(projects);
     }
     SettingsPage.prototype.saveSelections = function (evt) {
+        console.log('saving settings');
         evt.preventDefault();
         //Save project id
         if (typeof this.project_id !== 'undefined')
@@ -868,9 +880,10 @@ var TabsPage = (function () {
     }
     //TODO: When you click the dashboard page and you have changed studies load the data from the new study
     TabsPage.prototype.initDash = function () {
-        //console.log('TabsPage:initDash Initializing Dashboard');
+        console.log('TabsPage:initDash');
         var project_id = this.dataService.getProjectId();
         var data_cache = this.dataService.getData(true);
+        debugger;
         if (this.dataService.studiesDidChange(project_id, data_cache)) {
             //reload data
             console.log('Reloading The Data From Web Service');

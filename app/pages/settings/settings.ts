@@ -33,6 +33,7 @@ export class SettingsPage {
   }
 
   saveSelections(evt){
+    console.log('saving settings');
     evt.preventDefault();
 
     //Save project id

@@ -34,10 +34,12 @@ export class TabsPage {
 
   //TODO: When you click the dashboard page and you have changed studies load the data from the new study
   initDash(){
-    //console.log('TabsPage:initDash Initializing Dashboard');
+    console.log('TabsPage:initDash');
 
     var project_id = this.dataService.getProjectId();
     var data_cache = this.dataService.getData(true);
+    
+    debugger;
 
     if(this.dataService.studiesDidChange(project_id, data_cache)){
       //reload data

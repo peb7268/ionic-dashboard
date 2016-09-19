@@ -36,14 +36,18 @@ export class Dashboard {
 	}
 
 	init(){ 
+		console.log('dashboard:init');
 		this.data 		= null;
 
 		var dataService = this.dataService;
 		var project_id 	= localStorage.getItem('project_id');
 
-		this.dataService.presentLoader(window['App']).then(() => {
+		var loadingPromise = this.dataService.presentLoader(window['App']);
+		debugger;
+		loadingPromise.then(() => {
 			var observable  = this.dataService.fetchData(window.localStorage.getItem('project_data'), project_id)
 			.subscribe( resp => {
+				debugger;
 				this.data = resp;
 				this.dataService.delegateData(project_id, this.data);
 			});
@@ -52,7 +56,7 @@ export class Dashboard {
 
 	ngOnInit(){
 		//console.log('Dashboard:init');
-		this.init();
+		//this.init();
 	}
 
 	ngOnChanges(changes:any):void {

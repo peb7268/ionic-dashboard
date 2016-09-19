@@ -29,7 +29,7 @@ export class DataService {
 	public loading;
 
 	constructor(public  http: Http, private app: App){
-		this.nav = app.getActiveNav();
+		this.nav 			= app.getActiveNav();
 		window['App'].instances.dataService  = this;
 
 		this.SettingsPage 	= SettingsPage;
@@ -40,20 +40,23 @@ export class DataService {
 
 	fetchData(localData, project_id = null){
 		var useCachedData = this.useCachedData(localData);
+		
 
 		if(this.dataFetchInProgress()){
+			console.log('dataService:fetchData fetch in progress');
 			this.dismissLoader(500);
 			return this.dataSubject.asObservable();
 		}
 
 		if(useCachedData) {
+			console.log('dataService:fetchData using cached data')
 			var data  = JSON.parse(localData);
 			this.dataSubject.next(data);
 
 			return this.dataSubject.asObservable();
 		} else {
+			console.log('dataService:fetchData getting data from source');
 			window['App'].activeRequests++;
-
 			return this.http.get('http://www.intengoresearch.com/dash/projects/' + project_id)
 		   .map(resp => resp.json())
 		   .catch(this.catchError);
@@ -88,8 +91,7 @@ export class DataService {
 			]
 		});
 
-		debugger;
-		window['App'].instances.dashboard.dismissLoader(250);
+		window['App'].instances.dashboard.dataService.dismissLoader(250);
 		window['App'].instances.dashboard.nav.present(window['App'].confirm);				
 
 		return Observable.throw(errMsg);
@@ -109,21 +111,27 @@ export class DataService {
 
 	presentLoader(App){
 		console.log('presenting loader');
+
 		if(this.loading.state !== '') {
 			this.loading = this.createLoader();
 		} 
 
-	  	var promise = this.nav.parent.present(this.loading);
+	  	var promise = this.nav.present(this.loading);
 	  	return promise;
 	}
 
 	dismissLoader(timer){
-	    console.log('Dashboard:dismissLoader');
+	    console.log('dataService:dismissLoader');
 	    var promise = this.loading.dismiss();
 	    promise.then(() => {
 	    	window.setTimeout(function(){
-	    	  // debugger;
+	    	  let loader = document.querySelectorAll('.loading-cmp')[0];
+	    	  if(typeof loader !== 'undefined' && loader !== null) loader.remove();
+
 		      window.dispatchEvent(new Event('resize'));
+		      this.loading = null;	
+
+		      if(window['App'].activeRequests > 0) window['App'].activeRequests--;
 		    }, timer);
 	    });
  	}
@@ -139,7 +147,7 @@ export class DataService {
 
 	delegateData(project_id, data){        
         var _shouldStoreData = this.shouldStoreData(data, project_id);
-	    //console.log('Should Store Data?: ' + _shouldStoreData);
+	    console.log('Should Store Data?: ' + _shouldStoreData);
 
 	    data = this.storeData(data);
 		
