@@ -17,7 +17,7 @@ export class SettingsPage {
   public  project:any     = {};
   public  project_id:any  = 0;
   public  admin;
-  public  endpoint:string = 'http://intengoresearch.com'
+  public  endpoint:string = 'http://www.intengoresearch.com'
 
   constructor(public platform: Platform, public nav: NavController) {
     var creds            = window.localStorage.getItem('credentials');
