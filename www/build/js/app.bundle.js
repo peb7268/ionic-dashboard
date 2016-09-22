@@ -74,6 +74,7 @@ var Chart = (function () {
         this.events = [];
         this.yLabelMinOffset = 20;
         this.data = this.dataService.getData(true);
+        console.log(this.data);
         window['App'].instances.chart = this;
     }
     //Fires on init
@@ -102,13 +103,13 @@ var Chart = (function () {
     * it should be able to delegate and return series data for multiple types of charts.
     */
     Chart.prototype.getSeriesData = function (data) {
+        var netAttractionData = data.netattraction;
         var seriesData = [];
         var best_data = [];
         var worst_data = [];
-        for (var i = 0; i < data.concepts.length; i++) {
-            var cid = data.concepts[i].id;
-            best_data.push(data.netattraction[cid].best_percent);
-            worst_data.push(data.netattraction[cid].worst_percent);
+        for (var cid in netAttractionData) {
+            best_data.push(netAttractionData[cid].best_percent);
+            worst_data.push(netAttractionData[cid].worst_percent);
         }
         seriesData.push(best_data, worst_data);
         return seriesData;
@@ -732,7 +733,6 @@ var LoginPage = (function () {
         endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://www.intengoresearch.com' : endpoint;
         //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
         var observable = this.http.post(endpoint + '/dash/login', { 'credentials': creds }).map(function (resp) {
-            console.log(resp);
             if (resp.text() == 'error') {
                 _this.showLoginError();
                 //this.destination.next({})
@@ -966,11 +966,20 @@ var Netattraction = (function () {
         if (typeof this.data == 'undefined')
             return;
         if (this.data !== null && typeof this.data == 'object') {
+            this.data.netattraction = this.data.netattraction;
             this.data = this.data;
         }
     };
     Netattraction.prototype.getConceptId = function (idx, concept) {
-        return concept.id;
+        var data = JSON.parse(window.localStorage.getItem('project_data'));
+        var netattraction = data.netattraction;
+        var i = 0;
+        for (var prop in netattraction) {
+            debugger;
+            if (idx == i)
+                return prop.split('_')[1];
+            i++;
+        }
     };
     Netattraction = __decorate([
         core_1.Component({

@@ -51,7 +51,6 @@ export class LoginPage {
 
     //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
     var observable = this.http.post(endpoint + '/dash/login', {'credentials' : creds }).map( (resp) => {
-      console.log(resp);
       if(resp.text() == 'error') {
         this.showLoginError();
         //this.destination.next({})

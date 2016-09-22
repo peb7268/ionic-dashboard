@@ -8,12 +8,12 @@
 			<ion-col width-16>worst</ion-col>
 		</ion-row>
 
-		<ion-row  *ngFor="let concept of data.concepts; let i = index; trackBy:concept?.id">
-			<ion-col width-16>{{ concept.name }}</ion-col>
-			<ion-col width-16>{{data.vwaps[concept.id]| currency:'USD':true:'1.2-2'}}</ion-col>
-			<ion-col width-16>{{ data.vwap_indexes[concept.id] }}</ion-col>
-			<ion-col width-16>{{ data.netattraction[concept.id].net }}</ion-col>
-			<ion-col width-16>{{ data.netattraction[concept.id].best_percent }}</ion-col>
-			<ion-col width-16>{{ data.netattraction[concept.id].worst_percent }}</ion-col>
+		<ion-row  *ngFor="let na of data.netattraction_chart_data; let i = index; trackBy:na?.net">
+			<ion-col width-16>{{ na.concept_name }}</ion-col>
+			<ion-col width-16>{{ data.vwaps[na.cid]| currency:'USD':true:'1.2-2'}}</ion-col>
+			<ion-col width-16>{{ data.vwap_indexes[na.cid] }}</ion-col>
+			<ion-col width-16>{{ na.net }}</ion-col>
+			<ion-col width-16>{{ na.best_percent }}</ion-col>
+			<ion-col width-16>{{ na.worst_percent }}</ion-col>
 		</ion-row>
 </ion-grid>

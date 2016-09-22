@@ -29,6 +29,7 @@ export class Chart {
 
   constructor(public dataService: DataService){    
     this.data = this.dataService.getData(true);
+    console.log(this.data);
     window['App'].instances.chart = this;
   }
 
@@ -63,18 +64,18 @@ export class Chart {
   * it should be able to delegate and return series data for multiple types of charts.
   */
   getSeriesData(data){
-    var seriesData = [];
+    var netAttractionData = data.netattraction;
+
+    var seriesData  = [];
     var best_data   = [];
     var worst_data  = [];
     
-    for(let i = 0; i < data.concepts.length; i++){
-      let cid = data.concepts[i].id;
-      
-      best_data.push(data.netattraction[cid].best_percent);
-      worst_data.push(data.netattraction[cid].worst_percent);
+    for(var cid in netAttractionData){
+      best_data.push(netAttractionData[cid].best_percent);
+      worst_data.push(netAttractionData[cid].worst_percent);
     }
-    seriesData.push(best_data, worst_data);
 
+    seriesData.push(best_data, worst_data);
     return seriesData;
   }
 
