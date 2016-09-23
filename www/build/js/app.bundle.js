@@ -350,7 +350,8 @@ var DataService = (function () {
     }
     DataService.prototype.fetchData = function (localData, project_id) {
         if (project_id === void 0) { project_id = null; }
-        var useCachedData = this.useCachedData(localData);
+        //var useCachedData = this.useCachedData(localData);
+        var useCachedData = false;
         if (this.dataFetchInProgress()) {
             console.log('dataService:fetchData fetch in progress');
             this.dismissLoader(500);
@@ -412,10 +413,11 @@ var DataService = (function () {
     };
     DataService.prototype.presentLoader = function (App) {
         console.log('presenting loader');
+        var nav = (typeof this.nav.present !== 'undefined') ? this.nav : this.nav.parent;
         if (this.loading.state !== '') {
             this.loading = this.createLoader();
         }
-        var promise = this.nav.present(this.loading);
+        var promise = nav.present(this.loading);
         return promise;
     };
     DataService.prototype.dismissLoader = function (timer) {
@@ -455,6 +457,9 @@ var DataService = (function () {
     };
     DataService.prototype.studiesDidChange = function (project_id, data) {
         // && window['App'].activeRequests == 0
+        var previouslyLoaded = window.localStorage.getItem('loaded');
+        if (previouslyLoaded == null)
+            return false;
         if (data === null)
             return true;
         return (project_id !== data.survey.id);
@@ -490,6 +495,7 @@ var DataService = (function () {
         this.charts[chart_id] = chart;
     };
     DataService.prototype.removeCharts = function () {
+        console.log('removing the charts', this.charts);
         for (var chartName in this.charts) {
             var chart = this.charts[chartName];
             chart.detach();
@@ -498,6 +504,7 @@ var DataService = (function () {
         this.charts = {};
     };
     DataService.prototype.reloadCharts = function () {
+        console.log('reloading the charts');
         window['App'].instances.dashboard.init();
     };
     DataService.prototype.getChartCount = function (charts) {
@@ -917,14 +924,16 @@ var TabsPage = (function () {
         var project_id = this.dataService.getProjectId();
         var data_cache = this.dataService.getData(true);
         if (this.dataService.studiesDidChange(project_id, data_cache)) {
+            window.localStorage.setItem('loaded', 'true');
             //reload data
-            //console.log('Reloading The Data From Web Service');
+            console.log('Studies Changed Reloading The Data From Web Service');
             window.localStorage.removeItem('project_data');
             this.dataService.removeCharts();
             this.dataService.reloadCharts();
         }
         else {
             console.log('Displaying the dash with cache');
+            this.dataService.reloadCharts();
         }
     };
     TabsPage = __decorate([

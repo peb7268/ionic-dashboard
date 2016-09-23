@@ -43,8 +43,8 @@ export class DataService {
 	}
 
 	fetchData(localData, project_id = null){
-		var useCachedData = this.useCachedData(localData);
-		
+		//var useCachedData = this.useCachedData(localData);
+		var useCachedData   = false;
 
 		if(this.dataFetchInProgress()){
 			console.log('dataService:fetchData fetch in progress');
@@ -115,12 +115,13 @@ export class DataService {
 
 	presentLoader(App){
 		console.log('presenting loader');
+		var nav = (typeof this.nav.present !== 'undefined') ? this.nav : this.nav.parent;
 
 		if(this.loading.state !== '') {
 			this.loading = this.createLoader();
 		} 
 
-	  	var promise = this.nav.present(this.loading);
+	  	var promise = nav.present(this.loading);
 	  	return promise;
 	}
 
@@ -168,6 +169,9 @@ export class DataService {
 
 	studiesDidChange(project_id, data?){
 		// && window['App'].activeRequests == 0
+		var previouslyLoaded = window.localStorage.getItem('loaded');
+		if(previouslyLoaded == null) return false;
+		
 		if(data === null) return true;
 
 		return (project_id !== data.survey.id);
@@ -213,6 +217,7 @@ export class DataService {
 	}
 
 	removeCharts(){
+		console.log('removing the charts', this.charts);
 		for(var chartName in this.charts){
 			var chart = this.charts[chartName];
 			chart.detach();
@@ -222,6 +227,7 @@ export class DataService {
 	}
 
 	reloadCharts(){
+		console.log('reloading the charts');
 		window['App'].instances.dashboard.init();
 	}
 

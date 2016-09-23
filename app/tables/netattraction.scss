@@ -3,12 +3,18 @@ netattraction { display: block; margin: 10px auto; }
 
 .table.netattraction {
 	ion-row {
+		&:nth-child(odd) { background: #ccc; }
 		&:first-child { background: #90ca55; color: #fff; font-weight: bold; text-transform: capitalize;}
-
+		
 		ion-col {
+			align-items: center;
+		    justify-content: center;
+		    display: flex;
+
 			text-align: center;
 			&:first-child {
 				text-align: left;
+				justify-content: flex-start;
 			} 
 		}
 	}

@@ -40,14 +40,18 @@ export class TabsPage {
     var data_cache = this.dataService.getData(true);
     
     if(this.dataService.studiesDidChange(project_id, data_cache)){
+      window.localStorage.setItem('loaded', 'true');
       //reload data
-      //console.log('Reloading The Data From Web Service');
+      console.log('Studies Changed Reloading The Data From Web Service');
+
       window.localStorage.removeItem('project_data');
       
       this.dataService.removeCharts();
+
       this.dataService.reloadCharts();
     } else {
       console.log('Displaying the dash with cache');
+      this.dataService.reloadCharts();
     }
   }
 }

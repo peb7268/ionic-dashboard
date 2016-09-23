@@ -1,19 +1,19 @@
 <ion-grid class='table netattraction' *ngIf="data">
 		<ion-row>
-			<ion-col width-16></ion-col>
-			<ion-col width-16>vwap</ion-col>
-			<ion-col width-16>vwap index</ion-col>
-			<ion-col width-16>net attraction</ion-col>
-			<ion-col width-16>best</ion-col>
-			<ion-col width-16>worst</ion-col>
+			<ion-col width-50></ion-col>
+			<ion-col width-10>vwap</ion-col>
+			<ion-col width-10>vwap index</ion-col>
+			<ion-col width-10>net attraction</ion-col>
+			<ion-col width-10>best</ion-col>
+			<ion-col width-10>worst</ion-col>
 		</ion-row>
 
 		<ion-row  *ngFor="let na of data.netattraction_chart_data; let i = index; trackBy:na?.net">
-			<ion-col width-16>{{ na.concept_name }}</ion-col>
-			<ion-col width-16>{{ data.vwaps[na.cid]| currency:'USD':true:'1.2-2'}}</ion-col>
-			<ion-col width-16>{{ data.vwap_indexes[na.cid] }}</ion-col>
-			<ion-col width-16>{{ na.net }}</ion-col>
-			<ion-col width-16>{{ na.best_percent }}</ion-col>
-			<ion-col width-16>{{ na.worst_percent }}</ion-col>
+			<ion-col width-50>{{ na.concept_name }}</ion-col>
+			<ion-col width-10>{{ data.vwaps[na.cid]| currency:'USD':true:'1.2-2'}}</ion-col>
+			<ion-col width-10>{{ data.vwap_indexes[na.cid] }}</ion-col>
+			<ion-col width-10>{{ na.net }}</ion-col>
+			<ion-col width-10>{{ na.best_percent }}</ion-col>
+			<ion-col width-10>{{ na.worst_percent }}</ion-col>
 		</ion-row>
 </ion-grid>
