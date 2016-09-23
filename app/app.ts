@@ -32,8 +32,9 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      if(typeof Cordova == 'undefined') document.querySelectorAll('body')[0].classList.add('browser');
       if(typeof Cordova !== 'undefined') StatusBar.styleDefault();
-
+      
       this.cache_settings = localStorage.getItem('cache_settings');
       if(this.cache_settings === null){
         window.localStorage.clear();

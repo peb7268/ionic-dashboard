@@ -9186,3 +9186,7 @@ h2.project_name {
   border: 1px solid #555;
   border-right: none;
   border-left: none; }
+
+.browser .ct-chart {
+  max-height: 400px;
+  margin: 0 auto; }
