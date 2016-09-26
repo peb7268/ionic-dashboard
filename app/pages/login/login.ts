@@ -35,6 +35,8 @@ export class LoginPage {
 
   login(evt){
   	evt.preventDefault();
+    if(evt.type == 'keyup' && evt.keyCode !== 13) return;
+    
     var endpoint = window.localStorage.getItem('endpoint');
 
   	this.user.username = this.user.username.trim().toLowerCase();

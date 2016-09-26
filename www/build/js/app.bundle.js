@@ -92,9 +92,10 @@ var Chart = (function () {
     Chart.prototype.throwChartError = function () {
         console.log('throwing chart error');
     };
-    Chart.prototype.getLabels = function (concepts) {
-        var labels = concepts.map(function (concept) {
-            return concept.name;
+    Chart.prototype.getLabels = function (data) {
+        var concepts = data.netattraction_chart_data;
+        var labels = concepts.map(function (netattraction) {
+            return netattraction.concept_name;
         });
         //console.log('labels: ', labels);
         return labels;
@@ -170,7 +171,7 @@ var Chart = (function () {
     Chart.prototype.composeBarChart = function (data) {
         console.log('composeBarChart(data): ');
         console.log(data);
-        var labels = this.getLabels(data.concepts);
+        var labels = this.getLabels(data);
         var seriesData = this.getSeriesData(data);
         var _data = {
             labels: labels,
@@ -735,6 +736,8 @@ var LoginPage = (function () {
     LoginPage.prototype.login = function (evt) {
         var _this = this;
         evt.preventDefault();
+        if (evt.type == 'keyup' && evt.keyCode !== 13)
+            return;
         var endpoint = window.localStorage.getItem('endpoint');
         this.user.username = this.user.username.trim().toLowerCase();
         this.user.password = this.user.password.trim().toLowerCase();

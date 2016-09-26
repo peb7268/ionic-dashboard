@@ -17,7 +17,7 @@
 
 		  <ion-item>
 		    <ion-label floating>Password</ion-label>
-		    <ion-input type="password" [(ngModel)]="user.password" required></ion-input>
+		    <ion-input type="password" [(ngModel)]="user.password" required (keyup)="login($event)"></ion-input>
 		  </ion-item>
 		</ion-list>
 		

@@ -49,9 +49,10 @@ export class Chart {
     console.log('throwing chart error');
   }
 
-  getLabels(concepts){
-    var labels = concepts.map(function(concept){
-     return concept.name;
+  getLabels(data){
+    var concepts = data.netattraction_chart_data;
+    var labels   = concepts.map(function(netattraction){
+     return netattraction.concept_name;
     });
 
     //console.log('labels: ', labels);
@@ -148,7 +149,7 @@ export class Chart {
     console.log('composeBarChart(data): ');
     console.log(data);
 
-    var labels     = this.getLabels(data.concepts);
+    var labels     = this.getLabels(data);
     var seriesData = this.getSeriesData(data);
     
     var _data: { labels?: string[], series?: any } = { 
@@ -181,7 +182,7 @@ export class Chart {
     var _chart:any     = document.querySelectorAll('.ct-chart')[0];
      
     console.log('typeof chartComponent: ', typeof chartComponent);
-     
+
     if(typeof _chart == 'undefined'){
       _chart = document.createElement('ct-chart');
       _chart.classList.add('ct-chart');
