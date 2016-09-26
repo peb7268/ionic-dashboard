@@ -904,7 +904,6 @@ var core_1 = require('@angular/core');
 var home_1 = require('../home/home');
 var settings_1 = require('../settings/settings');
 var data_service_1 = require('../../dashboard/data.service');
-//import { Dashboard }  from '../../dashboard/dashboard';
 var TabsPage = (function () {
     function TabsPage(dataService) {
         this.dataService = dataService;
@@ -924,12 +923,14 @@ var TabsPage = (function () {
         var project_id = this.dataService.getProjectId();
         var data_cache = this.dataService.getData(true);
         if (this.dataService.studiesDidChange(project_id, data_cache)) {
-            window.localStorage.setItem('loaded', 'true');
-            //reload data
+            var loaded = window.localStorage.getItem('loaded');
             console.log('Studies Changed Reloading The Data From Web Service');
-            window.localStorage.removeItem('project_data');
-            this.dataService.removeCharts();
+            if (loaded == null || typeof loaded == 'undefined') {
+                window.localStorage.removeItem('project_data');
+                this.dataService.removeCharts();
+            }
             this.dataService.reloadCharts();
+            window.localStorage.setItem('loaded', 'true');
         }
         else {
             console.log('Displaying the dash with cache');

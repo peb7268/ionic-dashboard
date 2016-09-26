@@ -6,7 +6,6 @@ import { HomePage }                 from '../home/home';
 import { SettingsPage }             from '../settings/settings';
 
 import { DataService }              from '../../dashboard/data.service'
-//import { Dashboard }  from '../../dashboard/dashboard';
 
 @Component({
   templateUrl: 'build/pages/tabs/tabs.html',
@@ -40,15 +39,16 @@ export class TabsPage {
     var data_cache = this.dataService.getData(true);
     
     if(this.dataService.studiesDidChange(project_id, data_cache)){
-      window.localStorage.setItem('loaded', 'true');
-      //reload data
+      var loaded = window.localStorage.getItem('loaded');
       console.log('Studies Changed Reloading The Data From Web Service');
 
-      window.localStorage.removeItem('project_data');
-      
-      this.dataService.removeCharts();
+      if(loaded == null || typeof loaded == 'undefined'){
+        window.localStorage.removeItem('project_data');
+        this.dataService.removeCharts();
+      }
 
       this.dataService.reloadCharts();
+      window.localStorage.setItem('loaded', 'true');
     } else {
       console.log('Displaying the dash with cache');
       this.dataService.reloadCharts();
