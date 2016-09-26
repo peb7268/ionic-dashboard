@@ -29,7 +29,7 @@ export class Chart {
 
   constructor(public dataService: DataService){    
     this.data = this.dataService.getData(true);
-    console.log(this.data);
+    console.log('Chart:constructor' + this.data);
     window['App'].instances.chart = this;
   }
 
@@ -123,10 +123,12 @@ export class Chart {
 
   //Delegates to whichever specific chart type we are working with
   composeChart(chartType, data){
-    var _data = data;
-    //console.log('composing a ' + this.chartType + ' chart.');
-    window['App'].instances.chart = this;
+    console.log('Chart:composeChart of type: ', chartType, 'with data: ');
+    console.log(data);
 
+    var _data = data;
+    
+    window['App'].instances.chart = this;
     if(_data == null) return;
 
     switch (chartType) {
@@ -143,6 +145,9 @@ export class Chart {
   }
 
   composeBarChart(data){
+    console.log('composeBarChart(data): ');
+    console.log(data);
+
     var labels     = this.getLabels(data.concepts);
     var seriesData = this.getSeriesData(data);
     
@@ -171,14 +176,18 @@ export class Chart {
       ]
     };
 
-    var _chart:any = document.querySelectorAll('.ct-chart');
-    if( _chart.length == 0){
-      var dashboard = document.querySelectorAll('dashboard')[0];
+    var dashboard      = document.querySelectorAll('dashboard')[0];
+    var chartComponent = dashboard.querySelectorAll('chart')[0];
+    var _chart:any     = document.querySelectorAll('.ct-chart')[0];
+     
+    console.log('typeof chartComponent: ', typeof chartComponent);
+     
+    if(typeof _chart == 'undefined'){
       _chart = document.createElement('ct-chart');
       _chart.classList.add('ct-chart');
-
-      dashboard.appendChild(_chart);
     }
+
+    chartComponent.appendChild(_chart);
 
     //Instantiate the chart
     var chart = new Chartist.Bar('.ct-chart', {

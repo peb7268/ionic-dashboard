@@ -156,7 +156,9 @@ export class DataService {
 
 	    data = this.storeData(data);
 		
-		//console.log('DataService:delegateData');	    
+		console.log('DataService:delegateData');	    
+		
+		this.data = data;
 
     	return data;
 	}

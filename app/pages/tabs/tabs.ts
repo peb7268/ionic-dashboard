@@ -37,12 +37,14 @@ export class TabsPage {
 
     var project_id = this.dataService.getProjectId();
     var data_cache = this.dataService.getData(true);
-    
-    if(this.dataService.studiesDidChange(project_id, data_cache)){
+    var studiesChanged = this.dataService.studiesDidChange(project_id, data_cache);
+    console.log('studies changed: ', studiesChanged);
+
+    if(studiesChanged == true){
       var loaded = window.localStorage.getItem('loaded');
-      console.log('Studies Changed Reloading The Data From Web Service');
 
       if(loaded == null || typeof loaded == 'undefined'){
+        console.log('reloading project data cache');
         window.localStorage.removeItem('project_data');
         this.dataService.removeCharts();
       }

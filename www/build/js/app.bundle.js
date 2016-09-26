@@ -76,7 +76,7 @@ var Chart = (function () {
         this.events = [];
         this.yLabelMinOffset = 20;
         this.data = this.dataService.getData(true);
-        console.log(this.data);
+        console.log('Chart:constructor' + this.data);
         window['App'].instances.chart = this;
     }
     //Fires on init
@@ -150,8 +150,9 @@ var Chart = (function () {
     };
     //Delegates to whichever specific chart type we are working with
     Chart.prototype.composeChart = function (chartType, data) {
+        console.log('Chart:composeChart of type: ', chartType, 'with data: ');
+        console.log(data);
         var _data = data;
-        //console.log('composing a ' + this.chartType + ' chart.');
         window['App'].instances.chart = this;
         if (_data == null)
             return;
@@ -167,6 +168,8 @@ var Chart = (function () {
         }
     };
     Chart.prototype.composeBarChart = function (data) {
+        console.log('composeBarChart(data): ');
+        console.log(data);
         var labels = this.getLabels(data.concepts);
         var seriesData = this.getSeriesData(data);
         var _data = {
@@ -188,13 +191,15 @@ var Chart = (function () {
             low: this.getChartLow(_data.series, -10),
             plugins: []
         };
-        var _chart = document.querySelectorAll('.ct-chart');
-        if (_chart.length == 0) {
-            var dashboard = document.querySelectorAll('dashboard')[0];
+        var dashboard = document.querySelectorAll('dashboard')[0];
+        var chartComponent = dashboard.querySelectorAll('chart')[0];
+        var _chart = document.querySelectorAll('.ct-chart')[0];
+        console.log('typeof chartComponent: ', typeof chartComponent);
+        if (typeof _chart == 'undefined') {
             _chart = document.createElement('ct-chart');
             _chart.classList.add('ct-chart');
-            dashboard.appendChild(_chart);
         }
+        chartComponent.appendChild(_chart);
         //Instantiate the chart
         var chart = new Chartist.Bar('.ct-chart', {
             labels: _data.labels,
@@ -447,7 +452,8 @@ var DataService = (function () {
         var _shouldStoreData = this.shouldStoreData(data, project_id);
         console.log('Should Store Data?: ' + _shouldStoreData);
         data = this.storeData(data);
-        //console.log('DataService:delegateData');	    
+        console.log('DataService:delegateData');
+        this.data = data;
         return data;
     };
     //TODO: Combine isCurrentProject and studiesDidChange. Seem redundant
@@ -922,10 +928,12 @@ var TabsPage = (function () {
         console.log('TabsPage:initDash');
         var project_id = this.dataService.getProjectId();
         var data_cache = this.dataService.getData(true);
-        if (this.dataService.studiesDidChange(project_id, data_cache)) {
+        var studiesChanged = this.dataService.studiesDidChange(project_id, data_cache);
+        console.log('studies changed: ', studiesChanged);
+        if (studiesChanged == true) {
             var loaded = window.localStorage.getItem('loaded');
-            console.log('Studies Changed Reloading The Data From Web Service');
             if (loaded == null || typeof loaded == 'undefined') {
+                console.log('reloading project data cache');
                 window.localStorage.removeItem('project_data');
                 this.dataService.removeCharts();
             }
