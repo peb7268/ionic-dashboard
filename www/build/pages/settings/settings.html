@@ -11,7 +11,7 @@
     </ion-list>
   </section>
 
-  <section class="group">
+  <section class="group" *ngIf="admin">
     <ion-list>
       <ion-list-header bold>
         Login
@@ -41,8 +41,13 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Remember Settings</ion-label>
-        <ion-checkbox [(ngModel)]="project.cache_settings"></ion-checkbox>
+        <ion-label>Remember Project</ion-label>
+        <ion-checkbox [(ngModel)]="project.remember_project"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Cache Data</ion-label>
+        <ion-checkbox [(ngModel)]="project.cache_data"></ion-checkbox>
       </ion-item>
     </ion-list>
   </section>

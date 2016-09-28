@@ -12,9 +12,6 @@ import { Loading,
 import { Observable } 					from 'rxjs/Observable';
 import { BehaviorSubject } 				from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
-
-import { SettingsPage }					from '../pages/settings/settings';
-
 //import { App } 					    from './../globals';
 
 
@@ -30,22 +27,22 @@ export class DataService {
 	public endpoint;
 
 	constructor(public  http: Http, private app: App){
+		console.log('DataService:constructor');
+
 		this.nav 			= app.getActiveNav();
 		window['App'].instances.dataService  = this;
 
-		this.SettingsPage 	= SettingsPage;
 		this.dataSubject 	= new BehaviorSubject(this.data);
 
 		this.loading 		= this.createLoader();
 
 		var endpoint 		= window.localStorage.getItem('endpoint');
-		this.endpoint 		= (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://intengoresearch.com';
+		this.endpoint 		= (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://www.intengoresearch.com';
 	}
 
 	fetchData(localData, project_id = null){
-		//var useCachedData = this.useCachedData(localData);
-		var useCachedData   = false;
-
+		var useCachedData = this.useCachedData(localData);
+		
 		if(this.dataFetchInProgress()){
 			console.log('dataService:fetchData fetch in progress');
 			this.dismissLoader(500);
@@ -57,10 +54,13 @@ export class DataService {
 			var data  = JSON.parse(localData);
 			this.dataSubject.next(data);
 
+			window.localStorage.setItem('loaded', 'true');
 			return this.dataSubject.asObservable();
 		} else {
 			console.log('dataService:fetchData getting data from source');
 			window['App'].activeRequests++;
+			window.localStorage.setItem('loaded', 'true');
+			
 			return this.http.get(this.endpoint + '/dash/projects/' + project_id)
 		   .map(resp => resp.json())
 		   .catch(this.catchError);
@@ -87,8 +87,7 @@ export class DataService {
 					handler: () => {
 						console.log('Returning to the settings screen.');
 						window['App'].confirm.dismiss().then( () => {
-							var SettingsPage = window['App'].instances.dataService.SettingsPage;
-							window['App'].instances.dashboard.nav.push(SettingsPage);
+							console.log('fix this');
 						})
 					}
 				}
@@ -150,6 +149,13 @@ export class DataService {
         return data;
 	}
 
+	resetData(){
+		delete this.data;
+		this.data = null;
+
+		window.localStorage.clear();
+	}
+
 	delegateData(project_id, data){        
         var _shouldStoreData = this.shouldStoreData(data, project_id);
 	    console.log('Should Store Data?: ' + _shouldStoreData);
@@ -171,10 +177,13 @@ export class DataService {
 
 	studiesDidChange(project_id, data?){
 		// && window['App'].activeRequests == 0
+		
 		var previouslyLoaded = window.localStorage.getItem('loaded');
 		if(previouslyLoaded == null) return false;
 		
 		if(data === null) return true;
+
+		
 
 		return (project_id !== data.survey.id);
 	}
@@ -190,8 +199,8 @@ export class DataService {
 	}
 
 	useCachedData(data, cache?){
-		var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_settings') : cache;
-		cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
+		var cache   = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_data') : cache;
+		cache 		= (typeof cache !== 'undefined' && cache == 'true') ? true : false;
 
 		var use_cached = (data !== null && typeof data == 'string' && cache == true);
 

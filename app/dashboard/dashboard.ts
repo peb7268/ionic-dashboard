@@ -17,8 +17,7 @@ import { HttpMock, MockDataService }     			from '../mocks';
 
   providers: [ 
   	HttpMock,
-  	MockDataService,
-  	DataService	
+  	MockDataService
   ],
 
   templateUrl: 'build/dashboard/dashboard.html',
@@ -32,6 +31,8 @@ export class Dashboard {
 	public caught: any;
 
 	constructor(public dataService: DataService){
+		console.log('Dashboard:constructor');
+
 		window['App'].instances.dashboard = this;
 	}
 

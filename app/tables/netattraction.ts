@@ -12,7 +12,6 @@ import { HttpMock, MockDataService }                from '../mocks';
   templateUrl: "build/tables/netattraction.html",
   providers: [
     MockDataService,
-    DataService, 
     HttpMock
   ],
   inputs: 	 ['data']
@@ -45,7 +44,6 @@ export class Netattraction {
     let i = 0;
 
     for(let prop in netattraction){
-      debugger;
       if(idx == i) return prop.split('_')[1];
       i++;
     }

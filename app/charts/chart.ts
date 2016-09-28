@@ -12,7 +12,6 @@ declare var Chartist: any;
   templateUrl: "build/charts/chart.html",
   providers: [
     MockDataService,
-    DataService, 
     HttpMock
   ],
   inputs:  ['data', 'chartType'],
@@ -181,14 +180,12 @@ export class Chart {
     var chartComponent = dashboard.querySelectorAll('chart')[0];
     var _chart:any     = document.querySelectorAll('.ct-chart')[0];
      
-    console.log('typeof chartComponent: ', typeof chartComponent);
+    // if(typeof _chart == 'undefined'){
+    //   _chart = document.createElement('ct-chart');
+    //   _chart.classList.add('ct-chart');
+    // }
 
-    if(typeof _chart == 'undefined'){
-      _chart = document.createElement('ct-chart');
-      _chart.classList.add('ct-chart');
-    }
-
-    chartComponent.appendChild(_chart);
+    // chartComponent.appendChild(_chart);
 
     //Instantiate the chart
     var chart = new Chartist.Bar('.ct-chart', {

@@ -7,19 +7,20 @@ import { StatusBar }      from 'ionic-native';
 
 import { App }            from './globals';
 
-import { TabsPage }       from './pages/tabs/tabs';
-import { LoginPage }      from './pages/login/login';
-
 import { DataService }    from './dashboard/data.service'
+
+import { LoginPage }      from './pages/login/login';
+import { TabsPage }       from './pages/tabs/tabs';
 
 enableProdMode();
 
 //TODO: make sure this doesnt break native
 let Cordova: any;
 
+//,providers: [DataService]
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [DataService]
+  providers: [HTTP_PROVIDERS, DataService]
 })
 
 export class MyApp {
@@ -35,7 +36,7 @@ export class MyApp {
       if(typeof Cordova == 'undefined') document.querySelectorAll('body')[0].classList.add('browser');
       if(typeof Cordova !== 'undefined') StatusBar.styleDefault();
       
-      this.cache_settings = localStorage.getItem('cache_settings');
+      this.cache_settings = localStorage.getItem('cache_data');
       if(this.cache_settings === null){
         window.localStorage.clear();
         this.rootPage   = LoginPage;
@@ -47,4 +48,4 @@ export class MyApp {
 }
 
 
-ionicBootstrap(MyApp, [DataService])
+ionicBootstrap(MyApp)

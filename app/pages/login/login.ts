@@ -1,9 +1,11 @@
 
-import { Platform, NavController, Toast}           from 'ionic-angular';
+import { Platform, NavController, Toast}            from 'ionic-angular';
 
 import { Component, EventEmitter, Output }          from '@angular/core'
 import { NgModel }                                  from '@angular/common'
 import { Http, Headers}                             from '@angular/http';
+
+import { DataService }                              from '../../dashboard/data.service'
 
 import 'rxjs/Rx';
 
@@ -19,8 +21,10 @@ export class LoginPage {
   public user: any  = {};
   public creds: any = {};
   public data: Object;
-
-  constructor(public platform: Platform, public nav: NavController, public http: Http){
+  
+  constructor(public platform: Platform, public nav: NavController, public http: Http, public dataService: DataService){
+    console.log('LoginPage:constructor', http);
+    
     window['App'].instances.loginPage = this;
 
     platform.ready().then(() => {
@@ -36,7 +40,7 @@ export class LoginPage {
   login(evt){
   	evt.preventDefault();
     if(evt.type == 'keyup' && evt.keyCode !== 13) return;
-    
+
     var endpoint = window.localStorage.getItem('endpoint');
 
   	this.user.username = this.user.username.trim().toLowerCase();
@@ -67,6 +71,8 @@ export class LoginPage {
 
         this.data = resp.project_list;
         window.localStorage.setItem('projects', JSON.stringify(this.data));
+
+        console.log(TabsPage);
         window['App'].instances.loginPage.nav.push(TabsPage);  //Push to tabs page once request is successful
       } else {
         //throw a login error message

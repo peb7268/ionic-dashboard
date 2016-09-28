@@ -5,7 +5,7 @@ import { Platform }                 from 'ionic-angular';
 import { HomePage }                 from '../home/home';
 import { SettingsPage }             from '../settings/settings';
 
-import { DataService }              from '../../dashboard/data.service'
+import { DataService }              from './../../dashboard/data.service'
 
 @Component({
   templateUrl: 'build/pages/tabs/tabs.html',
@@ -18,12 +18,13 @@ export class TabsPage {
   private currentTab: 	any;
 
   constructor(public dataService: DataService) {
-    window['App'].instances.tabsPage = this;
-    //console.log('TabsPage:constructor');
+    console.log('TabsPage:constructor');
+
+    window['App'].instances.tabsPage = this;    
 
     // this tells the tabs component which Pages
     // should be each tab's root Page
-    var currentTab  = window.localStorage.getItem('cache_settings');
+    var currentTab  = window.localStorage.getItem('cache_data');
     	  currentTab  = (currentTab !== null) ? 0 : 1;
 
     this.currentTab = currentTab;
@@ -41,16 +42,11 @@ export class TabsPage {
     console.log('studies changed: ', studiesChanged);
 
     if(studiesChanged == true){
-      var loaded = window.localStorage.getItem('loaded');
-
-      if(loaded == null || typeof loaded == 'undefined'){
-        console.log('reloading project data cache');
-        window.localStorage.removeItem('project_data');
-        this.dataService.removeCharts();
-      }
+      console.log('reloading project data cache');
+      window.localStorage.removeItem('project_data');
+      this.dataService.removeCharts();
 
       this.dataService.reloadCharts();
-      window.localStorage.setItem('loaded', 'true');
     } else {
       console.log('Displaying the dash with cache');
       this.dataService.reloadCharts();

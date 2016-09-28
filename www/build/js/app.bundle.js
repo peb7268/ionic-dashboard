@@ -10,15 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
 var ionic_angular_1 = require('ionic-angular');
 var ionic_native_1 = require('ionic-native');
 var globals_1 = require('./globals');
-var tabs_1 = require('./pages/tabs/tabs');
-var login_1 = require('./pages/login/login');
 var data_service_1 = require('./dashboard/data.service');
+var login_1 = require('./pages/login/login');
+var tabs_1 = require('./pages/tabs/tabs');
 core_1.enableProdMode();
 //TODO: make sure this doesnt break native
 var Cordova;
+//,providers: [DataService]
 var MyApp = (function () {
     function MyApp(platform) {
         var _this = this;
@@ -32,7 +34,7 @@ var MyApp = (function () {
                 document.querySelectorAll('body')[0].classList.add('browser');
             if (typeof Cordova !== 'undefined')
                 ionic_native_1.StatusBar.styleDefault();
-            _this.cache_settings = localStorage.getItem('cache_settings');
+            _this.cache_settings = localStorage.getItem('cache_data');
             if (_this.cache_settings === null) {
                 window.localStorage.clear();
                 _this.rootPage = login_1.LoginPage;
@@ -45,16 +47,16 @@ var MyApp = (function () {
     MyApp = __decorate([
         core_1.Component({
             template: '<ion-nav [root]="rootPage"></ion-nav>',
-            providers: [data_service_1.DataService]
+            providers: [http_1.HTTP_PROVIDERS, data_service_1.DataService]
         }), 
         __metadata('design:paramtypes', [ionic_angular_1.Platform])
     ], MyApp);
     return MyApp;
 }());
 exports.MyApp = MyApp;
-ionic_angular_1.ionicBootstrap(MyApp, [data_service_1.DataService]);
+ionic_angular_1.ionicBootstrap(MyApp);
 
-},{"./dashboard/data.service":4,"./globals":5,"./pages/login/login":8,"./pages/tabs/tabs":10,"@angular/core":159,"ionic-angular":425,"ionic-native":452}],2:[function(require,module,exports){
+},{"./dashboard/data.service":4,"./globals":5,"./pages/login/login":8,"./pages/tabs/tabs":10,"@angular/core":159,"@angular/http":249,"ionic-angular":425,"ionic-native":452}],2:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -195,12 +197,11 @@ var Chart = (function () {
         var dashboard = document.querySelectorAll('dashboard')[0];
         var chartComponent = dashboard.querySelectorAll('chart')[0];
         var _chart = document.querySelectorAll('.ct-chart')[0];
-        console.log('typeof chartComponent: ', typeof chartComponent);
-        if (typeof _chart == 'undefined') {
-            _chart = document.createElement('ct-chart');
-            _chart.classList.add('ct-chart');
-        }
-        chartComponent.appendChild(_chart);
+        // if(typeof _chart == 'undefined'){
+        //   _chart = document.createElement('ct-chart');
+        //   _chart.classList.add('ct-chart');
+        // }
+        // chartComponent.appendChild(_chart);
         //Instantiate the chart
         var chart = new Chartist.Bar('.ct-chart', {
             labels: _data.labels,
@@ -246,7 +247,6 @@ var Chart = (function () {
             templateUrl: "build/charts/chart.html",
             providers: [
                 mocks_1.MockDataService,
-                data_service_1.DataService,
                 mocks_1.HttpMock
             ],
             inputs: ['data', 'chartType'],
@@ -278,6 +278,7 @@ var mocks_1 = require('../mocks');
 var Dashboard = (function () {
     function Dashboard(dataService) {
         this.dataService = dataService;
+        console.log('Dashboard:constructor');
         window['App'].instances.dashboard = this;
     }
     Dashboard.prototype.init = function () {
@@ -308,8 +309,7 @@ var Dashboard = (function () {
             directives: [chart_1.Chart, netattraction_1.Netattraction],
             providers: [
                 mocks_1.HttpMock,
-                mocks_1.MockDataService,
-                data_service_1.DataService
+                mocks_1.MockDataService
             ],
             templateUrl: 'build/dashboard/dashboard.html',
             inputs: ['data'],
@@ -338,7 +338,6 @@ var ionic_angular_1 = require('ionic-angular');
 var Observable_1 = require('rxjs/Observable');
 var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
 require('rxjs/Rx');
-var settings_1 = require('../pages/settings/settings');
 //import { App } 					    from './../globals';
 var DataService = (function () {
     function DataService(http, app) {
@@ -346,18 +345,17 @@ var DataService = (function () {
         this.app = app;
         this.charts = {};
         this.instances = {};
+        console.log('DataService:constructor');
         this.nav = app.getActiveNav();
         window['App'].instances.dataService = this;
-        this.SettingsPage = settings_1.SettingsPage;
         this.dataSubject = new BehaviorSubject_1.BehaviorSubject(this.data);
         this.loading = this.createLoader();
         var endpoint = window.localStorage.getItem('endpoint');
-        this.endpoint = (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://intengoresearch.com';
+        this.endpoint = (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://www.intengoresearch.com';
     }
     DataService.prototype.fetchData = function (localData, project_id) {
         if (project_id === void 0) { project_id = null; }
-        //var useCachedData = this.useCachedData(localData);
-        var useCachedData = false;
+        var useCachedData = this.useCachedData(localData);
         if (this.dataFetchInProgress()) {
             console.log('dataService:fetchData fetch in progress');
             this.dismissLoader(500);
@@ -367,11 +365,13 @@ var DataService = (function () {
             console.log('dataService:fetchData using cached data');
             var data = JSON.parse(localData);
             this.dataSubject.next(data);
+            window.localStorage.setItem('loaded', 'true');
             return this.dataSubject.asObservable();
         }
         else {
             console.log('dataService:fetchData getting data from source');
             window['App'].activeRequests++;
+            window.localStorage.setItem('loaded', 'true');
             return this.http.get(this.endpoint + '/dash/projects/' + project_id)
                 .map(function (resp) { return resp.json(); })
                 .catch(this.catchError);
@@ -396,8 +396,7 @@ var DataService = (function () {
                     handler: function () {
                         console.log('Returning to the settings screen.');
                         window['App'].confirm.dismiss().then(function () {
-                            var SettingsPage = window['App'].instances.dataService.SettingsPage;
-                            window['App'].instances.dashboard.nav.push(SettingsPage);
+                            console.log('fix this');
                         });
                     }
                 }
@@ -449,6 +448,11 @@ var DataService = (function () {
         this.data = data;
         return data;
     };
+    DataService.prototype.resetData = function () {
+        delete this.data;
+        this.data = null;
+        window.localStorage.clear();
+    };
     DataService.prototype.delegateData = function (project_id, data) {
         var _shouldStoreData = this.shouldStoreData(data, project_id);
         console.log('Should Store Data?: ' + _shouldStoreData);
@@ -480,7 +484,7 @@ var DataService = (function () {
         return (typeof data == 'object' && data !== null);
     };
     DataService.prototype.useCachedData = function (data, cache) {
-        var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_settings') : cache;
+        var cache = (typeof cache == 'undefined') ? window.localStorage.getItem('cache_data') : cache;
         cache = (typeof cache !== 'undefined' && cache == 'true') ? true : false;
         var use_cached = (data !== null && typeof data == 'string' && cache == true);
         return use_cached;
@@ -530,7 +534,7 @@ var DataService = (function () {
 }());
 exports.DataService = DataService;
 
-},{"../pages/settings/settings":9,"@angular/core":159,"@angular/http":249,"ionic-angular":425,"rxjs/BehaviorSubject":520,"rxjs/Observable":523,"rxjs/Rx":528}],5:[function(require,module,exports){
+},{"@angular/core":159,"@angular/http":249,"ionic-angular":425,"rxjs/BehaviorSubject":520,"rxjs/Observable":523,"rxjs/Rx":528}],5:[function(require,module,exports){
 "use strict";
 var App = (function () {
     function App() {
@@ -714,15 +718,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ionic_angular_1 = require('ionic-angular');
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var data_service_1 = require('../../dashboard/data.service');
 require('rxjs/Rx');
 var tabs_1 = require('../tabs/tabs');
 var LoginPage = (function () {
-    function LoginPage(platform, nav, http) {
+    function LoginPage(platform, nav, http, dataService) {
         this.platform = platform;
         this.nav = nav;
         this.http = http;
+        this.dataService = dataService;
         this.user = {};
         this.creds = {};
+        console.log('LoginPage:constructor', http);
         window['App'].instances.loginPage = this;
         platform.ready().then(function () {
             // if(typeof samsung !== 'undefined'){
@@ -763,6 +770,7 @@ var LoginPage = (function () {
                 window.localStorage.setItem('credentials', JSON.stringify(_this.creds));
                 _this.data = resp.project_list;
                 window.localStorage.setItem('projects', JSON.stringify(_this.data));
+                console.log(tabs_1.TabsPage);
                 window['App'].instances.loginPage.nav.push(tabs_1.TabsPage); //Push to tabs page once request is successful
             }
             else {
@@ -812,13 +820,13 @@ var LoginPage = (function () {
         core_1.Component({
             templateUrl: 'build/pages/login/login.html'
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.Platform, ionic_angular_1.NavController, http_1.Http])
+        __metadata('design:paramtypes', [ionic_angular_1.Platform, ionic_angular_1.NavController, http_1.Http, data_service_1.DataService])
     ], LoginPage);
     return LoginPage;
 }());
 exports.LoginPage = LoginPage;
 
-},{"../tabs/tabs":10,"@angular/core":159,"@angular/http":249,"ionic-angular":425,"rxjs/Rx":528}],9:[function(require,module,exports){
+},{"../../dashboard/data.service":4,"../tabs/tabs":10,"@angular/core":159,"@angular/http":249,"ionic-angular":425,"rxjs/Rx":528}],9:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -830,29 +838,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-// import { NgModel }   from '@angular/common'
 var ionic_angular_1 = require('ionic-angular');
+var globals_1 = require('../../globals');
 var login_1 = require('../login/login');
+var data_service_1 = require('../../dashboard/data.service');
 var SettingsPage = (function () {
-    function SettingsPage(platform, nav) {
+    function SettingsPage(platform, nav, dataService) {
         this.platform = platform;
         this.nav = nav;
+        this.dataService = dataService;
         this.creds = null;
         this.projects = [];
         this.project = {};
         this.project_id = 0;
+        this.admin = false;
         this.endpoint = 'http://www.intengoresearch.com';
+        console.log('SettingsPage:constructor');
         var creds = window.localStorage.getItem('credentials');
         var projects = window.localStorage.getItem('projects');
         var project_id = window.localStorage.getItem('project_id');
-        var cache_settings = window.localStorage.getItem('cache_settings');
+        var cache_data = window.localStorage.getItem('cache_data');
+        var remember_project = window.localStorage.getItem('remember_project');
         var isAdmin = window.localStorage.getItem('admin');
-        this.admin = isAdmin;
+        this.admin = (isAdmin == 'false') ? false : true;
         window['App'].instances.settingsPage = this;
-        if (typeof project_id !== 'undefined' && project_id !== null && project_id.length > 0)
+        if (typeof cache_data !== 'undefined' && project_id !== null && project_id.length > 0)
             this.project_id = project_id;
-        if (typeof cache_settings !== 'undefined' && cache_settings !== null && cache_settings.length > 0)
-            this.project.cache_settings = cache_settings;
+        if (typeof cache_data !== 'undefined' && cache_data !== null && cache_data.length > 0)
+            this.project.cache_data = cache_data;
         if (typeof creds !== 'undefined')
             this.creds = JSON.parse(creds);
         if (typeof projects !== 'undefined')
@@ -863,8 +876,8 @@ var SettingsPage = (function () {
         //Save project id
         if (typeof this.project_id !== 'undefined')
             window.localStorage.setItem('project_id', this.project_id);
-        if (typeof this.project.cache_settings !== 'undefined' && this.project.cache_settings === true)
-            window.localStorage.setItem('cache_settings', 'true');
+        if (typeof this.project.cache_data !== 'undefined' && this.project.cache_data === true)
+            window.localStorage.setItem('cache_data', 'true');
         if (typeof this.endpoint !== 'undefined')
             window.localStorage.setItem('endpoint', JSON.stringify(this.endpoint));
         //Send to dash page
@@ -881,7 +894,12 @@ var SettingsPage = (function () {
                     icon: !this.platform.is('ios') ? 'close' : null,
                     handler: function () {
                         window.localStorage.clear();
-                        window['App'].instances.settingsPage.nav.push(login_1.LoginPage);
+                        var nav = window['App'].instances.settingsPage.nav;
+                        window['App'].instances.settingsPage.dataService.removeCharts();
+                        window['App'].instances.settingsPage.dataService.resetData();
+                        delete window['App'];
+                        window['App'] = new globals_1.App();
+                        nav.push(login_1.LoginPage);
                     }
                 }
             ]
@@ -892,13 +910,13 @@ var SettingsPage = (function () {
         core_1.Component({
             templateUrl: 'build/pages/settings/settings.html'
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.Platform, ionic_angular_1.NavController])
+        __metadata('design:paramtypes', [ionic_angular_1.Platform, ionic_angular_1.NavController, data_service_1.DataService])
     ], SettingsPage);
     return SettingsPage;
 }());
 exports.SettingsPage = SettingsPage;
 
-},{"../login/login":8,"@angular/core":159,"ionic-angular":425}],10:[function(require,module,exports){
+},{"../../dashboard/data.service":4,"../../globals":5,"../login/login":8,"@angular/core":159,"ionic-angular":425}],10:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -912,15 +930,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var home_1 = require('../home/home');
 var settings_1 = require('../settings/settings');
-var data_service_1 = require('../../dashboard/data.service');
+var data_service_1 = require('./../../dashboard/data.service');
 var TabsPage = (function () {
     function TabsPage(dataService) {
         this.dataService = dataService;
+        console.log('TabsPage:constructor');
         window['App'].instances.tabsPage = this;
-        //console.log('TabsPage:constructor');
         // this tells the tabs component which Pages
         // should be each tab's root Page
-        var currentTab = window.localStorage.getItem('cache_settings');
+        var currentTab = window.localStorage.getItem('cache_data');
         currentTab = (currentTab !== null) ? 0 : 1;
         this.currentTab = currentTab;
         this.tab1Root = home_1.HomePage;
@@ -934,14 +952,10 @@ var TabsPage = (function () {
         var studiesChanged = this.dataService.studiesDidChange(project_id, data_cache);
         console.log('studies changed: ', studiesChanged);
         if (studiesChanged == true) {
-            var loaded = window.localStorage.getItem('loaded');
-            if (loaded == null || typeof loaded == 'undefined') {
-                console.log('reloading project data cache');
-                window.localStorage.removeItem('project_data');
-                this.dataService.removeCharts();
-            }
+            console.log('reloading project data cache');
+            window.localStorage.removeItem('project_data');
+            this.dataService.removeCharts();
             this.dataService.reloadCharts();
-            window.localStorage.setItem('loaded', 'true');
         }
         else {
             console.log('Displaying the dash with cache');
@@ -959,7 +973,7 @@ var TabsPage = (function () {
 }());
 exports.TabsPage = TabsPage;
 
-},{"../../dashboard/data.service":4,"../home/home":7,"../settings/settings":9,"@angular/core":159}],11:[function(require,module,exports){
+},{"../home/home":7,"../settings/settings":9,"./../../dashboard/data.service":4,"@angular/core":159}],11:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -998,7 +1012,6 @@ var Netattraction = (function () {
         var netattraction = data.netattraction;
         var i = 0;
         for (var prop in netattraction) {
-            debugger;
             if (idx == i)
                 return prop.split('_')[1];
             i++;
@@ -1010,7 +1023,6 @@ var Netattraction = (function () {
             templateUrl: "build/tables/netattraction.html",
             providers: [
                 mocks_1.MockDataService,
-                data_service_1.DataService,
                 mocks_1.HttpMock
             ],
             inputs: ['data']
