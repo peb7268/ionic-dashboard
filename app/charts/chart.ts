@@ -29,6 +29,7 @@ export class Chart {
   constructor(public dataService: DataService){    
     this.data = this.dataService.getData(true);
     console.log('Chart:constructor' + this.data);
+    
     window['App'].instances.chart = this;
   }
 
@@ -123,9 +124,6 @@ export class Chart {
 
   //Delegates to whichever specific chart type we are working with
   composeChart(chartType, data){
-    console.log('Chart:composeChart of type: ', chartType, 'with data: ');
-    console.log(data);
-
     var _data = data;
     
     window['App'].instances.chart = this;
@@ -145,9 +143,6 @@ export class Chart {
   }
 
   composeBarChart(data){
-    console.log('composeBarChart(data): ');
-    console.log(data);
-
     var labels     = this.getLabels(data);
     var seriesData = this.getSeriesData(data);
     
@@ -195,7 +190,6 @@ export class Chart {
 
     //Add Custom labels
     chart.on('draw', (data) => {
-      //console.log('pushing draw event');
       window['App'].instances.chart.events.push('draw');
 
       if (data.type === 'bar') {
@@ -221,7 +215,6 @@ export class Chart {
 
     //Add hover behavior
     chart.on('hover', function (data) {
-      console.log('hovering: ', data);
       if (data.type === 'bar') {}
     });
 
