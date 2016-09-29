@@ -18,6 +18,7 @@ export class ProjectsPage {
   public  projects:any 	  = [];
   public  project:any     = {};
   public  project_id:any  = 0;
+  public  projectNameFilter:any;
   public  endpoint:string = 'http://www.intengoresearch.com';
 
   constructor(public platform: Platform, public nav: NavController, public dataService: DataService ) {
@@ -25,6 +26,11 @@ export class ProjectsPage {
 
     var projects         = window.localStorage.getItem('projects');
     if(typeof projects !== 'undefined') this.projects = JSON.parse(projects);
+  }
+
+  ngAfterViewChecked(){
+    var input:any = document.querySelectorAll('.project_filter input');
+    input[0].focus();
   }
 
   selectProject(evt){

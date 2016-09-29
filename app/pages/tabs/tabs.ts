@@ -58,5 +58,9 @@ export class TabsPage {
 
   initProjects(){
     console.log('TabsPage:initProjects');
+    var input:any = document.querySelectorAll('.project_filter input');
+    if(input.length > 0){
+      input[0].focus();
+    }
   }
 }

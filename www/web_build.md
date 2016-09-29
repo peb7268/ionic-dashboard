@@ -27,6 +27,7 @@ git commit -m 'wip'
 git remote add origin https://github.com/intengodev/dash.git
 git push -f -u origin master
 
+5. Push to Heroku
 heroku git:remote intengo-dash
 
-git push heroku //maybe need a -f
+git push heroku -f

@@ -762,7 +762,6 @@ var LoginPage = (function () {
             if (resp.authed == true) {
                 window.localStorage.setItem('admin', resp.isAdmin);
                 window.localStorage.setItem('credentials', JSON.stringify(_this.creds));
-                console.log(resp);
                 _this.data = resp.project_list;
                 window.localStorage.setItem('projects', JSON.stringify(_this.data));
                 window['App'].instances.loginPage.nav.push(tabs_1.TabsPage); //Push to tabs page once request is successful
@@ -890,6 +889,10 @@ var ProjectsPage = (function () {
         if (typeof projects !== 'undefined')
             this.projects = JSON.parse(projects);
     }
+    ProjectsPage.prototype.ngAfterViewChecked = function () {
+        var input = document.querySelectorAll('.project_filter input');
+        input[0].focus();
+    };
     ProjectsPage.prototype.selectProject = function (evt) {
         evt.preventDefault();
         this.project_id = evt.target.parentElement.parentElement.getAttribute('project_id');
@@ -1048,6 +1051,10 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.initProjects = function () {
         console.log('TabsPage:initProjects');
+        var input = document.querySelectorAll('.project_filter input');
+        if (input.length > 0) {
+            input[0].focus();
+        }
     };
     TabsPage = __decorate([
         core_1.Component({

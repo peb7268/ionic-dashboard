@@ -69,8 +69,6 @@ export class LoginPage {
         window.localStorage.setItem('admin', resp.isAdmin);
         window.localStorage.setItem('credentials', JSON.stringify(this.creds));
 
-        console.log(resp);
-
         this.data = resp.project_list;
         window.localStorage.setItem('projects', JSON.stringify(this.data));
         window['App'].instances.loginPage.nav.push(TabsPage);  //Push to tabs page once request is successful
