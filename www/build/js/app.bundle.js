@@ -762,7 +762,7 @@ var LoginPage = (function () {
             if (resp.authed == true) {
                 window.localStorage.setItem('admin', resp.isAdmin);
                 window.localStorage.setItem('credentials', JSON.stringify(_this.creds));
-                debugger;
+                console.log(resp);
                 _this.data = resp.project_list;
                 window.localStorage.setItem('projects', JSON.stringify(_this.data));
                 window['App'].instances.loginPage.nav.push(tabs_1.TabsPage); //Push to tabs page once request is successful
