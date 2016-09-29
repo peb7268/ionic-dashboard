@@ -2,6 +2,7 @@
 import { Component }                from '@angular/core'
 import { Platform }                 from 'ionic-angular';
 
+import { ProjectsPage }             from '../projects/projects';
 import { HomePage }                 from '../home/home';
 import { SettingsPage }             from '../settings/settings';
 
@@ -15,6 +16,7 @@ import { DataService }              from './../../dashboard/data.service'
 export class TabsPage {
   private tab1Root: 	  any;
   private tab2Root: 	  any;
+  private tab3Root:     any;
   private currentTab: 	any;
 
   constructor(public dataService: DataService) {
@@ -25,14 +27,15 @@ export class TabsPage {
     // this tells the tabs component which Pages
     // should be each tab's root Page
     var currentTab  = window.localStorage.getItem('cache_data');
-    	  currentTab  = (currentTab !== null) ? 0 : 1;
+    currentTab      = (currentTab !== null) ? 1 : 0;
 
     this.currentTab = currentTab;
-    this.tab1Root 	= HomePage;
-    this.tab2Root 	= SettingsPage;
+
+    this.tab1Root   = ProjectsPage;
+    this.tab2Root 	= HomePage;
+    this.tab3Root 	= SettingsPage;
   }
 
-  //TODO: When you click the dashboard page and you have changed studies load the data from the new study
   initDash(){
     console.log('TabsPage:initDash');
 
@@ -51,5 +54,9 @@ export class TabsPage {
       console.log('Displaying the dash with cache');
       this.dataService.reloadCharts();
     }
+  }
+
+  initProjects(){
+    console.log('TabsPage:initProjects');
   }
 }

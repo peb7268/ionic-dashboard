@@ -1,0 +1,39 @@
+
+<ion-content padding class="projects" *ngIf="projects">
+	<ion-row [hidden]="projects.length < 2">
+		<ion-input type="text" class='project_filter' placeholder='Project Name' #projectNameFilter autofocus></ion-input>
+	</ion-row>
+
+	<ion-list>
+		<ion-card *ngFor='let project of projects | filterByName:projectNameFilter.value' class='projects' attr.project_id="{{project.id}}" (click)="selectProject($event)">
+	  <!-- <img src="http://lorempixel.com/340/221/business"/> -->
+
+	  <ion-card-content>
+	    <ion-card-title>
+	      {{ project.name }}
+	    </ion-card-title>
+
+	    <p>
+	      The most popular industrial group ever, and largely
+	      responsible for bringing the music to a mass audience.
+	    </p>
+	  </ion-card-content>
+
+	  	<ion-row>
+		    <ion-col class='completes'>
+		      <button primary clear small>
+		         <ion-icon name="checkmark-circle"></ion-icon>
+		        <div>12 Completes</div>
+		      </button>
+		    </ion-col>
+
+		    <ion-col right text-right class='terminates'>
+		      <button primary clear small>
+		        <ion-icon name="close"></ion-icon>
+		        <div>4 Terminates</div>
+		      </button>
+		    </ion-col>
+		</ion-row>
+		</ion-card>
+	</ion-list>
+</ion-content>

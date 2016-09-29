@@ -25,7 +25,6 @@ export class SettingsPage {
   public  admin           = false;
   public  endpoint:string = 'http://www.intengoresearch.com';
 
-
   constructor(public platform: Platform, public nav: NavController, public dataService: DataService ) {
     console.log('SettingsPage:constructor');
 

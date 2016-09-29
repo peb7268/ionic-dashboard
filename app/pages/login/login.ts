@@ -71,8 +71,6 @@ export class LoginPage {
 
         this.data = resp.project_list;
         window.localStorage.setItem('projects', JSON.stringify(this.data));
-
-        console.log(TabsPage);
         window['App'].instances.loginPage.nav.push(TabsPage);  //Push to tabs page once request is successful
       } else {
         //throw a login error message

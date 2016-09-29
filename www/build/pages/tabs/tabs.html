@@ -1,6 +1,7 @@
 
 <ion-tabs [selectedIndex]="currentTab">
-  <ion-tab [root]="tab1Root" tabTitle="Dashboard" tabIcon="podium" (ionSelect)="initDash()"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Preferences" tabIcon="switch"></ion-tab>
+	<ion-tab [root]="tab1Root" tabTitle="Projects"    tabIcon="list-box" (ionSelect)="initProjects()"></ion-tab>
+	<ion-tab [root]="tab2Root" tabTitle="Dashboard"   tabIcon="podium" (ionSelect)="initDash()"></ion-tab>
+	<ion-tab [root]="tab3Root" tabTitle="Preferences" tabIcon="switch"></ion-tab>
 </ion-tabs>
 

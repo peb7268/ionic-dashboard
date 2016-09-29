@@ -31,3 +31,18 @@ h2.project_name {
 		margin: 0 auto;
 	}
 }
+
+
+/* -- Projects -- */
+.projects { &:hover { cursor: pointer; } }
+
+.completes, .terminates, .view_project {
+	div { color: #333; }
+}
+
+.completes  { 
+	.ion-md-checkmark-circle { color: green; }
+}
+.terminates {
+	.ion-md-close { color: red; }
+}
