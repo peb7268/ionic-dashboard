@@ -23,7 +23,7 @@
 	  	<ion-row>
 		    <ion-col class='completes'>
 		      <button primary clear small>
-		        <span [ngClass]='status' class='indicator'></span>
+		        <span [ngClass]='{open: project.percent_complete < 100 && project.percent_complete > 0, closed: project.percent_complete == 0, finished: project.percent_complete >= 100 }' class='indicator'></span>
 		        <div>{{ project.percent_complete }}% COMPLETE (N = {{ project.completes }} of {{ project.quota }})</div>
 		      </button>
 		    </ion-col>
