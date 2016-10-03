@@ -9,6 +9,7 @@
 	  <!-- <img src="http://lorempixel.com/340/221/business"/> -->
 
 	  <ion-card-content>
+	  	<div class="project_id" *ngIf='isAdmin'>{{project.id}}</div>
 	    <ion-card-title>
 	      {{ project.name }}
 	    </ion-card-title>
@@ -22,15 +23,8 @@
 	  	<ion-row>
 		    <ion-col class='completes'>
 		      <button primary clear small>
-		         <ion-icon name="checkmark-circle"></ion-icon>
-		        <div>%{{ project.percent_complete }} Complete</div>
-		      </button>
-		    </ion-col>
-
-		    <ion-col right text-right class='terminates'>
-		      <button primary clear small>
-		        <ion-icon name="close"></ion-icon>
-		        <div>{{ project.terminated }} Terminates</div>
+		        <span [ngClass]='status' class='indicator'></span>
+		        <div>{{ project.percent_complete }}% COMPLETE (N = {{ project.completes }} of {{ project.quota }})</div>
 		      </button>
 		    </ion-col>
 		</ion-row>

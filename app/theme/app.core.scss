@@ -36,13 +36,16 @@ h2.project_name {
 /* -- Projects -- */
 .projects { &:hover { cursor: pointer; } }
 
-.completes, .terminates, .view_project {
-	div { color: #333; }
+.indicator {
+	display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    margin: 1px 5px 0 0;
+
+	&.closed 	 { background: red; }
+	&.open   	 { background: orange; }
+	&.finished   { background: green; }
 }
 
-.completes  { 
-	.ion-md-checkmark-circle { color: green; }
-}
-.terminates {
-	.ion-md-close { color: red; }
-}
+.project_id { float: right; color: #ccc; }

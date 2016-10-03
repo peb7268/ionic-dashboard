@@ -884,14 +884,21 @@ var ProjectsPage = (function () {
         this.project = {};
         this.project_id = 0;
         this.endpoint = 'http://www.intengoresearch.com';
+        this.status = 'closed';
+        this.isAdmin = false;
         console.log('ProjectsPage:constructor');
         var projects = window.localStorage.getItem('projects');
+        var admin = window.localStorage.getItem('admin');
         if (typeof projects !== 'undefined')
             this.projects = JSON.parse(projects);
+        this.isAdmin = (typeof admin !== 'undefined' && admin != 'false') ? true : false;
     }
+    /*
+    UPDATE surveys SET surveys.completes = (SELECT count(*) FROM users WHERE users.survey_id = 277 AND users.completed = 1) WHERE id = 277;
+    */
     ProjectsPage.prototype.ngAfterViewChecked = function () {
-        var input = document.querySelectorAll('.project_filter input');
-        input[0].focus();
+        //var input:any = document.querySelectorAll('.project_filter input');
+        //input[0].focus();
     };
     ProjectsPage.prototype.selectProject = function (evt) {
         evt.preventDefault();
