@@ -9,7 +9,8 @@ import { DataService }                              from '../../dashboard/data.s
 
 import 'rxjs/Rx';
 
-import { TabsPage } from '../tabs/tabs';
+import { TabsPage }     from '../tabs/tabs';
+import { ProjectsPage } from '../projects/projects';
 
 declare var samsung:any;
 
@@ -40,6 +41,9 @@ export class LoginPage {
   login(evt){
   	evt.preventDefault();
     if(evt.type == 'keyup' && evt.keyCode !== 13) return;
+    
+    var remember_me = (typeof this.user.remember_me !== 'undefined') ? this.user.remember_me.toString() : 'false';
+    window.localStorage.setItem('remember_me', remember_me);
 
     var endpoint = window.localStorage.getItem('endpoint');
 
@@ -53,7 +57,7 @@ export class LoginPage {
 
     var headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');    
-    endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://www.intengoresearch.com' : endpoint;
+    endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://intengodev.com' : endpoint;
 
     //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
     var observable = this.http.post(endpoint + '/dash/login', {'credentials' : creds }).map( (resp) => {

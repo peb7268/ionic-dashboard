@@ -21,6 +21,11 @@
 		  </ion-item>
 		</ion-list>
 		
+		<ion-item>
+			<ion-label>Remember Me</ion-label>
+		    <ion-checkbox [(ngModel)]="user.remember_me" clear></ion-checkbox>
+		</ion-item>
+
 		<button class="button button-block button-calm" (click)="login($event)">Login</button>
 	</ion-content>
 </ion-view>

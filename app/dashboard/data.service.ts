@@ -37,7 +37,7 @@ export class DataService {
 		this.loading 		= this.createLoader();
 
 		var endpoint 		= window.localStorage.getItem('endpoint');
-		this.endpoint 		= (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://www.intengoresearch.com';
+		this.endpoint 		= (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://intengodev.com';
 	}
 
 	fetchData(localData, project_id = null){
@@ -150,6 +150,8 @@ export class DataService {
 	}
 
 	resetData(){
+		console.log('resetting data');
+		
 		delete this.data;
 		this.data = null;
 

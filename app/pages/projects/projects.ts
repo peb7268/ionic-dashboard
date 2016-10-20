@@ -19,7 +19,7 @@ export class ProjectsPage {
   public  project:any     = {};
   public  project_id:any  = 0;
   public  projectNameFilter:any;
-  public  endpoint:string = 'http://www.intengoresearch.com';
+  public  endpoint:string = 'http://intengodev.com';
   public  status          = 'closed';
   public  isAdmin         = false;
 

@@ -14,9 +14,8 @@
 	      {{ project.name }}
 	    </ion-card-title>
 
-	    <p>
-	      The most popular industrial group ever, and largely
-	      responsible for bringing the music to a mass audience.
+	    <p *ngIf="project.description">
+	      {{ project.description }}
 	    </p>
 	  </ion-card-content>
 
@@ -24,7 +23,7 @@
 		    <ion-col class='completes'>
 		      <button primary clear small>
 		        <span [ngClass]='{open: project.percent_complete < 100 && project.percent_complete > 0, closed: project.percent_complete == 0, finished: project.percent_complete >= 100 }' class='indicator'></span>
-		        <div>{{ project.percent_complete }}% COMPLETE (N = {{ project.completes }} of {{ project.quota }})</div>
+		        <div>{{ project.percent_complete }}% COMPLETE (N={{ project.completes }} of {{ project.quota }})</div>
 		      </button>
 		    </ion-col>
 		</ion-row>

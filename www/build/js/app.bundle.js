@@ -34,13 +34,14 @@ var MyApp = (function () {
                 document.querySelectorAll('body')[0].classList.add('browser');
             if (typeof Cordova !== 'undefined')
                 ionic_native_1.StatusBar.styleDefault();
-            _this.cache_settings = localStorage.getItem('cache_data');
-            if (_this.cache_settings === null) {
-                window.localStorage.clear();
-                _this.rootPage = login_1.LoginPage;
+            var cache_settings = localStorage.getItem('cache_data');
+            var remember_me = window.localStorage.getItem('remember_me');
+            if (remember_me == 'true') {
+                _this.rootPage = tabs_1.TabsPage;
             }
             else {
-                _this.rootPage = tabs_1.TabsPage;
+                window.localStorage.clear();
+                _this.rootPage = login_1.LoginPage;
             }
         });
     }
@@ -443,6 +444,7 @@ var DataService = (function () {
         return data;
     };
     DataService.prototype.resetData = function () {
+        console.log('resetting data');
         delete this.data;
         this.data = null;
         window.localStorage.clear();
@@ -739,6 +741,8 @@ var LoginPage = (function () {
         evt.preventDefault();
         if (evt.type == 'keyup' && evt.keyCode !== 13)
             return;
+        var remember_me = (typeof this.user.remember_me !== 'undefined') ? this.user.remember_me.toString() : 'false';
+        window.localStorage.setItem('remember_me', remember_me);
         var endpoint = window.localStorage.getItem('endpoint');
         this.user.username = this.user.username.trim().toLowerCase();
         this.user.password = this.user.password.trim().toLowerCase();
@@ -749,7 +753,7 @@ var LoginPage = (function () {
         var creds = JSON.stringify(this.creds);
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://www.intengoresearch.com' : endpoint;
+        endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://dev.intengodev.com' : endpoint;
         //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
         var observable = this.http.post(endpoint + '/dash/login', { 'credentials': creds }).map(function (resp) {
             if (resp.text() == 'error') {
@@ -883,7 +887,7 @@ var ProjectsPage = (function () {
         this.projects = [];
         this.project = {};
         this.project_id = 0;
-        this.endpoint = 'http://www.intengoresearch.com';
+        this.endpoint = 'http://dev.intengodev.com';
         this.status = 'closed';
         this.isAdmin = false;
         console.log('ProjectsPage:constructor');
@@ -1032,8 +1036,8 @@ var TabsPage = (function () {
         window['App'].instances.tabsPage = this;
         // this tells the tabs component which Pages
         // should be each tab's root Page
-        var currentTab = window.localStorage.getItem('cache_data');
-        currentTab = (currentTab !== null) ? 1 : 0;
+        var currentTab = window.localStorage.getItem('remember_me');
+        currentTab = (currentTab !== null) ? 0 : 1;
         this.currentTab = currentTab;
         this.tab1Root = projects_1.ProjectsPage;
         this.tab2Root = home_1.HomePage;

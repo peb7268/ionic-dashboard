@@ -36,12 +36,14 @@ export class MyApp {
       if(typeof Cordova == 'undefined') document.querySelectorAll('body')[0].classList.add('browser');
       if(typeof Cordova !== 'undefined') StatusBar.styleDefault();
       
-      this.cache_settings = localStorage.getItem('cache_data');
-      if(this.cache_settings === null){
+      var cache_settings = localStorage.getItem('cache_data');
+      var remember_me    = window.localStorage.getItem('remember_me');
+      
+      if(remember_me == 'true') {
+        this.rootPage   = TabsPage;
+      } else {
         window.localStorage.clear();
         this.rootPage   = LoginPage;
-      } else {
-        this.rootPage   = TabsPage;
       }
     });
   }

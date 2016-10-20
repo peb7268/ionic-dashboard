@@ -23,7 +23,7 @@ export class SettingsPage {
   public  project:any     = {};
   public  project_id:any  = 0;
   public  admin           = false;
-  public  endpoint:string = 'http://www.intengoresearch.com';
+  public  endpoint:string = 'http://www.intengodev.com';
 
   constructor(public platform: Platform, public nav: NavController, public dataService: DataService ) {
     console.log('SettingsPage:constructor');

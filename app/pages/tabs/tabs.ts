@@ -26,8 +26,8 @@ export class TabsPage {
 
     // this tells the tabs component which Pages
     // should be each tab's root Page
-    var currentTab  = window.localStorage.getItem('cache_data');
-    currentTab      = (currentTab !== null) ? 1 : 0;
+    var currentTab  = window.localStorage.getItem('remember_me');
+    currentTab      = (currentTab !== null) ? 0 : 1;
 
     this.currentTab = currentTab;
 
