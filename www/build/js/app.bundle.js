@@ -346,7 +346,7 @@ var DataService = (function () {
         this.dataSubject = new BehaviorSubject_1.BehaviorSubject(this.data);
         this.loading = this.createLoader();
         var endpoint = window.localStorage.getItem('endpoint');
-        this.endpoint = (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://www.intengoresearch.com';
+        this.endpoint = (endpoint !== null && typeof endpoint !== 'undefined') ? JSON.parse(endpoint) : 'http://intengodev.com';
     }
     DataService.prototype.fetchData = function (localData, project_id) {
         if (project_id === void 0) { project_id = null; }
@@ -753,7 +753,7 @@ var LoginPage = (function () {
         var creds = JSON.stringify(this.creds);
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://dev.intengodev.com' : endpoint;
+        endpoint = (endpoint === null || typeof endpoint == 'undefined') ? 'http://intengodev.com' : endpoint;
         //endpoint = 'http://dev.intengodev.com';  //Uncomment for testing
         var observable = this.http.post(endpoint + '/dash/login', { 'credentials': creds }).map(function (resp) {
             if (resp.text() == 'error') {
@@ -887,7 +887,7 @@ var ProjectsPage = (function () {
         this.projects = [];
         this.project = {};
         this.project_id = 0;
-        this.endpoint = 'http://dev.intengodev.com';
+        this.endpoint = 'http://intengodev.com';
         this.status = 'closed';
         this.isAdmin = false;
         console.log('ProjectsPage:constructor');
@@ -949,7 +949,7 @@ var SettingsPage = (function () {
         this.project = {};
         this.project_id = 0;
         this.admin = false;
-        this.endpoint = 'http://www.intengoresearch.com';
+        this.endpoint = 'http://www.intengodev.com';
         console.log('SettingsPage:constructor');
         var creds = window.localStorage.getItem('credentials');
         var projects = window.localStorage.getItem('projects');
